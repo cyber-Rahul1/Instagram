@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../utils/Firebase';
+
 
 
 
@@ -108,6 +111,16 @@ const Login = () => {
     }, 1000)
   }
 
+  const handleFacebookLogin = async () => {
+    try {
+      let result = await signInWithPopup(auth, provider);
+      console.log(result);
+    } catch (error) {
+      setLoading(false)
+      setStatus(error?.response?.status);
+    }
+  }
+
   
 
 
@@ -151,7 +164,7 @@ const Login = () => {
               <p className='text-[#ffffffa5] text-xs '>OR</p>
               <hr className='w-[110px] h-[2px] bg-[#55555574]' />
             </div>
-            <div className='flex items-center justify-center gap-2 mt-7'>
+            <div  onClick={handleFacebookLogin} className='flex items-center justify-center gap-2 mt-7'>
               <FaFacebook color='#2d6dd6' className='text-[21px]' />
               <p className='text-[#2d6dd6] text-[14px] font-semibold cursor-pointer '>Log in with Facebook</p>
             </div>
@@ -160,6 +173,7 @@ const Login = () => {
                 Sorry, your password was incorrect. Please<br/> double-check your password.
               </p>
             )}
+            
 
             <div className='flex flex-col  items-center justify-center mt-1 gap-18 md:gap-13'>
               <p onClick={() => {navigate('/forgotpassword')}} className='text-[#fffffff4] text-sm mt-4 cursor-pointer hover:text-[#ffffff79] transition-all duration-200 ease-in-out'>Forgot password?</p>
@@ -169,8 +183,8 @@ const Login = () => {
           
         </div>
        
-      </div>
-      <LoginFooter />
+      </div >
+      <LoginFooter page={'login'}/>
     </div>
   )
 }
