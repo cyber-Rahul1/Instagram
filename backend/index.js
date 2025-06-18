@@ -14,6 +14,9 @@ import authRouter from './routes/auth.routes.js';
 import isAuth from './middlewares/auth.js';
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
 
 const port = process.env.PORT || 3000;
 
