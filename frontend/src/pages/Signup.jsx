@@ -405,7 +405,7 @@ const Signup = () => {
             <p className='text-[#ffffffa5] text-xs mt-1 text-center'>People who use our service may have uploaded<br /> your contact information to Instagram. <span className='text-[#708dff] cursor-pointer'>Learn<br /> More</span></p>
             <p className='text-[#ffffffa5] text-xs mt-4 text-center'>By signing up, you agree to our <span className='text-[#708dff] cursor-pointer'>Terms</span> , <span className='text-[#708dff] cursor-pointer'> Privacy<br /> Policy</span > and <span className='text-[#708dff] cursor-pointer'>Cookies Policy</span> .</p>
           </div>
-          <button disabled={username === '' || pass === '' || email === '' || !PassValid || !valid || !available} onClick={handleSignup} className={`${username === '' || email === '' || pass?.length < 5 || !PassValid || !valid || !available ? 'bg-[#0069ad] text-[#aaafb3]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white active:scale-95'
+          <button disabled={username === '' || pass === '' || email === '' || PassValid === 'false' || valid === 'false' || !available || name === '' } onClick={handleSignup} className={`${username === '' || email === '' || pass?.length < 5 || !PassValid || !valid || !available ? 'bg-[#0069ad] text-[#aaafb3]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white active:scale-95'
             } w-[270px] h-[34px] cursor-pointer rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}
           >
             {loading ? (

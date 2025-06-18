@@ -127,7 +127,7 @@ const Login = () => {
                 <p className='text-[#b0abab]'>Username or email</p>
               </div>
             </div>
-            <div onKeyDown={() => handleinput(inputRef2, inputBox1)} className='relative'>
+            <div onKeyDown={() => {handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative'>
               <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] h-[36px] border pl-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm ' />
               <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs z-1 transition-all duration-300 ease-in-out'>
                 <p className='text-[#b0abab]'>Password</p>

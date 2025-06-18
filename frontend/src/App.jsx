@@ -1,7 +1,7 @@
 import Login from "./pages/Login"
 import { Routes, Route } from "react-router-dom"
 import Signup from "./pages/Signup"
-import GetCurrentUser from "./functions/getCurrentUser"
+
 import Home from "./pages/Home"
 import { useEffect } from "react"
 import ForgotPassword from "./pages/ForgotPassword"
@@ -9,6 +9,7 @@ import EnterOtp from "./pages/EnterOtp"
 import ResetPassword from "./pages/ResetPassword"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import DataDeletion from "./pages/DataDeletion"
+import GetCurrentUser from "./functions/GetCurrentUser"
 
 
 
