@@ -15,6 +15,7 @@ import { auth, provider } from '../utils/Firebase';
 
 
 
+
 const Login = () => {
   const inputRef1 = useRef(null)
   const inputRef2 = useRef(null)
@@ -112,9 +113,19 @@ const Login = () => {
   }
 
   const handleFacebookLogin = async () => {
+    setLoading(true)
     try {
-      let result = await signInWithPopup(auth, provider);
-      console.log(result);
+      let response = await signInWithPopup(auth, provider);
+      let name = response.user.displayName;
+      let email = response.user.email;
+
+      let result = await axios.post(`${serverUrl}/api/auth/googlelogin`, {
+        name,
+        email
+      }, { withCredentials: true });
+      setLoading(false)
+      setStatus(result.status)
+      navigate('/')
     } catch (error) {
       setLoading(false)
       setStatus(error?.response?.status);

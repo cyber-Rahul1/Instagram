@@ -308,9 +308,23 @@ const Signup = () => {
 
 
   const handleFacebookLogin = async () => {
+    setLoading(true)
     try {
-      let result = await signInWithPopup(auth, provider);
-      console.log(result);
+      let response = await signInWithPopup(auth, provider);
+      let name = response.user.displayName;
+      let email = response.user.email;
+
+      let result = await axios.post(`${serverUrl}/api/auth/googlelogin`, {
+        name,
+        email
+      }, { withCredentials: true });
+      setLoading(false)
+      dispatch(setUserData(result.data));
+      setEmail('')
+      setPassword('')
+      setName('')
+      setUsername('')
+      navigate('/')
     } catch (error) {
       setLoading(false)
       console.log(error);
