@@ -16,7 +16,7 @@ const LoginFooter = ({page}) => {
 
 
     return (
-        <div className={`w-full lg:flex left-0 flex flex-col justify-center items-center md:mt-20 lg:mt-14 bg-black   ${page === "signUp" ? 'fixed bottom-8' : (page === "forgotPassword") ? 'fixed bottom-12 ' : (page === "Otp") ? ' pt-18' : (page === 'login') ? 'fixed bottom-12' : ''}`}>
+        <div className={`w-full lg:flex left-0 flex flex-col justify-center items-center md:mt-20 lg:mt-14 bg-black   ${page === "signUp" ? 'absolute left-0 bottom-8' : (page === "forgotPassword") ? 'absolute bottom-12 left-0' : (page === "Otp") ? ' pt-18' : (page === 'login') ? 'absolute left-0 bottom-12' : ''}`}>
             <div className='flex flex-wrap gap-4 justify-center items-center p-auto md:p-2'>
                 {footerLinks.map((links) => {
                     return <p key={links} onClick={() =>{handleClick(links)}} className='text-[#ffffffa5] text-xs lg:mt-4 leading-2 cursor-pointer hover:underline'>{links}</p>
