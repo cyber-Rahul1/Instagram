@@ -9,6 +9,8 @@ import LoginFooter from "../components/LoginFooter";
 import { AiOutlineReload } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../redux/userSlice";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../utils/Firebase";
 
 
 
@@ -305,7 +307,15 @@ const Signup = () => {
 
 
 
-
+  const handleFacebookLogin = async () => {
+    try {
+      let result = await signInWithPopup(auth, provider);
+      console.log(result);
+    } catch (error) {
+      setLoading(false)
+      console.log(error);
+    }
+  }
 
 
 
@@ -324,7 +334,7 @@ const Signup = () => {
         <h1 className='heading text-5xl tracking-tight font-medium text-gray-100 mb-5 pt-2'>Instagram</h1>
 
         <p className='text-[#c5c1bcc4] text-[16px] font-semibold mb-2 text-center leading-5'>Sign up to see photos and videos<br /> from your friends.</p>
-        <button className="flex items-end px-12 py-[6px] rounded-lg gap-2 bg-[#0095f6] text-[#fffafd] font-semibold text-sm mt-2 transition-all duration-200 ease-in-out hover:bg-[#2d6dd6b7] active:scale-95 cursor-pointer"><BiLogoFacebookSquare size={22} /><p >Log in with Facebook</p></button>
+        <button onClick={handleFacebookLogin} className="flex items-end px-12 py-[6px] rounded-lg gap-2 bg-[#0095f6] text-[#fffafd] font-semibold text-sm mt-2 transition-all duration-200 ease-in-out hover:bg-[#2d6dd6b7] active:scale-95 cursor-pointer"><BiLogoFacebookSquare size={22} /><p >Log in with Facebook</p></button>
 
         {/* OR divider section - Visual separator between Facebook login and form fields */}
         <form className='flex items-center flex-col justify-center '>
