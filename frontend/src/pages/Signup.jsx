@@ -314,12 +314,12 @@ const Signup = () => {
       let name = response.user.displayName;
       let email = response.user.email;
 
-      let result = await axios.post(`${serverUrl}/api/auth/googlelogin`, {
+      await axios.post(`${serverUrl}/api/auth/googlelogin`, {
         name,
         email
       }, { withCredentials: true });
       setLoading(false)
-      dispatch(setUserData(result.data));
+      
       setEmail('')
       setPassword('')
       setName('')

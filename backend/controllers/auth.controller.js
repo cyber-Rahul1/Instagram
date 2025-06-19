@@ -26,10 +26,10 @@ export const createUser = async (req,res) => {
             expiresIn: 7 * 24 * 60 * 60 * 1000
         } )
         await user.save();
-        res.status(201).json({ message: 'User created successfully', user });
+        return res.status(201).json({ message: 'User created successfully', user });
 
     } catch (error) {
-        res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong' });
     }
 }
 
@@ -41,12 +41,12 @@ export const checkUsername = async (req,res) => {
         const { username } = req.body;
         const user = await User.findOne({ username });
         if (user) {
-            res.status(400).json({ message: 'Username already exists' });
+            return res.status(400).json({ message: 'Username already exists' });
         } else {
-            res.status(200).json({ message: 'Username is available' });
+            return res.status(200).json({ message: 'Username is available' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong' });
     }
 }
 
@@ -74,11 +74,12 @@ export const loginUser = async (req,res) => {
         res.cookie('token', token, {
             httpOmly: true,
             expiresIn: 7 * 24 * 60 * 60 * 1000
-        }).status(200).json({ message: 'Login successful', user });
+        })
+        return res.status(200).json({ message: 'Login successful', user });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong' });
     }
 }
 
@@ -87,10 +88,10 @@ export const loginUser = async (req,res) => {
 export const logoutUser = async (req,res) => {
     try {
         res.clearCookie('token');
-        res.status(200).json({ message: 'Logout successful' });
+        return res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong' });
     }
 }
 
@@ -109,17 +110,18 @@ export const googleLogin = async (req, res) => {
         if (!user) {
             let user = await User.create({email,name});
             user = await user.save();
-            return res.status(200).json({ message: 'Login successful', user });
+            
         }
         
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token, {
             httpOmly: true,
             expiresIn: 7 * 24 * 60 * 60 * 1000
-        }).status(200).json({ message: 'Login successful', user });
+        })
+        return res.status(200).json({ message: 'Login successful', user });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong' });
     }
 }
