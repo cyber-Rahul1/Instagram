@@ -129,7 +129,7 @@ const ResetPassword = () => {
 
 
   return (
-    <div className="relative w-full h-screen flex flex-col justify-start items-center bg-black pt-28 md:pt-50 z-2 overflow-x-hidden ">
+    <div className="relative w-full h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-28 md:pt-50 z-2 overflow-x-hidden ">
       <div className='w-full h-fit fixed top-0 left-0'>
         <OtpNavbar />
       </div>

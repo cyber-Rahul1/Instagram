@@ -68,9 +68,10 @@ function Birthday() {
     }
 
     return (
-        <div className="relative w-full min-h-screen flex flex-col justify-start items-center bg-black pt-18 md:pt-16 z-2 ">
+        <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-18 md:pt-16 z-2 ">
             {message && <p className="text-[#ffffffd1] text-[15px]  w-full h-[40px] absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-[#262626]">{message}</p>}
-            <div className='flex flex-col justify-start items-center md:border-1 border-[#363636] px-auto  pt-5 px-10'>
+           <div className='w-full h-fit flex flex-col'> 
+           <div className='flex flex-col justify-start items-center md:border-1 border-[#363636] px-auto  pt-5 px-10'>
                 <div className='flex justify-center items-center w-200px '>
                     <img src={birthday} alt="birthday" className='object-cover w-full h-full' />
                 </div>
@@ -138,6 +139,7 @@ function Birthday() {
             <div onClick={() => { navigate('/login') }} className='md:border-1 border-[#363636] flex flex-col items-center justify-center py-6 bg-black w-full md:w-fit md:px-[121px] mt-[10px] '>
                 <p  className='text-[#ffffffe9] text-sm text-center leading-3'>Have an account? <br /><span className='text-[#007fce] cursor-pointer font-semibold text-sm'>Log in</span> </p>
             </div>
+           </div>
             <LoginFooter page="signUp" />
         </div>
        

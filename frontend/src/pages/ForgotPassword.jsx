@@ -95,7 +95,7 @@ const ForgotPassword = () => {
   }, [])
 
   return (
-    <div className="relative w-full min-h-screen flex flex-col justify-start items-center bg-black pt-28 md:pt-36 z-2">
+    <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-28 md:pt-36 z-2">
       {message && <p className="text-[#ffffffd1] text-[15px]  w-full h-[40px] absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-[#262626]">{message}</p>}
      { popup && <div className="w-full h-full absolute top-0 left-0 z-5 bg-[#000000a7]"></div>}
      { popup && <div className="absolute z-10 w-[300px] md:w-[400px] h-[180px] flex flex-col justify-center items-center bg-[#262626] rounded-2xl md:px-8 top-80">
