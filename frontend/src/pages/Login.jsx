@@ -151,14 +151,14 @@ const Login = () => {
           <div className='lg:w-[20vw] h-[48vh] flex flex-col  items-center rounded-xl'>
             <h1 className='heading text-5xl tracking-tight font-medium text-gray-100 mb-8 md:mb-8'>Instagram</h1>
             <form className='flex items-center flex-col justify-center mt-4'>
-              <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-3'>
-                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm  mb-2' />
+              <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-0'>
+                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-10 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm  mb-2' />
                 <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
                   <p className='text-[#b0abab]'>Username or email</p>
                 </div>
               </div>
-              <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-3'>
-                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-3 h-[36px] border pl-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm ' />
+              <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-0'>
+                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-10 h-[36px] border pl-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm ' />
                 <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
                   <p className='text-[#b0abab]'>Password</p>
                 </div>
