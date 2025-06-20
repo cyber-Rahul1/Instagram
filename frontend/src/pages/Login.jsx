@@ -136,7 +136,7 @@ const Login = () => {
 
 
   return (
-    <div className='w-full h-screen flex flex-col justify-start items-center bg-black pt-14 lg:pt-22'>
+    <div className='w-full h-screen flex flex-col justify-center md:justify-start items-center bg-black pt-14 lg:pt-22'>
       
       <div className='flex justify-center items-center'>
         <div className='hidden lg:block w-fit h-fit'>
@@ -179,16 +179,17 @@ const Login = () => {
               <FaFacebook color='#2d6dd6' className='text-[21px]' />
               <p className='text-[#2d6dd6] text-[14px] font-semibold cursor-pointer '>Log in with Facebook</p>
             </div>
-            {(status === 400 || status === 500) && (
-              <p className="text-red-400 text-center text-sm mt-5 absolute bottom-53 md:block">
-                Sorry, your password was incorrect. Please<br/> double-check your password.
-              </p>
-            )}
+            
             
 
-            <div className='flex flex-col  items-center justify-center mt-1 gap-18 md:gap-13'>
+            <div className='flex flex-col  items-center justify-center mt-1 gap-5 md:gap-13 pb-10'>
               <p onClick={() => {navigate('/forgotpassword')}} className='text-[#fffffff4] text-sm mt-4 cursor-pointer hover:text-[#ffffff79] transition-all duration-200 ease-in-out'>Forgot password?</p>
-              <p onClick={() => {navigate('/signup')}} className={`text-[#fffffff4]  text-sm md:mb-30 cursor-pointer`}>Don't have an account? <span className='text-[#2d65d6] text-[14px] font-bold cursor-pointer'>Sign up</span></p>
+              {(status === 400 || status === 500) && (
+                <p className="text-red-400 text-center text-sm mt-1  md:block">
+                  Sorry, your password was incorrect. Please<br /> double-check your password.
+                </p>
+              )}
+              <p onClick={() => {navigate('/signup')}} className={`text-[#fffffff4]  text-sm md:mb-30  cursor-pointer`}>Don't have an account? <span className='text-[#2d65d6] text-[14px] font-bold cursor-pointer'>Sign up</span></p>
             </div>
           </form>
           

@@ -8,7 +8,7 @@ import { FaRegCircleCheck } from "react-icons/fa6";
 import LoginFooter from "../components/LoginFooter";
 import { AiOutlineReload } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { setUserData } from "../redux/userSlice";
+import { setUserCredentials } from "../redux/userSlice";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/Firebase";
 
@@ -38,6 +38,7 @@ const Signup = () => {
   const [valid, setValid] = useState('');
   const [isFocused, setIsFocused] = useState(null);
   const [PassValid, setPassValid] = useState('');
+  const [same, setSame] = useState('')
   const [loading, setLoading] = useState(false)
   const serverUrl = import.meta.env.VITE_SERVER_URL
   const navigate = useNavigate()
@@ -89,25 +90,32 @@ const Signup = () => {
    */
   const handleSignup = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    try {
-      let result = await axios.post(`${serverUrl}/api/auth/register`, {
-        username,
-        email,
-        password: pass,
-        name
-      }, { withCredentials: true })
-      dispatch(setUserData(result.data));
-      setLoading(false)
-      navigate('/')
-      setEmail('')
-      setPassword('')
-      setName('')
-      setUsername('')
-    } catch (error) {
-      error.response.status === 400 && setAvailable(false)
-      setLoading(false)
-    }
+    // setLoading(true)
+    // try {
+    //   let result = await axios.post(`${serverUrl}/api/auth/register`, {
+    //     username,
+    //     email,
+    //     password: pass,
+    //     name
+    //   }, { withCredentials: true })
+    //   dispatch(setUserData(result.data));
+    //   setLoading(false)
+    //   navigate('/')
+    //   setEmail('')
+    //   setPassword('')
+    //   setName('')
+    //   setUsername('')
+    // } catch (error) {
+    //   error.response.status === 400 && setAvailable(false)
+    //   setLoading(false)
+    // }
+    dispatch(setUserCredentials({
+      username,
+      email,
+      password: pass,
+      name
+    }))
+    navigate('/signup/birthday');
 
   }
 
@@ -164,6 +172,7 @@ const Signup = () => {
   const validateEmail = (value) => {
     setEmail(value);
     clearTimeout(timerRef.current);
+    
 
     if (value === '') {
       setValid("")
@@ -188,6 +197,13 @@ const Signup = () => {
   const handlePassword = (value) => {
     setPassword(value);
     clearTimeout(passwordRef.current);
+    let name = email.split('@')[0];
+    if(value.includes(name)){
+      setSame('true')
+      return
+    }else{
+      setSame('false')
+    }
 
 
     if (value === '') {
@@ -341,7 +357,7 @@ const Signup = () => {
 
   return (
     /* Main page container - Full screen background with centered content */
-    <div className='w-full min-h-screen flex flex-col justify-start items-center bg-black pt-2 md:pt-4'>
+    <div className='w-full min-h-screen flex flex-col justify-center md:justify-start items-center bg-black pt-2 md:pt-4'>
 
       {/* Main signup form container - Contains Instagram logo, form fields, and signup button */}
       <div className='flex flex-col justify-center items-center md:border-1 border-[#363636] px-auto p-10 pt-10 '>
@@ -378,15 +394,16 @@ const Signup = () => {
 
             {/* Password input field with show/hide toggle and validation */}
             <div onKeyDown={() => {handleInput(inputRef2, inputBox1); handleBlur(inputRef2, inputBox1);} } className='relative'>
-              <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => {handleBlur(inputRef2, inputBox1); setIsFocused(null)}} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') ? 'border-[#ff3040] border-1' : ''} w-[270px] h-[36px] border pl-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-[3px]`} />
+              <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => {handleBlur(inputRef2, inputBox1); setIsFocused(null)}} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') || (same === 'true') ? 'border-[#ff3040] border-1' : ''} w-[270px] h-[36px] border pl-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-[3px]`} />
               <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs z-1 transition-all duration-300 ease-in-out'>
                 <p className='text-[#b0abab]'>Password</p>
               </div>
               {pass?.length > 0 && <div className={`absolute flex items-center justify-center gap-2 right-3 ${PassValid === 'false' ? 'top-1' : 'top-2 '}`}>
-                {(pass.length >= 5 && PassValid === 'true') ? <FaRegCircleCheck size={22} className={`${(PassValid === 'false') ? 'hidden' : ''} text-[#909090]`}/> : <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(PassValid === 'false') ? '' : 'hidden'}`} />}
+                {(pass.length >= 5 && PassValid === 'true') ? <FaRegCircleCheck size={22} className={`${(PassValid === 'false') ? 'hidden' : ''} text-[#909090]`}/> : <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(PassValid === 'false' ) ? '' : 'hidden'}`} />}
                 <p onClick={() => { handleShow() }} className={` cursor-pointer text-white font-semibold text-sm transition-all duration-300 ease-in-out hover:text-[#919191]`}>{show ? 'Hide' : 'Show'}</p>
               </div>}
             </div>
+            {(same === 'true') && <div className='flex items-center justify-start pl-2'><p className={` ${isFocused === 'password' ? 'text-[#ff3041bc]' : ''} text-[#ff3040] text-xs pb-2 `}> Password should not contain your email.</p></div>}
             {(PassValid === 'false') && <div className='flex items-center justify-center'><p className={` ${isFocused === 'password' ? 'text-[#ff3041bc]' : ''} text-[#ff3040] text-xs pb-2 `}>This password is too easy to guess. Please create<br /> a new one.</p></div>}
 
             {/* Full name input field */}
@@ -429,7 +446,7 @@ const Signup = () => {
             <p className='text-[#ffffffa5] text-xs mt-1 text-center'>People who use our service may have uploaded<br /> your contact information to Instagram. <span className='text-[#708dff] cursor-pointer'>Learn<br /> More</span></p>
             <p className='text-[#ffffffa5] text-xs mt-4 text-center'>By signing up, you agree to our <span className='text-[#708dff] cursor-pointer'>Terms</span> , <span className='text-[#708dff] cursor-pointer'> Privacy<br /> Policy</span > and <span className='text-[#708dff] cursor-pointer'>Cookies Policy</span> .</p>
           </div>
-          <button disabled={username === '' || pass === '' || email === '' || PassValid === 'false' || valid === 'false' || !available || name === '' } onClick={handleSignup} className={`${username === '' || email === '' || pass?.length < 5 || !PassValid || !valid || !available ? 'bg-[#0069ad] text-[#aaafb3]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white active:scale-95'
+          <button disabled={username === '' || pass === '' || email === '' || PassValid === 'false' || valid === 'false' || !available || name === '' || same === 'true' } onClick={handleSignup} className={`${username === '' || email === '' || pass?.length < 5 || !PassValid || !valid || !available || name === '' || same === 'true' ? 'bg-[#0069ad] text-[#aaafb3]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white active:scale-95'
             } w-[270px] h-[34px] cursor-pointer rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}
           >
             {loading ? (

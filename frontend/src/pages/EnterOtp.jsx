@@ -131,7 +131,7 @@ const EnterOtp = () => {
       let result = await axios.post(`${serverUrl}/api/users/getotp`, {
         identifier: identifier
       }, { withCredentials: true })
-      setMessage(result.data.message)
+      setMessage(`${result.data.message} to ${result.data.email}`)
       setLoading(false)
       setTimeout(() => {
         setMessage('')

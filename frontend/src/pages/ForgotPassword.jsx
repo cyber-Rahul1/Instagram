@@ -65,6 +65,10 @@ const ForgotPassword = () => {
      
       dispatch(setUserEmail(useremail))
       dispatch(setIdentifier(username))
+      setMessage(`${result.data.message} to ${result.data.email}`)
+      setTimeout(() => {
+        setMessage('')
+      }, 3000);
       
       if(result.status === 400){
         setMessage(result.data.message)

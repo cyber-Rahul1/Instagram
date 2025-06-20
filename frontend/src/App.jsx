@@ -10,6 +10,9 @@ import ResetPassword from "./pages/ResetPassword"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import DataDeletion from "./pages/DataDeletion"
 import GetCurrentUser from "./functions/GetCurrentUser"
+import Birthday from "./pages/Birthday"
+import ConfirmEmail from "./pages/ConfirmEmail"
+// import { useSelector } from "react-redux"
 
 
 
@@ -27,12 +30,21 @@ const App = () => {
       "color: white; font-size: 20px; letter-spacing: 2px;"
     );
   }, []);
+
+  useEffect(() => {
+    document.title = 'Instagram'
+  }, [])
+
+  // const { userData } = useSelector((state) => state.user)
+
   return (
     <>
     <Routes>
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
       <Route path="/signup/:username" element={<Signup/>}/>
+      <Route path="/signup/birthday" element={<Birthday/>}/>
+      <Route path="/signup/birthday/confirmemail" element={<ConfirmEmail/>}/>
       <Route path="/forgotpassword" element={<ForgotPassword/>}/>
       <Route path="/otp" element={<EnterOtp/>}/>
       <Route path="/resetpassword" element={<ResetPassword/>}/>

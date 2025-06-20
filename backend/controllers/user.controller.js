@@ -25,11 +25,11 @@ export const updateUser = async (req, res) => {
         const userid = req.userId;
         const user = await User.findById(userid);
         if (!user) return res.status(404).json({ message: 'User not found' });
-        const { name, email, password } = req.body;
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'All fields are required' });
+        const { name, email, username, profilepic } = req.body;
+        if (!name || !email ) {
+            return res.status(400).json({ message: 'Name and email fields are required' });
         }
-        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, password }, { new: true });   
+        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, username, profilepic }, { new: true });   
         await updatedUser.save();
         res.status(200).json({ message: 'User updated successfully', updatedUser });
     } catch (error) {   
@@ -58,7 +58,7 @@ export const forgotPassword = async (req, res) => {
         });
         await otpData.save();
         await sendEmail(user.email, otp);
-        res.status(200).json({ message: 'OTP sent successfully', otp, email: user.email });
+        res.status(200).json({ message: 'Email sent successfully', email: user.email });
         
     } catch (error) {
         console.log(error);
