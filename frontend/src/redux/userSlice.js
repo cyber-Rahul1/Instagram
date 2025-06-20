@@ -23,11 +23,14 @@ const userSlice = createSlice({
                 ...state.userCredentials,
                 ...action.payload
             };
-        }
+        },
+        clearUserCredentials(state) {
+            state.userCredentials = {};
+          }
         
        
     }
 })
 
-export const { setUserData, setUserEmail, setIdentifier, setUserCredentials } = userSlice.actions;
+export const { setUserData, setUserEmail, setIdentifier, setUserCredentials, clearUserCredentials } = userSlice.actions;
 export default userSlice.reducer

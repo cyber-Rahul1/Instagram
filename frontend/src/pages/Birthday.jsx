@@ -32,9 +32,11 @@ function Birthday() {
     };
 
     useEffect(() => {
-       console.log(userCredentials)
-
-    },[userCredentials])
+        if (!userCredentials || Object.keys(userCredentials).length === 0) {
+            alert('Session expired. Please start again.');
+            navigate('/signup', { replace: true });
+        }
+    }, [userCredentials, navigate]);
 
 
     const handleNext = async (e) => {
