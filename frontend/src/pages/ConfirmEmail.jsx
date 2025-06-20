@@ -2,10 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import email from '../assets/email.png'
 import LoginFooter from '../components/LoginFooter'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import axios from 'axios'
-import { clearUserCredentials } from '../redux/userSlice'
+
 
 
 
@@ -15,14 +15,12 @@ const ConfirmEmail = () => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
-  let dispatch = useDispatch();
+
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
   let navigate = useNavigate()
   const { userCredentials } = useSelector((state) => state.user)
-  useEffect(() => {
-    console.log(userCredentials)
-  }, [userCredentials])
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,7 +34,7 @@ const ConfirmEmail = () => {
       setTimeout(() => {
         setMessage('')
       }, 3000);
-
+      
       navigate('/', { replace: true })
     } catch (error) {
       setLoading(false)
@@ -47,27 +45,27 @@ const ConfirmEmail = () => {
     }
   }
 
-  const handleResend =async () => {
+  const handleResend = async () => {
     setError(false)
     setLoading(true)
     try {
-      let result = await axios.post(`${serverUrl}/api/users/getotp`, {
-        identifier: userCredentials.email
+      let result = await axios.post(`${serverUrl}/api/users/confirmemail`, {
+        email: userCredentials.email
       }, { withCredentials: true })
       if(result.status === 400){
         setError(true)
         setMessage(result.data.message)
       }
+      console.log(result.data)
       setMessage(`${result.data.message} to ${userCredentials.email}`)
       setTimeout(() => {
         setMessage('')
       }, 3000);
       setLoading(false)
-      dispatch(clearUserCredentials());
+      
       navigate('/signup/birthday/confirmemail')
     } catch (error) {
       setMessage(error.response?.data.message)
-      setError(true)
       setLoading(false)
       setTimeout(() => {
         setMessage('')
@@ -78,16 +76,15 @@ const ConfirmEmail = () => {
 
   useEffect(() => {
     if (!userCredentials || Object.keys(userCredentials).length === 0) {
-      alert('Session expired. Please start again.');
-      navigate('/signup', { replace: true });
+      navigate('/login', { replace: true });
     }
   }, [userCredentials, navigate]);
 
 
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-25 md:pt-22 z-2 ">
-      {message && <p className="text-[#ffffffd1] text-[15px]  w-full h-[40px] absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-[#262626]">{message}</p>}
-     <div className='w-full h-fit flex flex-col'> 
+      {message && <p className="text-[#ffffffd1] text-[15px]  w-full absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-[#262626]">{message}</p>}
+     <div className='w-fit h-fit flex flex-col'> 
         <div className='flex flex-col justify-start items-center md:border-1 border-[#363636] md:px-10 pt-2'>
           <div className='flex justify-center items-center w-[180px] '>
             <img src={email} alt="birthday" className='object-cover w-full h-full pr-2' />

@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setIdentifier, setUserEmail } from '../redux/userSlice';
+import { clearUserCredentials, setIdentifier, setUserEmail } from '../redux/userSlice';
 import OtpNavbar from '../components/OtpNavbar';
 
 const Home = () => {
 
   let dispatch = useDispatch();
-  const { userEmail, identifier, userCredentials } = useSelector((state) => state.user)
+  const { userEmail, identifier } = useSelector((state) => state.user)
 
   useEffect(() => {
     if (identifier || userEmail) {
@@ -16,8 +16,8 @@ const Home = () => {
   }, [identifier, userEmail, dispatch])
 
   useEffect(() => {
-      console.log(userCredentials)
-    }, [userCredentials])
+    dispatch(clearUserCredentials());
+    }, [] )
 
   return (
     <div>

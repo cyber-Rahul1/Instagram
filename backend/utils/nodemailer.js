@@ -58,7 +58,8 @@ export const sendEmail = async (email, otp) => {
                     © Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA
                 </p>
             </div>
-        </div>`
+        </div>`,
+            replyTo: "no-reply@yourdomain.com"
         };
 
         await transporter.sendMail(mailOptions);

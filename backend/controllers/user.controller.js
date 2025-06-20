@@ -26,13 +26,13 @@ export const updateUser = async (req, res) => {
         const user = await User.findById(userid);
         if (!user) return res.status(404).json({ message: 'User not found' });
         const { name, email, username, profilepic } = req.body;
-        if (!name || !email ) {
+        if (!name || !email) {
             return res.status(400).json({ message: 'Name and email fields are required' });
         }
-        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, username, profilepic }, { new: true });   
+        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, username, profilepic }, { new: true });
         await updatedUser.save();
         res.status(200).json({ message: 'User updated successfully', updatedUser });
-    } catch (error) {   
+    } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Something went wrong' });
     }
@@ -59,7 +59,37 @@ export const forgotPassword = async (req, res) => {
         await otpData.save();
         await sendEmail(user.email, otp);
         res.status(200).json({ message: 'Email sent successfully', email: user.email });
-        
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+
+
+//------------------------------------------------------------------------------------------
+
+
+
+export const confirmEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: 'This field is required' });
+        }
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(400).json({ message: 'Already have an account with this email' });
+        }
+        const otp = Math.floor(1000 + Math.random() * 9000);
+        const otpData = new Otp({
+            email,
+            otp,
+        });
+        await otpData.save();
+        await sendEmail(email, otp);
+        res.status(200).json({ message: 'Email sent successfully', email, otp });
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Something went wrong' });
@@ -101,7 +131,7 @@ export const resetPassword = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
         const hashPassword = await bcrypt.hash(password, 12);
-        const user = await User.findOneAndUpdate({ username } , { password : hashPassword } , { new: true });
+        const user = await User.findOneAndUpdate({ username }, { password: hashPassword }, { new: true });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
