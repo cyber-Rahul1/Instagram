@@ -11,6 +11,12 @@ const LoginFooter = ({page}) => {
             navigate('/privacy-policy');
         }else if(link === "Delete Account"){
             navigate('/data-deletion');
+        }else if(link === "Terms"){
+            navigate('/privacy-policy');
+        }else if(link === "Meta"){
+            navigate('/privacy-policy');
+        }else if(link === "Help"){
+            navigate('/data-deletion');
         }
     }
 

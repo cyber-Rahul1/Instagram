@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { BiLogoFacebookSquare } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { setUserCredentials } from "../redux/userSlice";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/Firebase";
+import { ServerContext } from "../context/ContextProvider";
 
 
 
@@ -45,6 +46,7 @@ const Signup = () => {
   const timerRef = useRef(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
+   const {setPage} = useContext(ServerContext)
   let dispatch = useDispatch();
 
 
@@ -80,6 +82,7 @@ const Signup = () => {
   useEffect(() => {
     inputBox.current.focus()
     document.title = `Sign up - Instagram`;
+    setPage('signup')
 
   }, [])
 
@@ -115,6 +118,7 @@ const Signup = () => {
       password: pass,
       name
     }))
+    setPage('')
     navigate('/signup/birthday');
 
   }
@@ -339,6 +343,7 @@ const Signup = () => {
       setPassword('')
       setName('')
       setUsername('')
+      setPage('')
       navigate('/')
     } catch (error) {
       setLoading(false)
@@ -358,7 +363,7 @@ const Signup = () => {
     /* Main page container - Full screen background with centered content */
     <div className='w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-2 md:pt-4'>
 
-      <div className='w-full h-fit flex flex-col'>
+      <div className='w-fit h-fit flex flex-col'>
         
         {/* Main signup form container - Contains Instagram logo, form fields, and signup button */}
         <div className='flex flex-col justify-center items-center md:border-1 border-[#363636] px-auto p-10 pt-10 '>
@@ -444,8 +449,8 @@ const Signup = () => {
 
             {/* Terms and privacy policy text section */}
             <div>
-              <p className='text-[#ffffffa5] text-xs mt-1 text-center'>People who use our service may have uploaded<br /> your contact information to Instagram. <span className='text-[#708dff] cursor-pointer'>Learn<br /> More</span></p>
-              <p className='text-[#ffffffa5] text-xs mt-4 text-center'>By signing up, you agree to our <span className='text-[#708dff] cursor-pointer'>Terms</span> , <span className='text-[#708dff] cursor-pointer'> Privacy<br /> Policy</span > and <span className='text-[#708dff] cursor-pointer'>Cookies Policy</span> .</p>
+              <p className='text-[#ffffffa5] text-xs mt-1 text-center'>People who use our service may have uploaded<br /> your contact information to Instagram. <span onClick={() => { navigate('/privacy-policy') }} className='text-[#708dff] cursor-pointer'>Learn<br /> More</span></p>
+              <p className='text-[#ffffffa5] text-xs mt-4 text-center'>By signing up, you agree to our <span onClick={() => { navigate('/privacy-policy') }} className='text-[#708dff] cursor-pointer'>Terms</span> , <span className='text-[#708dff] cursor-pointer'> Privacy<br /> Policy</span > and <span onClick={() => { navigate('/data-deletion') }} className='text-[#708dff] cursor-pointer'>Cookies Policy</span> .</p>
             </div>
             <button disabled={username === '' || pass === '' || email === '' || PassValid === 'false' || valid === 'false' || !available || name === '' || same === 'true'} onClick={handleSignup} className={`${username === '' || email === '' || pass?.length < 5 || !PassValid || !valid || !available || name === '' || same === 'true' ? 'bg-[#0069ad] text-[#aaafb3]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white active:scale-95'
               } w-[270px] h-[34px] cursor-pointer rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}

@@ -1,12 +1,13 @@
 
 
+import { useState } from 'react';
 import { ServerContext } from '../context/ContextProvider'
 
 export const ServerProvider = ({ children }) => {
-    const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"; 
+    const [page, setPage] = useState(''); 
 
     return (
-        <ServerContext.Provider value={serverUrl}>
+        <ServerContext.Provider value={{page, setPage}}>
             {children}
         </ServerContext.Provider>
     );

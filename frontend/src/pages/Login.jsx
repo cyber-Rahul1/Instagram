@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import instalogin from '../assets/instagram-login.png'
 import { FaFacebook } from "react-icons/fa";
 import LoginFooter from '../components/LoginFooter';
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../utils/Firebase';
+import { ServerContext } from '../context/ContextProvider';
 
 
 
@@ -26,6 +27,7 @@ const Login = () => {
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState('')
+  const {setPage} = useContext(ServerContext)
 
  
 
@@ -57,6 +59,7 @@ const Login = () => {
      setUsername('')
      setPassword('')
      setLoading(false)
+     setPage('')
      navigate('/')
 
  
@@ -73,7 +76,8 @@ const Login = () => {
     inputBox.current.focus()
     setStatus('')
     document.title = `Login - Instagram`; 
-    
+    setPage('login')
+
   }, [])
 
   useEffect(() => {
@@ -125,6 +129,7 @@ const Login = () => {
       }, { withCredentials: true });
       setLoading(false)
       setStatus(result.status)
+      setPage('')
       navigate('/')
     } catch (error) {
       setLoading(false)

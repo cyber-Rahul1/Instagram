@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LoginFooter from '../components/LoginFooter'
 import OtpNavbar from '../components/OtpNavbar'
+import { ServerContext } from '../context/ContextProvider'
 
 const PrivacyPolicy = () => {
     const navigate = useNavigate()
+    const {page} = useContext(ServerContext)
 
     useEffect(() => {
         document.title = 'Privacy Policy - Instagram'
@@ -171,10 +173,10 @@ const PrivacyPolicy = () => {
                     {/* Back to Login */}
                     <div className="text-center mt-12 mb-8">
                         <button
-                            onClick={() => navigate('/login')}
+                            onClick={() => navigate(page === 'signup' ? '/signup' : '/login')}
                             className="text-[#0087eb] hover:text-[#0087ebcc] cursor-pointer font-semibold text-sm transition-all duration-200 ease-in-out"
                         >
-                            ← Back to Login
+                            ← Back to {page === 'signup' ? 'Sign Up' : 'Login'}
                         </button>
                     </div>
                 </div>
