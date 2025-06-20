@@ -110,15 +110,22 @@ export const googleLogin = async (req, res) => {
         if (!user) {
             let user = await User.create({email,name});
             user = await user.save();
-            
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+            res.cookie('token', token, {
+                httpOmly: true,
+                expiresIn: 7 * 24 * 60 * 60 * 1000
+            })
+            return res.status(200).json({ message: 'Login successful', user });
+        }else {
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+            res.cookie('token', token, {
+                httpOmly: true,
+                expiresIn: 7 * 24 * 60 * 60 * 1000
+            })
+            return res.status(200).json({ message: 'Login successful', user });
         }
         
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-        res.cookie('token', token, {
-            httpOmly: true,
-            expiresIn: 7 * 24 * 60 * 60 * 1000
-        })
-        return res.status(200).json({ message: 'Login successful', user });
+        
 
     } catch (error) {
         console.log(error);
