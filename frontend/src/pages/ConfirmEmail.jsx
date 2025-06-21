@@ -30,18 +30,28 @@ const ConfirmEmail = () => {
         otp: code
       }, { withCredentials: true })
       setMessage(result.data.message)
-      setLoading(false)
+      
       setTimeout(() => {
         setMessage('')
-      }, 3000);
-      
+      }, 5000);
+      let result2 = await axios.post(`${serverUrl}/api/auth/register`, {
+        email: userCredentials.email,
+        password: userCredentials.password,
+        name: userCredentials?.name,
+        username: userCredentials.username
+      }, { withCredentials: true })
+      setLoading(false)
+      setMessage(result2.data.message)
+      setTimeout(() => {
+        setMessage('')
+      }, 5000);
       navigate('/', { replace: true })
     } catch (error) {
       setLoading(false)
       setMessage(error.response.data.message)
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
     }
   }
 
@@ -60,16 +70,16 @@ const ConfirmEmail = () => {
       setMessage(`${result.data.message} to ${userCredentials.email}`)
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
       setLoading(false)
       
-      navigate('/signup/birthday/confirmemail')
+     
     } catch (error) {
       setMessage(error.response?.data.message)
       setLoading(false)
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
       
     }
   }

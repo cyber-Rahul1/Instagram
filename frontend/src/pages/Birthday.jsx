@@ -54,7 +54,7 @@ function Birthday() {
             setMessage(`${result.data.message} to ${userCredentials.email}`)
             setTimeout(() => {
                 setMessage('')
-            }, 3000);
+            }, 5000);
 
         } catch (error) {
             console.log(error)
@@ -62,7 +62,7 @@ function Birthday() {
             setMessage(error.response?.data.message)
             setTimeout(() => {
                 setMessage('')
-            }, 3000);
+            }, 5000);
         }
         navigate('/signup/birthday/confirmemail')
     }

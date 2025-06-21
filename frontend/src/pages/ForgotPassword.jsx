@@ -68,20 +68,20 @@ const ForgotPassword = () => {
       setMessage(`${result.data.message} to ${result.data.email}`)
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
       
       if(result.status === 400){
         setMessage(result.data.message)
         setTimeout(() => {
           setMessage('')
-        }, 3000);
+        }, 5000);
       }
     } catch (error) {
       setLoading(false)
       setMessage(error.response?.data.message)
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
     }
 
   }

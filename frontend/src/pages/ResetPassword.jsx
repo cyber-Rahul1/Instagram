@@ -116,13 +116,13 @@ const ResetPassword = () => {
       setConfirmPass('')
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
     } catch (error) {
       setLoading(false)
       setMessage(error.response?.data.message)
       setTimeout(() => {
         setMessage('')
-      }, 3000);
+      }, 5000);
     }
   }
 
