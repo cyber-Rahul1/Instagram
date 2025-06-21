@@ -11,6 +11,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import DataDeletion from "./pages/DataDeletion"
 import Birthday from "./pages/Birthday"
 import ConfirmEmail from "./pages/ConfirmEmail"
+import GetCurrentUser from "./functions/GetCurrentUser"
 // import { useSelector } from "react-redux"
 
 
@@ -18,7 +19,7 @@ import ConfirmEmail from "./pages/ConfirmEmail"
 
 
 const App = () => {
-  
+  GetCurrentUser()
   useEffect(() => {
     console.log(
       "%cStop!",
