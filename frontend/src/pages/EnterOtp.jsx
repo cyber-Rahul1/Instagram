@@ -148,22 +148,22 @@ const EnterOtp = () => {
 
 
   return (
-    <div className="relative w-full h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-28 md:pt-50 z-2 overflow-x-hidden ">
+    <div className="relative w-full h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black pt-28 md:pt-50 z-2 overflow-x-hidden ">
       <div className='w-full h-fit fixed top-0 left-0'>
         <OtpNavbar />
       </div>
-      <div className="relative w-[400px] flex flex-col justify-start items-center md:border-1 border-[#363636] mt-1 px-auto md:px-12 pt-6 rounded-sm">
-        <div className="flex items-center justify-center border-3 border-[#f5f5f5a1] rounded-full p-3">
-          <LockClosedIcon className="h-16 w-16 text-[#f5f5f5a9] pb-1" />
+      <div className="relative w-[400px] flex flex-col justify-start items-center md:border-1 border-[#dbdbdb] dark:border-[#363636] mt-1 px-auto md:px-12 pt-6 rounded-sm">
+        <div className="flex items-center justify-center border-3 dark:border-[#f5f5f5] border-[#5e5d5d] rounded-full p-3">
+          <LockClosedIcon className="h-16 w-16 dark:text-[#f5f5f5] text-[#5e5d5d] pb-1" />
         </div>
         <div>
-          <p className="text-[#ffffffac] text-[17px] font-semibold mt-3 text-center">Enter OTP sent to {userEmail} and is <br /> valid for 10 minutes.</p>
+          <p className="dark:text-[#ffffffac] text-[#5e5d5d] text-[17px] font-semibold mt-3 text-center">Enter OTP sent to {userEmail} and is <br /> valid for 10 minutes.</p>
         </div>
         <div className="flex items-center justify-center gap-3 mt-4">
           {letters.map((_, i) => {
             return (
               <div key={i} className="flex items-center justify-center mt-2">
-                <input key={i} type="text" maxLength={1} ref={inputRefs[i]} onChange={(e) => handleotpinput(e, i)} onPaste={(e) => handlePaste(e, i)} onKeyDown={(e) => handleKeyDown(e, i)} value={otp[i]} className="w-10 h-10 border-2 border-[#262626] p-2 bg-[#121212] outline-none rounded-md text-center text-white text-lg font-medium" />
+                <input key={i} type="text" maxLength={1} ref={inputRefs[i]} onChange={(e) => handleotpinput(e, i)} onPaste={(e) => handlePaste(e, i)} onKeyDown={(e) => handleKeyDown(e, i)} value={otp[i]} className="w-10 h-10 border-2 border-[#a79f9f] dark:border-[#555555] p-2 bg-[#fafafa] dark:bg-[#121212] outline-none rounded-md text-center dark:text-gray-300 text-[#000000d6] text-lg font-medium" />
               </div>
             )
           })}
@@ -171,7 +171,7 @@ const EnterOtp = () => {
         </div>
         
         <div className=" text-center  flex flex-col items-center justify-center">
-          <p className="text-[#ffffffac] text-[13px] ml-25 w-full  flex items-center mt-4">Didn`t receive an OTP?<button onClick={() => handleResend()} disabled={!resend} className={` ${resend ? 'text-[#0087eb]' : 'text-[#0085eb7c]'}  ml-2 cursor-pointer`}>Resend Otp</button></p>
+          <p className="dark:text-[#ffffffac] text-[13px] ml-25 w-full  flex items-center mt-4">Didn`t receive an OTP?<button onClick={() => handleResend()} disabled={!resend} className={` ${resend ? 'text-[#0087eb]' : 'text-[#0085eb7c]'}  ml-2 cursor-pointer`}>Resend Otp</button></p>
           {timer >= 0 && <p className="text-[#ffffffac] text-[13px] ml-40 w-full pt-1 flex  items-center">Resend after {timer} seconds</p>}
         </div>
         <button onKeyDown={(e) =>handleEnter(e)} onClick={() => handleSubmit()} disabled={otp.includes('')} className={`bg-blue-500 mb-30 text-white font-bold mt-4 py-2 px-10 cursor-pointer  rounded-lg  ${otp.includes('') ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 active:scale-95'}`}>{loading ? (
@@ -179,7 +179,7 @@ const EnterOtp = () => {
         ) : (
           'Verify'
         )}</button>
-        <button onClick={() => { navigate('/login', { replace: true }) }} className="w-screen sm:w-[380px] md:w-full py-3 md:absolute border-1 md:border-t-1 border-[#363636af] bottom-0 left-0 bg-[#121212] text-[#ffffff] hover:text-[#ffffff79] cursor-pointer transition-all duration-200 ease-in-out font-bold text-sm text-center mt-3">Back to Login</button>
+        <button onClick={() => { navigate('/login') }} className="w-screen sm:w-[380px] md:w-full py-3 md:absolute border-1 md:border-t-1 border-[#dbdbdb] dark:border-[#363636af] bottom-0 left-0 bg-[#fafafa] dark:bg-[#121212] dark:text-[#ffffff] text-[#5e5c5c] hover:text-[#9a9696d2] dark:hover:text-[#ffffff79] cursor-pointer transition-all duration-200 ease-in-out font-bold text-sm text-center mt-3">Back to Login</button>
       </div>
 
       <div className="w-full hidden lg:block">

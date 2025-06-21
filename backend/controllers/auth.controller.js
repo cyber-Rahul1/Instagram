@@ -7,7 +7,7 @@ import Otp from "../models/otp.model.js";
 
 export const createUser = async (req,res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, name } = req.body;
         if (!username || !email || !password) {
             return res.status(400).json({ message: 'All fields are required' });
         }
@@ -19,13 +19,14 @@ export const createUser = async (req,res) => {
         const user = new User({
             username,
             email,
+            name,
             password: hashPassword
         });
 
         const token =  jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token,{
-            httpOmly: true,
-            expiresIn: 7 * 24 * 60 * 60 * 1000
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000
         } )
         await user.save();
         return res.status(201).json({ message: 'User created successfully', user });
@@ -74,8 +75,8 @@ export const loginUser = async (req,res) => {
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.cookie('token', token, {
-            httpOmly: true,
-            expiresIn: 7 * 24 * 60 * 60 * 1000
+            httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000
         })
         return res.status(200).json({ message: 'Login successful', user });
 
@@ -114,15 +115,15 @@ export const googleLogin = async (req, res) => {
             user = await user.save();
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
             res.cookie('token', token, {
-                httpOmly: true,
-                expiresIn: 7 * 24 * 60 * 60 * 1000
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60 * 1000
             })
             return res.status(200).json({ message: 'Login successful', user });
         }else {
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
             res.cookie('token', token, {
-                httpOmly: true,
-                expiresIn: 7 * 24 * 60 * 60 * 1000
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60 * 1000
             })
             return res.status(200).json({ message: 'Login successful', user });
         }
@@ -225,13 +226,15 @@ export const checkOtp = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
     try {
-        const { username, password } = req.body;
-        if (!username || !password) {
+        const { identifier, password } = req.body;
+        if (!identifier || !password) {
             return res.status(400).json({ message: 'All fields are required' });
         }
         const hashPassword = await bcrypt.hash(password, 12);
-        const user = await User.findOneAndUpdate({ username }, { password: hashPassword }, { new: true });
+        const user = await User.findOneAndUpdate({ $or: [{ email: identifier }, { username: identifier }] }, { password: hashPassword }, { new: true });
         if (!user) {
+            await Otp.deleteMany({ email: user.email });
+            console.log("Deleted OTPs for", user.email);
             return res.status(404).json({ message: 'User not found' });
         }
         await Otp.deleteMany({ email: user.email });

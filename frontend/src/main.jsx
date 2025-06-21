@@ -9,12 +9,12 @@ import { ServerProvider } from './context/ServerContext.jsx'
 
 createRoot(document.getElementById('root')).render(
 
-    <BrowserRouter>
-      <Provider store={store}>
-        <ServerProvider>
-          <App />
-        </ServerProvider>
-      </Provider>
-    </BrowserRouter>
+  <BrowserRouter>
+    <Provider store={store}>
+      <ServerProvider>
+        <App />
+      </ServerProvider>
+    </Provider>
+  </BrowserRouter>
 
 )

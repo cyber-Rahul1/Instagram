@@ -1,4 +1,4 @@
-import  { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import LoginFooter from '../components/LoginFooter'
 import OtpNavbar from '../components/OtpNavbar'
@@ -6,7 +6,7 @@ import { ServerContext } from '../context/ContextProvider'
 
 const DataDeletion = () => {
     const navigate = useNavigate()
-    const {page} = useContext(ServerContext)
+    const { page } = useContext(ServerContext)
 
 
     useEffect(() => {
@@ -14,10 +14,10 @@ const DataDeletion = () => {
     }, [])
 
     return (
-        <div className="min-h-screen bg-black text-white py-8">
+        <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-white py-8">
             {/* Header */}
-            <div className="w-full border-b border-[#363636] bg-black">
-                <div className="w-full border-b border-[#363636] bg-black">
+            <div className="w-full  bg-white dark:bg-black">
+                <div className="w-full  bg-white dark:bg-black">
                     <div className='w-full h-fit fixed top-0 left-0'>
                         <OtpNavbar />
                     </div>
@@ -26,18 +26,18 @@ const DataDeletion = () => {
 
             {/* Main Content */}
             <div className="max-w-4xl mx-auto px-4 py-8">
-                <div className="bg-black">
+                <div className="bg-white dark:bg-black">
                     {/* Title */}
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-white mb-2">Data Deletion</h1>
-                        <p className="text-[#c5c1bcc4] text-sm">Request deletion of your account and data</p>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Data Deletion</h1>
+                        <p className="text-gray-600 dark:text-[#c5c1bcc4] text-sm">Request deletion of your account and data</p>
                     </div>
 
                     {/* Main Content */}
                     <section className="mb-8">
-                        <div className="bg-[#121212] border border-[#363636] rounded-lg p-8 text-center">
-                            <h2 className="text-xl font-semibold text-white mb-6">User Data Deletion Instructions</h2>
-                            <p className="text-[#ffffffe9] text-base leading-6 mb-6">
+                        <div className="bg-gray-50 dark:bg-[#121212] border border-gray-300 dark:border-[#363636] rounded-lg p-8 text-center">
+                            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">User Data Deletion Instructions</h2>
+                            <p className="text-gray-700 dark:text-[#ffffffe9] text-base leading-6 mb-6">
                                 To delete your data from our app, please email us at{' '}
                                 <a
                                     href="mailto:instagramclone0@gmail.com"
@@ -49,9 +49,9 @@ const DataDeletion = () => {
                             </p>
 
                             {/* Additional Information */}
-                            <div className="bg-[#1a1a1a] border border-[#363636] rounded-lg p-6 mt-6">
-                                <h3 className="text-lg font-medium text-white mb-4">What happens when you request deletion?</h3>
-                                <ul className="text-left list-disc list-inside space-y-2 text-[#c5c1bcc4]">
+                            <div className="bg-gray-100 dark:bg-[#1a1a1a] border border-gray-300 dark:border-[#363636] rounded-lg p-6 mt-6">
+                                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">What happens when you request deletion?</h3>
+                                <ul className="text-left list-disc list-inside space-y-2 text-gray-600 dark:text-[#c5c1bcc4]">
                                     <li>Your account will be permanently deleted</li>
                                     <li>All your posts, stories, and messages will be removed</li>
                                     <li>Your profile information will be erased</li>
@@ -60,12 +60,12 @@ const DataDeletion = () => {
                             </div>
 
                             {/* Contact Information */}
-                            <div className="mt-6 p-4 bg-[#0a0a0a] border border-[#363636] rounded-lg">
-                                <p className="text-[#c5c1bcc4] text-sm mb-2">
-                                    <strong className="text-white">Email:</strong> instagramclone0@gmail.com
+                            <div className="mt-6 p-4 bg-gray-200 dark:bg-[#0a0a0a] border border-gray-300 dark:border-[#363636] rounded-lg">
+                                <p className="text-gray-600 dark:text-[#c5c1bcc4] text-sm mb-2">
+                                    <strong className="text-gray-900 dark:text-white">Email:</strong> instagramclone0@gmail.com
                                 </p>
-                                <p className="text-[#c5c1bcc4] text-sm">
-                                    <strong className="text-white">Response Time:</strong> Within 48 hours
+                                <p className="text-gray-600 dark:text-[#c5c1bcc4] text-sm">
+                                    <strong className="text-gray-900 dark:text-white">Response Time:</strong> Within 48 hours
                                 </p>
                             </div>
                         </div>
@@ -73,10 +73,10 @@ const DataDeletion = () => {
 
                     {/* Additional Information */}
                     <section className="mb-8">
-                        <h2 className="text-xl font-semibold text-white mb-4">Important Notes</h2>
-                        <div className="text-[#ffffffe9] text-base leading-6 space-y-4">
-                            <div className="bg-[#121212] border border-[#363636] rounded-lg p-6">
-                                <ul className="list-disc list-inside space-y-3 text-[#c5c1bcc4]">
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Important Notes</h2>
+                        <div className="text-gray-700 dark:text-[#ffffffe9] text-base leading-6 space-y-4">
+                            <div className="bg-gray-50 dark:bg-[#121212] border border-gray-300 dark:border-[#363636] rounded-lg p-6">
+                                <ul className="list-disc list-inside space-y-3 text-gray-600 dark:text-[#c5c1bcc4]">
                                     <li>Make sure to use the same email address that you registered with</li>
                                     <li>Include your username in the email for faster processing</li>
                                     <li>Download any content you want to keep before requesting deletion</li>
@@ -89,19 +89,19 @@ const DataDeletion = () => {
 
                     {/* Alternative Options */}
                     <section className="mb-8">
-                        <h2 className="text-xl font-semibold text-white mb-4">Alternative Options</h2>
-                        <div className="text-[#ffffffe9] text-base leading-6">
+                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Alternative Options</h2>
+                        <div className="text-gray-700 dark:text-[#ffffffe9] text-base leading-6">
                             <p className="mb-4">Before requesting permanent deletion, consider these alternatives:</p>
                             <div className="grid md:grid-cols-2 gap-4">
-                                <div className="bg-[#121212] border border-[#363636] rounded-lg p-4">
-                                    <h3 className="text-lg font-medium text-white mb-2">Deactivate Account</h3>
-                                    <p className="text-[#c5c1bcc4] text-sm">
+                                <div className="bg-gray-50 dark:bg-[#121212] border border-gray-300 dark:border-[#363636] rounded-lg p-4">
+                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Deactivate Account</h3>
+                                    <p className="text-gray-600 dark:text-[#c5c1bcc4] text-sm">
                                         Temporarily disable your account without losing your data. You can reactivate it anytime.
                                     </p>
                                 </div>
-                                <div className="bg-[#121212] border border-[#363636] rounded-lg p-4">
-                                    <h3 className="text-lg font-medium text-white mb-2">Privacy Settings</h3>
-                                    <p className="text-[#c5c1bcc4] text-sm">
+                                <div className="bg-gray-50 dark:bg-[#121212] border border-gray-300 dark:border-[#363636] rounded-lg p-4">
+                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Privacy Settings</h3>
+                                    <p className="text-gray-600 dark:text-[#c5c1bcc4] text-sm">
                                         Adjust your privacy settings to control who can see your content and information.
                                     </p>
                                 </div>

@@ -141,7 +141,7 @@ const Login = () => {
 
 
   return (
-    <div className='w-full h-screen flex flex-col justify-around md:justify-start items-center bg-black pt-14 lg:pt-22'>
+    <div className='w-full h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black pt-14 lg:pt-22'>
       
       <div className='w-full h-fit flex flex-col'>
         <div className='flex justify-center items-center'>
@@ -149,24 +149,24 @@ const Login = () => {
             <img src={instalogin} alt=" instagram login " className='w-[32vw]' />
           </div>
           <div className='lg:w-[20vw] h-[48vh] flex flex-col  items-center rounded-xl'>
-            <h1 className='heading text-5xl tracking-tight font-medium text-gray-100 mb-8 md:mb-8'>Instagram</h1>
+            <h1 className='heading text-5xl tracking-tight font-medium text-[#262626] dark:text-gray-100  mb-8 md:mb-8'>Instagram</h1>
             <form className='flex items-center flex-col justify-center mt-4'>
               <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-0'>
-                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-10 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm  mb-2' />
+                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-10 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-sm  mb-2' />
                 <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
-                  <p className='text-[#b0abab]'>Username or email</p>
+                  <p className='dark:text-[#b0abab] text-[#938e8e]'>Username or email</p>
                 </div>
               </div>
               <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-0'>
-                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-10 h-[36px] border pl-3 border-[#555555] outline-none text-xs text-white bg-[#121212] rounded-sm ' />
+                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-10 h-[36px] border pl-3 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212]  rounded-sm ' />
                 <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
-                  <p className='text-[#b0abab]'>Password</p>
+                  <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                 </div>
                 {pass.length > 0 && <div className='absolute top-2 right-3 cursor-pointer'>
                   <p onClick={() => { handleShow() }} className='text-white font-semibold text-sm transition-all duration-300 ease-in-out hover:text-[#919191]'>{show ? 'Hide' : 'Show'}</p>
                 </div>}
               </div>
-              <button disabled={username === '' || pass === '' || pass.length < 5} onClick={handleLogin} className={`${username === '' || pass.length < 5 ? 'bg-[#0069ad] text-[#aaafb3]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
+              <button disabled={username === '' || pass === '' || pass.length < 5} onClick={handleLogin} className={`${username === '' || pass.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
                 } w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}
               >
                 {loading ? (
@@ -177,9 +177,9 @@ const Login = () => {
               </button>
 
               <div className='flex items-center justify-center gap-4 mt-4'>
-                <hr className='w-[110px] h-[2px] bg-[#55555574] ' />
-                <p className='text-[#ffffffa5] text-xs '>OR</p>
-                <hr className='w-[110px] h-[2px] bg-[#55555574]' />
+                <hr className='w-[110px] dark:h-[2px] h-[1px] border-none bg-[#737c8a6f] dark:bg-[#55555574] ' />
+                <p className='dark:text-[#ffffffa5] text-[#737c8add] text-[13px] dark:font-normal font-semibold'>OR</p>
+                <hr className='w-[110px] dark:h-[2px] h-[1px] border-none bg-[#737c8a6f] dark:bg-[#55555574]' />
               </div>
               <div onClick={handleFacebookLogin} className='flex items-center justify-center gap-2 mt-7'>
                 <FaFacebook color='#2d6dd6' className='text-[21px]' />
@@ -189,13 +189,13 @@ const Login = () => {
 
 
               <div className='flex flex-col  items-center justify-center mt-1 gap-5 md:gap-13 pb-10'>
-                <p onClick={() => { navigate('/forgotpassword') }} className='text-[#fffffff4] text-sm mt-4 cursor-pointer hover:text-[#ffffff79] transition-all duration-200 ease-in-out'>Forgot password?</p>
+                <p onClick={() => { navigate('/forgotpassword') }} className='text-[#3d3c3c] font-semibold dark:font-normal dark:text-[#ffffffa5] text-sm mt-4 cursor-pointer hover:text-[#7b7474b2]  dark:hover:text-[#ffffff79] transition-all duration-200 ease-in-out'>Forgot password?</p>
                 {(status === 400 || status === 500) && (
                   <p className="text-red-400 text-center text-sm mt-1  md:block">
                     Sorry, your password was incorrect. Please<br /> double-check your password.
                   </p>
                 )}
-                <p onClick={() => { navigate('/signup') }} className={`text-[#fffffff4]  text-sm md:mb-30  cursor-pointer`}>Don't have an account? <span className='text-[#2d65d6] text-[14px] font-bold cursor-pointer'>Sign up</span></p>
+                <p onClick={() => { navigate('/signup') }} className={`dark:text-[#fffffff4]  text-sm md:mb-30  cursor-pointer`}>Don't have an account? <span className='dark:text-[#2d65d6] text-[14px] font-bold cursor-pointer text-[#4e7edc]'>Sign up</span></p>
               </div>
             </form>
 
