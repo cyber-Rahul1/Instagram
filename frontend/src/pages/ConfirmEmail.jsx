@@ -26,7 +26,7 @@ const ConfirmEmail = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      let result = await axios.post(`${serverUrl}/api/users/checkotp`, {
+      let result = await axios.post(`${serverUrl}/api/auth/checkotp`, {
         otp: code
       }, { withCredentials: true })
       setMessage(result.data.message)
@@ -49,7 +49,7 @@ const ConfirmEmail = () => {
     setError(false)
     setLoading(true)
     try {
-      let result = await axios.post(`${serverUrl}/api/users/confirmemail`, {
+      let result = await axios.post(`${serverUrl}/api/auth/confirmemail`, {
         email: userCredentials.email
       }, { withCredentials: true })
       if(result.status === 400){

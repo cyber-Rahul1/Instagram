@@ -52,7 +52,7 @@ const ForgotPassword = () => {
     setLoading(true)
 
     try {
-      let result = await axios.post(`${serverUrl}/api/users/getotp`, {
+      let result = await axios.post(`${serverUrl}/api/auth/getotp`, {
         identifier: username
       }, { withCredentials: true })
       

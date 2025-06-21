@@ -9,7 +9,6 @@ import EnterOtp from "./pages/EnterOtp"
 import ResetPassword from "./pages/ResetPassword"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import DataDeletion from "./pages/DataDeletion"
-import GetCurrentUser from "./functions/GetCurrentUser"
 import Birthday from "./pages/Birthday"
 import ConfirmEmail from "./pages/ConfirmEmail"
 // import { useSelector } from "react-redux"
@@ -19,7 +18,7 @@ import ConfirmEmail from "./pages/ConfirmEmail"
 
 
 const App = () => {
-  GetCurrentUser()
+  
   useEffect(() => {
     console.log(
       "%cStop!",

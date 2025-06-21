@@ -99,7 +99,7 @@ const EnterOtp = () => {
     const lettersofotp = otpData.join('');
     setLoading(true)
     try {
-      let result = await axios.post(`${serverUrl}/api/users/checkotp`, {
+      let result = await axios.post(`${serverUrl}/api/auth/checkotp`, {
         otp: lettersofotp
       }, { withCredentials: true })
       setMessage(result.data.message)
@@ -128,7 +128,7 @@ const EnterOtp = () => {
     setResend(false)
     setTimer(30)
     try {
-      let result = await axios.post(`${serverUrl}/api/users/getotp`, {
+      let result = await axios.post(`${serverUrl}/api/auth/getotp`, {
         identifier: identifier
       }, { withCredentials: true })
       setMessage(`${result.data.message} to ${result.data.email}`)

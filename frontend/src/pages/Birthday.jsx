@@ -46,7 +46,7 @@ function Birthday() {
             birthdate: `${day}-${month}-${year}`
         }))
         try {
-            let result = await axios.post(`${serverUrl}/api/users/confirmemail`, {
+            let result = await axios.post(`${serverUrl}/api/auth/confirmemail`, {
                 email: userCredentials.email
             }, { withCredentials: true })
             console.log(result)
