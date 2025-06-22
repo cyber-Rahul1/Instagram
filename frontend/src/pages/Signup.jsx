@@ -428,7 +428,7 @@ const Signup = () => {
               {/* Password input field with show/hide toggle and validation */}
               <div onKeyDown={() => { handleInput(inputRef2, inputBox1); handleBlur(inputRef2, inputBox1); }} className='relative z-0'>
                 <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') || (same === 'true') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555] '} z-10  w-[270px] h-[36px] border pl-3 outline-none text-xs bg-[#fafafa] dark:text-gray-300 text-[#000000d6] dark:bg-[#121212] rounded-[3px]`} />
-                <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
+                <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                 </div>
                 {pass?.length > 0 && <div className={`absolute flex items-center justify-center gap-2 right-3 ${PassValid === 'false' ? 'top-1' : 'top-2 '}`}>
@@ -443,7 +443,7 @@ const Signup = () => {
               {/* Full name input field */}
               <div onKeyDown={() => { handleInput(inputRef3, inputBox2); handleBlur(inputRef3, inputBox2); }} className='relative z-0'>
                 <input autoComplete="" ref={inputBox2} onFocus={() => setIsFocused('name')} onBlur={() => handleBlur(inputRef3, inputBox2)} type="text" value={name} onChange={(e) => setName(e.target.value)} className='w-[270px] h-[36px] z-10  pl-3 border border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-[3px] ' />
-                <div ref={inputRef3} onClick={() => { inputBox2.current.focus() }} className='absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
+                <div ref={inputRef3} onClick={() => { inputBox2.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Full Name</p>
                 </div>
                 {(name?.length >= 3 && isFocused !== 'name') && <div className='absolute flex items-center justify-center gap-2 top-2 right-3 dark:text-[#909090] text-[#909090]'>
@@ -454,7 +454,7 @@ const Signup = () => {
               {/* Username input field */}
               <div onKeyDown={() => { handleInput(inputRef4, inputBox3); handleBlur(inputRef4, inputBox3); }} className='relative z-0'>
                 <input autoComplete="" required ref={inputBox3} onFocus={() => setIsFocused('username')} onBlur={() => { handleBlur(inputRef4, inputBox3); setIsFocused(null) }} type="text" value={username} onChange={handleUsername} className={`${!available || !usernameValid ? 'border-[#ff3040] border-1' : 'dark:border-[#555555] border-[#dbdbdb]'} w-[270px] z-10  h-[36px]  pl-3 border  outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-[3px]`} />
-                <div ref={inputRef4} onClick={() => { inputBox3.current.focus() }} className={`absolute top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out`}>
+                <div ref={inputRef4} onClick={() => { inputBox3.current.focus() }} className={`absolute top-[10px] sm:top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out`}>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Username</p>
                 </div>
                 <div className={`absolute flex items-center justify-center gap-1 right-3 ${!available ? 'top-1' : 'top-2 '} ${!usernameValid ? 'bottom-2' : '' }`}>
