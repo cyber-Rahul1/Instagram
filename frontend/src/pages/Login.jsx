@@ -27,13 +27,13 @@ const Login = () => {
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState('')
-  const {setPage} = useContext(ServerContext)
-
- 
+  const { setPage } = useContext(ServerContext)
 
 
-  
- 
+
+
+
+
   let dispatch = useDispatch();
 
   const navigate = useNavigate()
@@ -41,47 +41,47 @@ const Login = () => {
 
 
 
-  
 
 
 
- const handleLogin = async (e) => {
-   e.preventDefault()
-   setLoading(true)
-   try {
-     let result = await axios.post(`${serverUrl}/api/auth/login`,{
-       identifier: username,
-       password: pass
-     }, { withCredentials: true });
 
-     setStatus(result.status)
-     dispatch(setUserData(result.data));
-     setUsername('')
-     setPassword('')
-     setLoading(false)
-     setPage('')
-     navigate('/')
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      let result = await axios.post(`${serverUrl}/api/auth/login`, {
+        identifier: username,
+        password: pass
+      }, { withCredentials: true });
 
- 
-   } catch (error) {
-     
-     setLoading(false)
-     setStatus(error?.response?.status);
-   }
- }
+      setStatus(result.status)
+      dispatch(setUserData(result.data));
+      setUsername('')
+      setPassword('')
+      setLoading(false)
+      setPage('')
+      navigate('/')
+
+
+    } catch (error) {
+
+      setLoading(false)
+      setStatus(error?.response?.status);
+    }
+  }
 
 
 
   useEffect(() => {
     inputBox.current.focus()
     setStatus('')
-    document.title = `Login - Instagram`; 
+    document.title = `Login - Instagram`;
     setPage('login')
 
   }, [])
 
   useEffect(() => {
-    if (pass === '' ) {
+    if (pass === '') {
       inputRef2.current.style.fontSize = '';
       inputRef2.current.style.top = '';
       inputBox1.current.style.paddingTop = '';
@@ -92,16 +92,16 @@ const Login = () => {
       inputBox.current.style.paddingTop = '';
     }
   }, [pass, username]);
- 
 
-  const handleinput = ( inputRef, inputBox) => {
+
+  const handleinput = (inputRef, inputBox) => {
     inputRef.current.style.fontSize = '10px';
     inputRef.current.style.top = '4px';
     inputBox.current.style.paddingTop = '12px';
   }
 
 
-  const handleblur = ( inputRef, inputBox ) => {
+  const handleblur = (inputRef, inputBox) => {
     if (inputBox.current.value === '') {
       inputRef.current.style.fontSize = '';
       inputRef.current.style.top = '';
@@ -137,12 +137,12 @@ const Login = () => {
     }
   }
 
-  
+
 
 
   return (
     <div className='w-full h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black pt-14 lg:pt-22'>
-      
+
       <div className='w-full h-fit flex flex-col'>
         <div className='flex justify-center items-center'>
           <div className='hidden lg:block w-fit h-fit'>
@@ -151,15 +151,17 @@ const Login = () => {
           <div className='lg:w-[20vw] h-[48vh] flex flex-col  items-center rounded-xl'>
             <h1 className='heading text-5xl tracking-tight font-medium text-[#262626] dark:text-gray-100  mb-8 md:mb-8'>Instagram</h1>
             <form className='flex items-center flex-col justify-center mt-4'>
-              <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-0'>
-                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-10 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-sm  mb-2' />
-                <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
-                  <p className='dark:text-[#b0abab] text-[#938e8e]'>Username or email</p>
+              <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-10'>
+                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-5 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6]  rounded-sm  mb-2' />
+                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-sm' />
+                <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[10px] sm:top-[9px] bg-[#fafafa] dark:bg-[#121212] left-3 text-xs -z-1  transition-all duration-300 ease-in-out'>
+                  <p className='dark:text-[#b0abab] text-[#938e8e] '>Username or email</p>
                 </div>
               </div>
-              <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-0'>
-                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-10 h-[36px] border pl-3 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212]  rounded-sm ' />
-                <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
+              <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-10'>
+                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-5 h-[36px] border pl-3 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6]   rounded-sm ' />
+                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-sm' />
+                <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                 </div>
                 {pass.length > 0 && <div className='absolute top-2 right-3 cursor-pointer'>
@@ -203,7 +205,7 @@ const Login = () => {
 
         </div >
       </div>
-      <LoginFooter page={'login'}/>
+      <LoginFooter page={'login'} />
     </div>
   )
 }

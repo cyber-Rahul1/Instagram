@@ -43,9 +43,6 @@ const userSchema = new mongoose.Schema({
     phonenumber: {
         type: String,
     },
-    address: {
-        type: String,
-    },
     isPrivate: {
         type: Boolean,
         default: false,

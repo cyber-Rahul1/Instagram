@@ -7,8 +7,8 @@ import Otp from "../models/otp.model.js";
 
 export const createUser = async (req,res) => {
     try {
-        const { username, email, password, name } = req.body;
-        if (!username || !email || !password) {
+        const { username, email, password, name, birthdate } = req.body;
+        if (!username || !email || !password || !birthdate) {
             return res.status(400).json({ message: 'All fields are required' });
         }
         const userExists = await User.findOne({ email });
@@ -20,6 +20,7 @@ export const createUser = async (req,res) => {
             username,
             email,
             name,
+            birthdate,
             password: hashPassword
         });
 
@@ -181,7 +182,7 @@ export const confirmEmail = async (req, res) => {
         if (user) {
             return res.status(400).json({ message: 'Already have an account with this email' });
         }
-        const otp = Math.floor(1000 + Math.random() * 9000);
+        const otp = Math.floor(100000 + Math.random() * 900000);
         const otpData = new Otp({
             email,
             otp,
@@ -211,6 +212,8 @@ export const checkOtp = async (req, res) => {
         if (!otpData) {
             return res.status(400).json({ message: 'Invalid OTP' });
         }
+        await Otp.deleteMany({ email: otpData.email });
+        console.log("Deleted OTPs for", otpData.email);
         res.status(200).json({ message: 'OTP verified successfully' });
     } catch (error) {
         console.log(error);

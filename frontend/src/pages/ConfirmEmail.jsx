@@ -104,9 +104,9 @@ const ConfirmEmail = () => {
           <p className='text-gray-700 dark:text-[#ffffffd7] text-sm mt-[15px] text-center leading-[18px]'>Enter the confirmation code we sent to<br /> {userCredentials.email} <span onClick={handleResend} className='text-[#49aaf9] hover:text-[#a4bcd0] cursor-pointer font-semibold'>Resend Code</span> </p>
           <form>
             <div className='flex gap-2 pt-6'>
-              <input value={code} onChange={(e) => setCode(e.target.value)} type="text" placeholder='Confirmation Code' className='w-[270px] h-[38px]  pl-3 border border-gray-400 dark:border-[#55555593]  focus:border-gray-500 dark:focus:border-[#555555] outline-none text-sm text-gray-900 dark:text-white bg-white dark:bg-[#121212] rounded-sm  mb-2' />
+              <input value={code} onChange={(e) => setCode(e.target.value)} maxLength={6} onKeyDown={(e) => { if (e.key === 'Enter') { handleSubmit(e) } }} type="text" placeholder='Confirmation Code' className='w-[270px] h-[38px]  pl-3 border border-gray-400 dark:border-[#55555593]  focus:border-gray-500 dark:focus:border-[#555555] outline-none text-sm text-gray-900 dark:text-white bg-white dark:bg-[#121212] rounded-sm  mb-2' />
             </div>
-            <button onClick={handleSubmit} disabled={code.length !== 4 || code === ''} className={`${code.length !== 4 || code === '' ? 'opacity-50 ' : 'hover:bg-[#4a5ef9b7] active:scale-95'} w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-2 transition-all duration-200 flex items-center justify-center bg-[#4a8df9]  text-white cursor-pointer `}>
+            <button onClick={handleSubmit} disabled={code.length !== 6 || code === ''} className={`${code.length !== 6 || code === '' ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'hover:bg-[#4a5ef9b7] active:scale-95'} w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-2 transition-all duration-200 flex items-center justify-center bg-[#4a8df9]  text-white cursor-pointer `}>
               {loading ? (
                 <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
               ) : (
