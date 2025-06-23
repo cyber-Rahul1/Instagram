@@ -43,11 +43,30 @@ const userSchema = new mongoose.Schema({
     phonenumber: {
         type: String,
     },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    saved: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    story: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Story'
+    }],
+    notifications: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Notification'
+    }],
+    messages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message',
+    }],
     isPrivate: {
         type: Boolean,
         default: false,
     }
-
 
 
 },{timestamps: true})

@@ -47,7 +47,7 @@ const Signup = () => {
   const timerRef = useRef(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-   const {setPage} = useContext(ServerContext)
+  const { setPage } = useContext(ServerContext)
   let dispatch = useDispatch();
 
 
@@ -214,7 +214,7 @@ const Signup = () => {
         if (passRegex.test(value)) {
           setPassValid("true");
 
-     
+
           const emailName = email?.split('@')[0];
           setSame(emailName && emailName.length >= 2 && value.includes(emailName));
         } else {
@@ -223,7 +223,7 @@ const Signup = () => {
       }, 1000);
     }
   };
-  
+
 
 
   /**
@@ -261,22 +261,22 @@ const Signup = () => {
     const regex = /^[a-zA-Z0-9._]+$/;
     let finalVal;
 
-    if (regex.test(value) ){
+    if (regex.test(value)) {
       setUsernameValid(true)
     }
-    else{
+    else {
       setUsernameValid(false)
     }
-    
-    if(value.length >= 10){
+
+    if (value.length >= 10) {
       value = value.slice(0, 10)
     }
 
-    if (!regex.test(value)){
-     finalVal = value.replace(/[^a-zA-Z0-9._]/g, '_')
-     
+    if (!regex.test(value)) {
+      finalVal = value.replace(/[^a-zA-Z0-9._]/g, '_')
+
     }
-    else{
+    else {
       finalVal = value
     }
     const threeDigit = Math.floor(100 + Math.random() * 900);
@@ -285,7 +285,7 @@ const Signup = () => {
     let first = finalVal + threeDigit;
     let second = finalVal + fourDigit;
 
-   
+
 
     setRandomUser([first, second])
   }
@@ -390,7 +390,7 @@ const Signup = () => {
     <div className='w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-white dark:bg-black pt-2 md:pt-4'>
 
       <div className='w-fit h-fit flex flex-col'>
-        
+
         {/* Main signup form container - Contains Instagram logo, form fields, and signup button */}
         <div className='flex flex-col justify-center items-center md:border-1 border-[#dbdbdb] dark:border-[#363636] px-auto p-10 pt-10 '>
           <h1 className='heading text-5xl tracking-tight font-medium text-[#262626] dark:text-gray-100 mb-5 pt-2'>Instagram</h1>
@@ -412,8 +412,10 @@ const Signup = () => {
 
               {/* Email input field with validation */}
               <div onKeyDown={() => { handleInput(inputRef1, inputBox); handleBlur(inputRef1, inputBox); }} className='relative z-0'>
-                <input autoComplete="" required ref={inputBox} onFocus={() => setIsFocused('email')} onBlur={() => { handleBlur(inputRef1, inputBox); setIsFocused(null) }} type="email" value={email} onChange={(e) => validateEmail(e.target.value)} className={`${(valid === 'false') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555]'} z-10 w-[270px] h-[36px]  pl-3 border  outline-none text-xs text-[#000000d6] dark:text-gray-300 bg-[#fafafa] dark:bg-[#121212] rounded-[3px]  `} />
-                <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[10px] sm:top-[9px] left-3 text-xs z-0  transition-all duration-300 ease-in-out'>
+                <input autoComplete="" required ref={inputBox} onFocus={() => setIsFocused('email')} onBlur={() => { handleBlur(inputRef1, inputBox); setIsFocused(null) }} type="email" value={email} onChange={(e) => validateEmail(e.target.value)} className={`${(valid === 'false') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555]'} z-10 w-[270px] h-[36px]  pl-3 border  outline-none text-xs text-[#000000d6] dark:text-gray-300  rounded-[3px]  `} />
+                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+                <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1  transition-all duration-300 ease-in-out'>
+
                   <div className='flex gap-41 justify-center '>
                     <p className='dark:text-[#b0abab] text-[#938e8e]'>Email Address</p>
                     {(valid === 'false' && email?.length > 0) && <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(valid === 'false') ? '' : 'hidden'}`} />}
@@ -422,13 +424,14 @@ const Signup = () => {
                 {(valid === 'true' && email?.length > 4 && isFocused !== 'email') && <div className='absolute flex items-center justify-center dark:text-[#909090] text-[#909090] gap-2 top-2 right-3 '>
                   <FaRegCircleCheck size={22} className={`${(valid === 'false') ? 'hidden' : 'dark:text-[#909090] text-[#909090]'}`} />
                 </div>}
-                {(valid === 'false' ) && <div className='flex items-center pl-2 pt-1'><p className={`${isFocused === 'email' ? 'text-[#ff3041bc]' : ''} text-[#ff3040]  text-xs pt-1 pb-2 px-auto md:px-2`}>Enter a valid email address.</p></div>}
+                {(valid === 'false') && <div className='flex items-center pl-2 pt-1'><p className={`${isFocused === 'email' ? 'text-[#ff3041bc]' : ''} text-[#ff3040]  text-xs pt-1 pb-2 px-auto md:px-2`}>Enter a valid email address.</p></div>}
               </div>
 
               {/* Password input field with show/hide toggle and validation */}
               <div onKeyDown={() => { handleInput(inputRef2, inputBox1); handleBlur(inputRef2, inputBox1); }} className='relative z-0'>
-                <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') || (same === 'true') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555] '} z-10  w-[270px] h-[36px] border pl-3 outline-none text-xs bg-[#fafafa] dark:text-gray-300 text-[#000000d6] dark:bg-[#121212] rounded-[3px]`} />
-                <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
+                <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') || (same === 'true') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555] '} z-10  w-[270px] h-[36px] border pl-3 outline-none text-xs  dark:text-gray-300 text-[#000000d6]  rounded-[3px]`} />
+                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+                <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                 </div>
                 {pass?.length > 0 && <div className={`absolute flex items-center justify-center gap-2 right-3 ${PassValid === 'false' ? 'top-1' : 'top-2 '}`}>
@@ -442,8 +445,9 @@ const Signup = () => {
 
               {/* Full name input field */}
               <div onKeyDown={() => { handleInput(inputRef3, inputBox2); handleBlur(inputRef3, inputBox2); }} className='relative z-0'>
-                <input autoComplete="" ref={inputBox2} onFocus={() => setIsFocused('name')} onBlur={() => handleBlur(inputRef3, inputBox2)} type="text" value={name} onChange={(e) => setName(e.target.value)} className='w-[270px] h-[36px] z-10  pl-3 border border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-[3px] ' />
-                <div ref={inputRef3} onClick={() => { inputBox2.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs z-0 transition-all duration-300 ease-in-out'>
+                <input autoComplete="" ref={inputBox2} onFocus={() => setIsFocused('name')} onBlur={() => handleBlur(inputRef3, inputBox2)} type="text" value={name} onChange={(e) => setName(e.target.value)} className='w-[270px] h-[36px] z-10  pl-3 border border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] rounded-[3px] ' />
+                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+                <div ref={inputRef3} onClick={() => { inputBox2.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Full Name</p>
                 </div>
                 {(name?.length >= 3 && isFocused !== 'name') && <div className='absolute flex items-center justify-center gap-2 top-2 right-3 dark:text-[#909090] text-[#909090]'>
@@ -453,20 +457,21 @@ const Signup = () => {
 
               {/* Username input field */}
               <div onKeyDown={() => { handleInput(inputRef4, inputBox3); handleBlur(inputRef4, inputBox3); }} className='relative z-0'>
-                <input autoComplete="" required ref={inputBox3} onFocus={() => setIsFocused('username')} onBlur={() => { handleBlur(inputRef4, inputBox3); setIsFocused(null) }} type="text" value={username} onChange={handleUsername} className={`${!available || !usernameValid ? 'border-[#ff3040] border-1' : 'dark:border-[#555555] border-[#dbdbdb]'} w-[270px] z-10  h-[36px]  pl-3 border  outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-[3px]`} />
-                <div ref={inputRef4} onClick={() => { inputBox3.current.focus() }} className={`absolute top-[10px] sm:top-[9px] left-3 text-xs z-0 transition-all duration-300 ease-in-out`}>
+                <input autoComplete="" required ref={inputBox3} onFocus={() => setIsFocused('username')} onBlur={() => { handleBlur(inputRef4, inputBox3); setIsFocused(null) }} type="text" value={username} onChange={handleUsername} className={`${!available || (!usernameValid && username?.length >= 3) ? 'border-[#ff3040] border-1' : 'dark:border-[#555555] border-[#dbdbdb]'} w-[270px] z-10  h-[36px]  pl-3 border  outline-none text-xs dark:text-gray-300 text-[#000000d6] rounded-[3px]`} />
+                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+                <div ref={inputRef4} onClick={() => { inputBox3.current.focus() }} className={`absolute top-[10px] sm:top-[9px] left-3 text-xs -z-1 transition-all duration-300 ease-in-out`}>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Username</p>
                 </div>
-                <div className={`absolute flex items-center justify-center gap-1 right-3 ${!available ? 'top-1' : 'top-2 '} ${!usernameValid ? 'bottom-2' : '' }`}>
+                <div className={`absolute flex items-center justify-center gap-1 right-3 ${!available ? 'top-1' : 'top-2 '} ${!usernameValid ? 'bottom-2' : ''}`}>
                   {(available && username?.length >= 3 && usernameValid) && <FaRegCircleCheck size={22} className={`dark:text-[#909090] text-[#909090] ${!available ? 'hidden' : ''}`} />}
-                  {((!available && username?.length >= 3) || (!usernameValid && username?.length >= 3)) && <RxCrossCircled size={26} className={`text-[#ff3040] ${!usernameValid ? '' : 'pt-[2px]' } `} />}
-                  {((!available && username?.length >= 3 ) || (!usernameValid && username?.length >= 3)) && <AiOutlineReload onClick={() => { handleSuggestions(username); setUsername(randomuser[0]) }} size={26} className="text-[#4492d8] cursor-pointer active:scale-95 pt-[2px]" />}
+                  {((!available && username?.length >= 3) || (!usernameValid && username?.length >= 3)) && <RxCrossCircled size={26} className={`text-[#ff3040] ${!usernameValid ? '' : 'pt-[2px]'} `} />}
+                  {((!available && username?.length >= 3) || (!usernameValid && username?.length >= 3)) && <AiOutlineReload onClick={() => { handleSuggestions(username); setUsername(randomuser[0]) }} size={26} className="text-[#4492d8] cursor-pointer active:scale-95 pt-[2px]" />}
 
                 </div>
               </div>
 
               {!available && <p className={`text-[#ff3040]  text-xs pb-1 px-2 ${isFocused === 'username' ? 'text-[#ff3041bc]' : ''}`}>This username isn't available. Please try another.</p>}
-              {!usernameValid && <p className={`text-[#ff3040]  text-xs pb-1 px-2 ${isFocused === 'username' ? 'text-[#ff3041bc]' : ''}`}>Usernames can only use letters, numbers,<br/> underscores and periods.</p>}
+              {(!usernameValid && username?.length >= 3) && <p className={`text-[#ff3040]  text-xs pb-1 px-2 ${isFocused === 'username' ? 'text-[#ff3041bc]' : ''}`}>Usernames can only use letters, numbers,<br /> underscores and periods.</p>}
               <div className={`flex  justify-start items-center  ${username?.length <= 8 ? '' : 'gap-3 items-start flex-col'}`}>
                 {!available && randomuser.map((item, index) => (
                   <div key={index} className={`flex ${item.length <= 9 ? 'gap-2' : 'gap-0 flex-col'} pb-1`}>
