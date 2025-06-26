@@ -175,7 +175,7 @@ const Signup = () => {
    * @param {string} value - Email input value to validate
    */
   const validateEmail = (value) => {
-    setEmail(value);
+    setEmail(value.trim());
     clearTimeout(timerRef.current);
 
 
@@ -232,7 +232,7 @@ const Signup = () => {
    * @param {Event} e - Input change event
    */
   const handleUsername = async (e) => {
-    const value = e.target.value.toLowerCase().slice(0, 15);
+    const value = e.target.value.toLowerCase().trim().slice(0, 15);
     setUsername(value);
 
     const regex = /^[a-zA-Z0-9._]+$/;
@@ -412,7 +412,7 @@ const Signup = () => {
 
               {/* Email input field with validation */}
               <div onKeyDown={() => { handleInput(inputRef1, inputBox); handleBlur(inputRef1, inputBox); }} className='relative z-0'>
-                <input autoComplete="" required ref={inputBox} onFocus={() => setIsFocused('email')} onBlur={() => { handleBlur(inputRef1, inputBox); setIsFocused(null) }} type="email" value={email} onChange={(e) => validateEmail(e.target.value)} className={`${(valid === 'false') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555]'} z-10 w-[270px] h-[36px]  pl-3 border  outline-none text-xs text-[#000000d6] dark:text-gray-300  rounded-[3px]  `} />
+                <input autoComplete="" required ref={inputBox} onFocus={() => setIsFocused('email')} onBlur={() => { handleBlur(inputRef1, inputBox); setIsFocused(null) }} type="email" value={email} onChange={(e) => validateEmail(e.target.value.trim())} className={`${(valid === 'false') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555]'} z-10 w-[270px] h-[36px]  pl-3 border  outline-none text-xs text-[#000000d6] dark:text-gray-300  rounded-[3px]  `} />
                 <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
                 <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1  transition-all duration-300 ease-in-out'>
 
@@ -429,7 +429,7 @@ const Signup = () => {
 
               {/* Password input field with show/hide toggle and validation */}
               <div onKeyDown={() => { handleInput(inputRef2, inputBox1); handleBlur(inputRef2, inputBox1); }} className='relative z-0'>
-                <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') || (same === 'true') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555] '} z-10  w-[270px] h-[36px] border pl-3 outline-none text-xs  dark:text-gray-300 text-[#000000d6]  rounded-[3px]`} />
+                <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value.trim())} className={`${(PassValid === 'false') || (same === 'true') ? 'border-[#ff3040] border-1' : 'border-[#dbdbdb] dark:border-[#555555] '} z-10  w-[270px] h-[36px] border pl-3 outline-none text-xs  dark:text-gray-300 text-[#000000d6]  rounded-[3px]`} />
                 <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
                 <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
@@ -445,7 +445,7 @@ const Signup = () => {
 
               {/* Full name input field */}
               <div onKeyDown={() => { handleInput(inputRef3, inputBox2); handleBlur(inputRef3, inputBox2); }} className='relative z-0'>
-                <input autoComplete="" ref={inputBox2} onFocus={() => setIsFocused('name')} onBlur={() => handleBlur(inputRef3, inputBox2)} type="text" value={name} onChange={(e) => setName(e.target.value)} className='w-[270px] h-[36px] z-10  pl-3 border border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] rounded-[3px] ' />
+                <input autoComplete="" ref={inputBox2} onFocus={() => setIsFocused('name')} onBlur={() => handleBlur(inputRef3, inputBox2)} type="text" value={name} onChange={(e) => setName(e.target.value.trim())} className='w-[270px] h-[36px] z-10  pl-3 border border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] rounded-[3px] ' />
                 <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
                 <div ref={inputRef3} onClick={() => { inputBox2.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Full Name</p>

@@ -21,6 +21,9 @@ const ConfirmEmail = () => {
   let navigate = useNavigate()
   const { userCredentials } = useSelector((state) => state.user)
 
+  useEffect(() => {
+    document.title = `Confirm Email - Instagram`;
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -34,11 +37,13 @@ const ConfirmEmail = () => {
       setTimeout(() => {
         setMessage('')
       }, 2000);
+      setCode('')
       let result2 = await axios.post(`${serverUrl}/api/auth/register`, {
         email: userCredentials.email,
         password: userCredentials.password,
         name: userCredentials?.name,
-        username: userCredentials.username
+        username: userCredentials.username,
+        birthdate: userCredentials.birthdate
       }, { withCredentials: true })
 
       setMessage(result2.data.message)
@@ -59,6 +64,7 @@ const ConfirmEmail = () => {
   const handleResend = async () => {
     setError(false)
     setLoading(true)
+    setCode('')
     try {
       let result = await axios.post(`${serverUrl}/api/auth/confirmemail`, {
         email: userCredentials.email
@@ -118,7 +124,7 @@ const ConfirmEmail = () => {
           {error && <p className='text-[#f81c1c] text-sm text-center '>That code isn't valid. You can request a<br /> new one.</p>}
         </div>
         {/* Login redirect section - Link to login page for existing users */}
-        <div onClick={() => { navigate('/login') }} className='md:border-1 border-gray-300 dark:border-[#363636] flex flex-col items-center justify-center mb-15 py-6 bg-white dark:bg-black w-full md:w-fit md:px-[121px] mt-[10px] '>
+        <div onClick={() => { navigate('/login') }} className='md:border-1 border-gray-300 dark:border-[#363636] flex flex-col items-center justify-center mb-15 py-6 bg-white dark:bg-black w-full md:w-fit md:px-[128px] mt-[10px] '>
           <p className='text-gray-700 dark:text-[#ffffffe9] text-sm text-center leading-3'>Have an account? <br /><span className='text-[#007fce] cursor-pointer font-semibold text-sm'>Log in</span> </p>
         </div>
       </div>

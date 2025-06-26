@@ -45,7 +45,7 @@ const ForgotPassword = () => {
 
     return `${name[0]}**@${domainName[0]}**.${tld}`;
   }
-  
+
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -55,22 +55,22 @@ const ForgotPassword = () => {
       let result = await axios.post(`${serverUrl}/api/auth/getotp`, {
         identifier: username
       }, { withCredentials: true })
-      
+
       setLoading(false)
       setPopup(true)
       setUsername('')
-      
+
       let useremail = customMaskEmail(result.data.email)
       setEmail(useremail)
-     
+
       dispatch(setUserEmail(useremail))
       dispatch(setIdentifier(username))
       setMessage(`${result.data.message} to ${result.data.email}`)
       setTimeout(() => {
         setMessage('')
       }, 5000);
-      
-      if(result.status === 400){
+
+      if (result.status === 400) {
         setMessage(result.data.message)
         setTimeout(() => {
           setMessage('')
@@ -97,7 +97,7 @@ const ForgotPassword = () => {
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black md:pt-36 z-2">
       {message && <p className="text-[#ffffffd1] text-[15px]  w-full h-[40px] absolute bottom-0 left-0 px-5 py-2 z-5 md:block dark:bg-[#262626]">{message}</p>}
-     { popup && <div className="w-full h-full absolute top-0 left-0 z-5 bg-[#000000a7]"></div>}
+      {popup && <div className="w-full h-full absolute top-0 left-0 z-5 bg-[#000000a7]"></div>}
       {popup && <div className="absolute z-10 w-[300px] md:w-[400px] h-[180px] flex flex-col justify-center items-center dark:bg-[#262626] bg-[#e9e2e2] rounded-2xl md:px-8 top-80">
         <div className="md:w-[400px] h-[180px] relative flex flex-col justify-center w-[300px] items-center rounded-2xl md:px-8">
           <h2 className="dark:text-white text-xl font-semibold mt-2">Email Sent</h2>
@@ -119,8 +119,9 @@ const ForgotPassword = () => {
         </div>
         <form className='flex items-center flex-col justify-center mt-4'>
           <div onKeyDown={() => { handleinput1(); handleblur() }} className='relative'>
-            <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={handleblur} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className={`md:w-[297px] w-[285px] h-[38px]  pl-3 border  outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-md  mb-2 ${inputBox.current?.value !== '' ? 'border-[#5f5e5e]' : 'border-[#a79f9f] dark:border-[#555555]'}`} />
-            <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute text-sm top-[9px] left-3 z-1 transition-all duration-300 ease-in-out'>
+            <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={handleblur} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className={`md:w-[297px] w-[285px] h-[38px]  pl-3 border  outline-none text-xs dark:text-gray-300 text-[#000000d6] rounded-md z-10 mb-2 ${inputBox.current?.value !== '' ? 'border-[#5f5e5e]' : 'border-[#a79f9f] dark:border-[#555555]'}`} />
+            <div className='absolute top-0 left-0 md:w-[297px] w-[285px] h-[38px]   bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+            <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute text-sm top-[9px] left-3 -z-1 transition-all duration-300 ease-in-out'>
               <p className='dark:text-[#b0abab] text-[#938e8e]'>Email or Username</p>
             </div>
           </div>

@@ -29,7 +29,7 @@ const ResetPassword = () => {
   let navigate = useNavigate()
 
   useEffect(() => {
-    
+
     if (identifier === null) {
 
       alert('Session expired. Please start again.');
@@ -143,8 +143,9 @@ const ResetPassword = () => {
             <p className="text-[#ffffffac] text-[17px] font-semibold mt-3 text-center mb-2">Reset your password</p>
           </div>
           <div onKeyDown={() => { handleInput(inputRef1, inputBox1); handleBlur(inputRef1, inputBox1); }} className='relative'>
-            <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef1, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') ? 'border-[#ff3040] border-1' : ''} w-[270px] h-[36px] border pl-3 border-[#a79f9f] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-[3px]`} />
-            <div ref={inputRef1} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs z-1 transition-all duration-300 ease-in-out'>
+            <input autoComplete="" required ref={inputBox1} onFocus={() => setIsFocused('password')} onBlur={() => { handleBlur(inputRef1, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={pass} onChange={e => handlePassword(e.target.value)} className={`${(PassValid === 'false') ? 'border-[#ff3040] border-1' : ''} w-[270px] h-[36px] border pl-3 border-[#a79f9f] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] z-10 rounded-[3px]`} />
+            <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+            <div ref={inputRef1} onClick={() => { inputBox1.current.focus() }} className='absolute top-[9px] left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
               <p className='text-[#b0abab]'>Enter New Password</p>
             </div>
             {pass?.length > 0 && <div className={`absolute flex items-center justify-center gap-2 right-3 ${PassValid === 'false' ? 'top-1' : 'top-2 '}`}>
@@ -154,8 +155,9 @@ const ResetPassword = () => {
           </div>
           {(PassValid === 'false') && <div className='flex items-center justify-center pt-1'><p className={` ${isFocused === 'password' ? 'text-[#ff3041bc]' : ''} text-[#ff3040] text-xs pb-2 `}>This password is too easy to guess. Please create<br /> a new one.</p></div>}
           <div onKeyDown={() => { handleInput(inputRef2, inputBox2); handleBlur(inputRef2, inputBox2); }} className='relative mt-2'>
-            <input autoComplete="" required ref={inputBox2} onFocus={() => setIsFocused('password2')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={confirmPass} onChange={e => setConfirmPass(e.target.value)} className={` w-[270px] h-[36px] border pl-3 border-[#a79f9f] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] bg-[#fafafa] dark:bg-[#121212] rounded-[3px]`} />
-            <div ref={inputRef2} onClick={() => { inputBox2.current.focus() }} className='absolute top-[9px] left-3 text-xs z-1 transition-all duration-300 ease-in-out'>
+            <input autoComplete="" required ref={inputBox2} onFocus={() => setIsFocused('password2')} onBlur={() => { handleBlur(inputRef2, inputBox1); setIsFocused(null) }} type={show ? 'text' : 'password'} value={confirmPass} onChange={e => setConfirmPass(e.target.value)} className={` w-[270px] h-[36px] border pl-3 border-[#a79f9f] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6] z-10 rounded-[3px]`} />
+            <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-[3px]' />
+            <div ref={inputRef2} onClick={() => { inputBox2.current.focus() }} className='absolute top-[9px] left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
               <p className='text-[#b0abab]'>Confirm Password</p>
             </div>
             {(confirmPass !== pass && confirmPass.length > 0 && pass.length > 0) && <div className='flex items-start pt-1 pl-2 justify-start'><p className={` ${isFocused === 'password2' ? 'text-[#ff3041bc]' : ''} text-[#ff3040] text-xs pb-2 `}>Passwords do not match.</p></div>}

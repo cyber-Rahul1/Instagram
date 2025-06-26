@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     },
     profilepic: {
         type: String,
+        default:""
     },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -66,7 +67,11 @@ const userSchema = new mongoose.Schema({
     isPrivate: {
         type: Boolean,
         default: false,
-    }
+    },
+    recentSearches: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 
 
 },{timestamps: true})

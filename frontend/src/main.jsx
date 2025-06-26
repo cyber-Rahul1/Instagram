@@ -5,14 +5,18 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import store from './redux/store.js'
 import { BrowserRouter } from 'react-router-dom'
-import { ServerProvider } from './context/ServerContext.jsx'
+import { ServerProvider } from './context/ServerProvider.jsx'
+import ThemeProvider from './context/ThemeProvider.jsx'
+
 
 createRoot(document.getElementById('root')).render(
 
   <BrowserRouter>
     <Provider store={store}>
       <ServerProvider>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </ServerProvider>
     </Provider>
   </BrowserRouter>

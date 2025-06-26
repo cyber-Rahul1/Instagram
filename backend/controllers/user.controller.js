@@ -29,10 +29,12 @@ export const updateUser = async (req, res) => {
         if (!name || !email) {
             return res.status(400).json({ message: 'Name and email fields are required' });
         }
+        let imageUrl
+        if (req.files?.profilepic) {
+        imageUrl = await uploadOnCloudinary(req.files.profilepic[0].path);
+        }
 
-        let imageUrl = await uploadOnCloudinary(req.files.profilepic[0].path);
-
-        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, username, imageUrl, bio, gender, website, phonenumber }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, username, profilepic: imageUrl, bio, gender, website, phonenumber }, { new: true });
         await updatedUser.save();
         return res.status(200).json({ message: 'User updated successfully', updatedUser });
     } catch (error) {
@@ -125,7 +127,7 @@ export const suggestedUsers = async (req, res) => {
                 suggestedUsers.add(suggestionId);
             }
         });
-        const suggestionIds = Array.from(suggestedUsers).slice(0, 5).map(id => new mongoose.Types.ObjectId(id));
+        const suggestionIds = Array.from(suggestedUsers).slice(0, 10).map(id => new mongoose.Schema.Types.ObjectId(id));
         const users = await User.find({ _id: { $in: suggestionIds } }).select(
             '_id username profilepic'
         );
@@ -156,6 +158,7 @@ export const suggestedUsers = async (req, res) => {
                 followedBy: mutualFollowers
             };
         });
+        
         return res.status(200).json(usersWithMutuals);
     } catch (error) {
         console.log(error);
@@ -196,3 +199,78 @@ export const getFollowing = async (req, res) => {
         return res.status(500).json({ message: 'Something went wrong' });
     }
 }
+
+//------------------------------------------------------------------------------------------
+
+
+export const addRecentUsers = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId);
+        if (!currentUser) return res.status(404).json({ message: 'User not found' });
+        const { username } = req.params;
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        if(!currentUser.recentSearches.includes(user._id)){
+            await User.findByIdAndUpdate(currentUser._id, { $push: { recentSearches: user._id } }, { new: true });
+            return res.status(200).json({ message: 'User added to recent searches' });
+        } else {
+            return res.status(200).json({ message: 'User already in recent searches' });
+        }
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+
+export const getRecentUsers = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId);
+        if (!currentUser) return res.status(404).json({ message: 'User not found' });
+        const recentUsers = await User.find({ _id: { $in: currentUser.recentSearches } }).select('_id username profilepic name').sort({ username: -1 });
+        if (!recentUsers) return res.status(404).json({ message: 'There are no recent searches' });
+        return res.status(200).json(recentUsers);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+
+export const clearRecentUsers = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId);
+        if (!currentUser) return res.status(404).json({ message: 'User not found' });
+        await User.findByIdAndUpdate(currentUser._id, { recentSearches: [] }, { new: true });
+        return res.status(200).json({ message: 'Recent searches cleared' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+
+export const clearOneRecentUser = async (req, res) => {
+    try {
+        const { username } = req.params;
+        if(!username) return res.status(400).json({ message: 'Username is required' });
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ message: 'User not found' }); 
+        const currentUser = await User.findById(req.userId);
+        if (!currentUser) return res.status(404).json({ message: 'User not found' });
+        await User.findByIdAndUpdate(currentUser._id, { $pull: { recentSearches: user._id}}, { new: true });
+        return res.status(200).json({ message: 'Recent user cleared' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+
+//------------------------------------------------------------------------------------------
