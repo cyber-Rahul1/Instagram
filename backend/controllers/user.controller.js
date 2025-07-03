@@ -2,6 +2,7 @@
 import mongoose from "mongoose";
 import uploadOnCloudinary from "../config/cloudinary.js";
 import User from "../models/user.model.js";
+import Notification from "../models/notification.model.js";
 
 
 
@@ -68,7 +69,7 @@ export const removeProfilePic = async (req, res) => {
 export const getUserProfile = async (req, res) => {
     try {
         const { identifier } = req.params;
-        const user = await User.findOne({ $or: [{ username: identifier }, { _id: identifier }] }).select('-password').populate('followers following posts saved');
+        const user = await User.findOne({ $or: [{ username: identifier }, { _id: identifier }] }).select('-password').populate('followers following posts saved notifications recentSearches activity');
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {
@@ -91,17 +92,22 @@ export const followAndUnfollow = async (req, res) => {
         if (currentUser.following.includes(otherUser._id)) {
             await Promise.all([
                 User.findByIdAndUpdate(currentUser._id, { $pull: { following: otherUser._id } }),
-                User.findByIdAndUpdate(otherUser._id, { $pull: { followers: currentUser._id } })
-            ])
+                User.findByIdAndUpdate(otherUser._id, { $pull: { followers: currentUser._id } }),
 
+            ])
+            await currentUser.save();
             console.log("Unfollowed");
             return res.status(200).json({ message: 'User unfollowed successfully' });
         } else {
+            let notification;
             await Promise.all([
                 User.findByIdAndUpdate(currentUser._id, { $push: { following: otherUser._id } }),
-                User.findByIdAndUpdate(otherUser._id, { $push: { followers: currentUser._id } })
+                User.findByIdAndUpdate(otherUser._id, { $push: { followers: currentUser._id } }),
+                notification = await Notification.create({ sender: currentUser._id, receiver: otherUser._id, type: 'follow', message: `${currentUser.username} started following you.` }),
+                User.findByIdAndUpdate(otherUser._id, { $push: { notifications: notification._id } })
             ])
-
+            await currentUser.save();
+            await otherUser.save();
             console.log("Followed");
             return res.status(200).json({ message: 'User followed successfully' });
         }

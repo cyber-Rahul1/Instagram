@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import Comment from "../models/comment.model.js";
 import Reply from "../models/Reply.model.js";
+import Notification from "../models/notification.model.js";
 
 
 
@@ -147,7 +148,10 @@ export const postComment = async (req, res) => {
         });
         await newComment.save();
         if (newComment) {
-            await Post.findByIdAndUpdate(post._id, { $push: { comments: newComment._id } });
+            await Post.findByIdAndUpdate(post._id, { $push: { comments: newComment._id } })
+            let notification = await Notification.create({ sender: author._id, receiver: post.author, type: 'comment', message: `${author.username} commented on your post.`, post: post._id })
+            await User.findByIdAndUpdate(post.author, { $push: { notifications: notification._id } })
+            await User.save();
         }
         await post.save();
         return res.status(201).json({ message: 'Comment posted successfully', newComment });
@@ -199,6 +203,9 @@ export const addReply = async (req, res) => {
         await newReply.save();
         if (newReply) {
             await Comment.findByIdAndUpdate(comment._id, { $push: { replies: newReply._id } }).sort({ createdAt: -1 });
+            let notification = await Notification.create({ sender: author._id, receiver: comment.author, type: 'comment', message: `${author.username} replied to your comment.`, post: post._id })
+            await User.findByIdAndUpdate(comment.author, { $push: { notifications: notification._id } })
+            await User.save();
         }
         await comment.save();
         return res.status(201).json({ message: 'Reply added successfully', newReply });
@@ -225,6 +232,9 @@ export const likeComment = async (req, res) => {
             return res.status(200).json({ message: 'Comment unliked' });
         } else {
             await Comment.findByIdAndUpdate(comment._id, { $push: { likes: user._id } });
+            let notification = await Notification.create({ sender: user._id, receiver: comment.author, type: 'like', message: `${user.username} liked your comment.`, post: comment.post })
+            await User.findByIdAndUpdate(comment.author, { $push: { notifications: notification._id } })
+            await User.save();
             return res.status(200).json({ message: 'Comment liked' });
         }
     } catch (error) {
@@ -269,6 +279,9 @@ export const likePost = async (req, res) => {
         } else {
             await Post.findByIdAndUpdate(post._id, { $push: { likes: user._id } });
             await User.findByIdAndUpdate(user._id, { $push: { activity: post._id } });
+            let notification = await Notification.create({ sender: user._id, receiver: post.author, type: 'like', message: `${user.username} liked your post.`, post: post._id })
+            await User.findByIdAndUpdate(post.author, { $push: { notifications: notification._id } })
+            await User.save();
             return res.status(200).json({ message: 'Post liked' });
         }
     } catch (error) {

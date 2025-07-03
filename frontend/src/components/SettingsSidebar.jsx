@@ -11,7 +11,7 @@ import { LuRefreshCw } from "react-icons/lu";
 import { PiTextAaLight } from "react-icons/pi";
 import { FaRegHandPointer } from "react-icons/fa";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
-import { MdOutlineSubscriptions } from "react-icons/md";
+import { MdArrowBackIos, MdOutlineSubscriptions } from "react-icons/md";
 import { BsDownload } from "react-icons/bs";
 import { IoIosSettings } from "react-icons/io";
 import { MdOutlineLanguage } from "react-icons/md";
@@ -25,28 +25,29 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ContextProvider";
+import axios from "axios";
 
 const SettingsSidebar = () => {
-    const { theme, activeSettings, setActiveSettings } = useContext(ThemeContext)    
+    const { theme, activeSettings, setActiveSettings } = useContext(ThemeContext)
     const navigate = useNavigate();
     const { userData } = useSelector((state) => state.user)
-    
+
 
     const settingsMenu = [
         { type: "heading", name: "How you use Instagram" },
-        { type: "item", name:  "Edit profile", icon: <RiAccountCircleLine size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/editprofile` },
+        { type: "item", name: "Edit profile", icon: <RiAccountCircleLine size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/editprofile` },
         { type: "item", name: "Notifications", icon: <IoIosNotificationsOutline size={25} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
 
         { type: "heading", name: "Who can see your content" },
         { type: "item", name: "Account privacy", icon: <PiLockKeyOpenLight size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
-        { type: "item", name: "Close Friends", icon: <BsPersonCheck size={24} />, path:`/settings/${userData?.user?.username || userData?.user?._id}/soon`},
+        { type: "item", name: "Close Friends", icon: <BsPersonCheck size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Blocked", icon: <LuEyeOff size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Hide story and live", icon: <HiOutlineUserGroup size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
 
         { type: "heading", name: "How others can interact with you" },
         { type: "item", name: "Messages and story replies", icon: <RiUserSettingsLine size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Tags and mentions", icon: <FiTag size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
-        { type: "item", name: "Comments", icon: <BiCommentDetail size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon`},
+        { type: "item", name: "Comments", icon: <BiCommentDetail size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Sharing and reuse", icon: <LuRefreshCw size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Restricted accounts", icon: <LuEyeOff size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Hidden Words", icon: <PiTextAaLight size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
@@ -54,14 +55,14 @@ const SettingsSidebar = () => {
         { type: "heading", name: "What you see" },
         { type: "item", name: "Muted accounts", icon: <LuEyeOff size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Content preferences", icon: <FaRegHandPointer size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
-        { type: "item", name: "Like and share counts", icon: <HiOutlineSpeakerphone size={24} />, path:`/settings/${userData?.user?.username || userData?.user?._id}/soon` },
+        { type: "item", name: "Like and share counts", icon: <HiOutlineSpeakerphone size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Subscriptions", icon: <MdOutlineSubscriptions size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
 
         { type: "heading", name: "Your app and media" },
         { type: "item", name: "Archiving and downloading", icon: <BsDownload size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Accessibility", icon: <IoIosSettings size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Language", icon: <MdOutlineLanguage size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
-        { type: "item", name: "Website permissions", icon: <FaRegUserCircle size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon`},
+        { type: "item", name: "Website permissions", icon: <FaRegUserCircle size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
 
         { type: "heading", name: "For families" },
         { type: "item", name: "Family Center", icon: <MdOutlineFamilyRestroom size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
@@ -74,18 +75,35 @@ const SettingsSidebar = () => {
         { type: "item", name: "Help", icon: <FaRegQuestionCircle size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Privacy Center", icon: <MdOutlinePrivacyTip size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
         { type: "item", name: "Account Status", icon: <HiOutlineStatusOnline size={24} />, path: `/settings/${userData?.user?.username || userData?.user?._id}/soon` },
-      ];
+        { type: "item", name: "Log Out", },
+    ];
 
-  return (
-      <div className="w-full h-fit overflow-auto scrollable pb-10 pr-8 md:pb-0">
-            <h2 className={`text-xl font-bold py-10 ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Settings</h2>
+    const handleLogOut =async () => {
+        try {
+            let result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, { withCredentials: true })
+            console.log(result);
+            localStorage.removeItem('token')
+            setTimeout(() => navigate('/login', { replace: true }), 1000)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    return (
+        <div className="w-full h-fit overflow-auto scrollable pb-10 pr-8 md:pb-0 pt-15 md:pt-0">
+            <div className="w-full hidden md:block"><h2 className={`text-xl font-bold py-10 ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Settings</h2></div>
+            <div className={`w-full fixed top-0 left-0 flex items-center justify-center py-3 border-b-1 gap-2 md:hidden ${theme === 'dark' ? 'bg-black text-white border-[#363636]' : (theme === 'light') ? 'bg-white text-black border-[#d3d3d3]' : ' bg-white dark:bg-black text-black dark:text-white  border-[#d3d3d3] dark:border-[#363636]'}`}>
+                <MdArrowBackIos onClick={() => { navigate(-1) }} size={24} className="cursor-pointer absolute left-6 flex md:hidden active:scale-95 text-[#ffffffe7] transition-all duration-200 ease-in-out " />
+                <h2 className={`text-md font-semibold ${theme === 'dark' ? 'text-white ' : (theme === 'light') ? 'text-black ' : ' text-black  dark:text-white'}`}>
+                    Settings and privacy</h2>
+            </div>
             {settingsMenu.map((item) => (
                 item.type === "heading" ? (
                     <h3 key={item.name} className="text-[11px] text-[#adaca5] font-medium px-2 py-1">{item.name}</h3>
                 ) : (
-                        <div key={item.name} onClick={() => { navigate(item.path, { replace: true }); setActiveSettings(item.name); }} className={`flex items-center gap-3 w-full py-4 pl-3 rounded-lg cursor-pointer ${activeSettings === item.name && theme === 'dark' ? 'bg-[#3c3c3c] hover:bg-[#262626] ' : (activeSettings === item.name && theme === 'light') ? 'bg-[#f2f2f2] ' : theme === 'dark' ? ' hover:bg-[#262626] ' : (theme === 'light') ? 'bg-white hover:bg-[#f8f7f7] ' : activeSettings === item.name ? 'bg-[#262626]' : ''}`}>
-                        {item.icon}
-                        <span className="text-sm" >{item.name}</span>
+                    <div key={item.name} onClick={() => { item.name === 'Log Out' ? handleLogOut() : navigate(item?.path, { replace: true }); setActiveSettings(item.name); }} className={`flex items-center gap-3 w-full py-4 pl-3 rounded-lg cursor-pointer ${activeSettings === item.name && theme === 'dark' ? 'bg-[#3c3c3c] hover:bg-[#262626] ' : (activeSettings === item.name && theme === 'light') ? 'bg-[#f2f2f2] ' : theme === 'dark' ? ' hover:bg-[#262626] ' : (theme === 'light') ? 'bg-white hover:bg-[#f8f7f7] ' : activeSettings === item.name ? 'bg-[#262626]' : ''}`}>
+                        {item?.icon}
+                        <span className={`${item.name === 'Log Out' ? 'text-red-500' : ''} text-sm`}>{item.name}</span>
                     </div>
                 )
             ))}
