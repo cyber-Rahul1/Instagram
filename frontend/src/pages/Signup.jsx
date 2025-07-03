@@ -51,6 +51,14 @@ const Signup = () => {
   let dispatch = useDispatch();
 
 
+  const axiosInstance = axios.create({
+    baseURL: serverUrl,
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  
 
   const resetInputStyle = (inputRef, boxRef) => {
     if (inputRef.current && boxRef.current) {
@@ -359,7 +367,7 @@ const Signup = () => {
       let name = response.user.displayName;
       let email = response.user.email;
 
-      await axios.post(`${serverUrl}/api/auth/googlelogin`, {
+      await axiosInstance.post(`${serverUrl}/api/auth/googlelogin`, {
         name,
         email
       }, { withCredentials: true });

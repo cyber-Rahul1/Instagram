@@ -31,6 +31,13 @@ const Login = () => {
 
 
 
+  const axiosInstance = axios.create({
+    baseURL: serverUrl,
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
 
 
 
@@ -49,7 +56,7 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      let result = await axios.post(`${serverUrl}/api/auth/login`, {
+      let result = await axiosInstance.post(`${serverUrl}/api/auth/login`, {
         identifier: username,
         password: pass
       }, { withCredentials: true });
@@ -123,7 +130,7 @@ const Login = () => {
       let name = response.user.displayName;
       let email = response.user.email;
 
-      let result = await axios.post(`${serverUrl}/api/auth/googlelogin`, {
+      let result = await axiosInstance.post(`${serverUrl}/api/auth/googlelogin`, {
         name,
         email
       }, { withCredentials: true });

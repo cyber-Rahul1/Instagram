@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import email from '../assets/email.png'
 import LoginFooter from '../components/LoginFooter'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import axios from 'axios'
+import { clearUserCredentials } from '../redux/userSlice'
 
 
 
@@ -15,6 +16,7 @@ const ConfirmEmail = () => {
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const dispatch = useDispatch();
 
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
@@ -46,6 +48,7 @@ const ConfirmEmail = () => {
         birthdate: userCredentials.birthdate
       }, { withCredentials: true })
       localStorage.setItem('token', result2.data.jwt);
+      dispatch(clearUserCredentials())
       setMessage(result2.data.message)
       setTimeout(() => {
         setMessage('')
