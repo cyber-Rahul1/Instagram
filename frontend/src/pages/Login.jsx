@@ -28,7 +28,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState('')
   const { setPage } = useContext(ServerContext)
-
+  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
 
   const axiosInstance = axios.create({
@@ -44,7 +44,7 @@ const Login = () => {
   let dispatch = useDispatch();
 
   const navigate = useNavigate()
-  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
+  
 
 
 
