@@ -8,7 +8,7 @@ import { FaRegCircleCheck } from "react-icons/fa6";
 import LoginFooter from "../components/LoginFooter";
 import { AiOutlineReload } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { setUserCredentials, setUserData } from "../redux/userSlice";
+import { setUserCredentials } from "../redux/userSlice";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../utils/Firebase";
 import { ServerContext } from "../context/ContextProvider";
@@ -94,25 +94,25 @@ const Signup = () => {
    */
   const handleSignup = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    try {
-      let result = await axios.post(`${serverUrl}/api/auth/register`, {
-        username,
-        email,
-        password: pass,
-        name
-      }, { withCredentials: true })
-      dispatch(setUserData(result.data));
-      setLoading(false)
-      navigate('/')
-      setEmail('')
-      setPassword('')
-      setName('')
-      setUsername('')
-    } catch (error) {
-      error.response.status === 400 && setAvailable(false)
-      setLoading(false)
-    }
+    // setLoading(true)
+    // try {
+    //   let result = await axios.post(`${serverUrl}/api/auth/register`, {
+    //     username,
+    //     email,
+    //     password: pass,
+    //     name
+    //   }, { withCredentials: true })
+    //   dispatch(setUserData(result.data));
+    //   setLoading(false)
+    //   navigate('/')
+    //   setEmail('')
+    //   setPassword('')
+    //   setName('')
+    //   setUsername('')
+    // } catch (error) {
+    //   error.response.status === 400 && setAvailable(false)
+    //   setLoading(false)
+    // }
     dispatch(setUserCredentials({
       username,
       email,
