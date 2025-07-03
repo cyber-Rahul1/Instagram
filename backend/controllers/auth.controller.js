@@ -45,6 +45,9 @@ export const createUser = async (req,res) => {
 export const checkUsername = async (req,res) => {
     try {
         const { username } = req.body;
+        if (!username) {
+            return res.status(400).json({ message: 'Username is required' });
+        }
         const user = await User.findOne({ username });
         if (user) {
             return res.status(400).json({ message: 'Username already exists' });

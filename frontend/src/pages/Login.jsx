@@ -165,7 +165,7 @@ const Login = () => {
   return (
     <div className='w-full h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black pt-14 lg:pt-22'>
 
-      <div className='w-full h-fit flex flex-col'>
+      <div className=' h-fit flex flex-1 flex-col'>
         <div className='flex justify-center items-center'>
           <div className='hidden lg:block w-fit h-fit'>
             <img src={instalogin} alt=" instagram login " className='w-[32vw]' />

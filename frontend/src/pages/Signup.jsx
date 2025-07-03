@@ -86,6 +86,10 @@ const Signup = () => {
 
 
 
+  useEffect(() => {
+    setAvailable(true)
+  }, [])
+
 
 
   useEffect(() => {
@@ -309,12 +313,12 @@ const Signup = () => {
     usernameRef.current = setTimeout(async () => {
       if (value.length > 0) {
         try {
-          let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
+          let useravailable = await axiosInstance.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
 
-          if (useravailable.status === 400) {
-            setAvailable(false)
-          } else {
+          if (useravailable.status === 200) {
             setAvailable(true)
+          } else {
+            setAvailable(false)
           }
 
         } catch (error) {
@@ -328,10 +332,7 @@ const Signup = () => {
   }
 
 
-  useEffect(() => {
-    setAvailable(true)
-  }, [])
-
+  
 
 
   useEffect(() => {
@@ -339,12 +340,12 @@ const Signup = () => {
       const value = username?.toLowerCase().slice(0, 15);
 
       try {
-        let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
+        let useravailable = await axiosInstance.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
 
-        if (useravailable.status === 400) {
-          setAvailable(false)
-        } else {
+        if (useravailable.status === 200) {
           setAvailable(true)
+        } else {
+          setAvailable(false)
         }
 
       } catch (error) {
@@ -352,10 +353,11 @@ const Signup = () => {
       }
     }
 
-    fetchData()
+    if (username) {
+      fetchData();
+    }
 
-
-  }, [username, serverUrl]);
+  }, [username, serverUrl, axiosInstance]);
 
 
 
@@ -368,8 +370,8 @@ const Signup = () => {
       let email = response.user.email;
 
       await axiosInstance.post(`${serverUrl}/api/auth/googlelogin`, {
-        name,
-        email
+        name: name,
+        email: email
       }, { withCredentials: true });
       setLoading(false)
 
