@@ -170,7 +170,7 @@ const EditProfile = () => {
                 </div>
               ))}
             </div>}
-            <label for="gender" className="text-[17px] font-semibold pb-1" >Gender</label>
+            <label htmlFor="gender" className="text-[17px] font-semibold pb-1" >Gender</label>
             <div onClick={() => setGenderShow(!genderShow)} className={`cursor-pointer flex items-center justify-between ${theme === 'dark' ? 'hover:bg-[#262626] bg-black text-white border-[#5d5c5c8f]' : (theme === 'light') ? 'hover:bg-[#efefef] text-black bg-white border-[#d3d3d3]' : ' bg-white dark:bg-[black] border-[#d3d3d3] dark:border-[#5d5c5c8f] hover:bg-[#efefef]'} w-full border-1  h-[50px] rounded-xl px-4 outline-none resize-none`}>
               <p className={`text-md  ${theme === 'dark' ? 'text-[#ffffffe6] font-medium' : (theme === 'light') ? 'text-[#313131]' : ' text-[#313131] dark:text-[#ffffffe6]'}`}>{gender}</p>
               <IoIosArrowDown size={18} className={` ${theme === 'dark' ? 'text-[#ffffff94]' : (theme === 'light') ? 'text-[#313131]' : ' text-[#313131] dark:text-[#ffffff94]'}`} />

@@ -59,17 +59,24 @@ const Login = () => {
       let result = await axiosInstance.post(`${serverUrl}/api/auth/login`, {
         identifier: username,
         password: pass
-      }, { withCredentials: true });
-      
+      }, {
+        withCredentials: true,
+         headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      if (result.data.jwt) {
+        localStorage.setItem('token', result.data.jwt);
+      }
       setStatus(result.status)
       dispatch(setUserData(result.data));
       setUsername('')
       setPassword('')
       setLoading(false)
       setPage('')
-      localStorage.setItem('token', result.data.jwt);
       navigate('/')
-     
+
 
     } catch (error) {
       setLoading(false)
@@ -133,8 +140,15 @@ const Login = () => {
       let result = await axiosInstance.post(`${serverUrl}/api/auth/googlelogin`, {
         name,
         email
-      }, { withCredentials: true });
-      localStorage.setItem('token', result.data.jwt);
+      }, { withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+       });
+      if (result.data.jwt) {
+        localStorage.setItem('token', result.data.jwt);
+      }
       setLoading(false)
       setStatus(result.status)
       setPage('')
