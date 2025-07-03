@@ -12,6 +12,10 @@ dotenv.config();
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.routes.js';
 import isAuth from './middlewares/auth.js';
+import postRouter from './routes/posts.routes.js';
+import messageRouter from './routes/message.routes.js';
+
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,5 +32,9 @@ app.listen(port, () => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', isAuth, userRouter);
+app.use('/api/posts', isAuth, postRouter);
+app.use('/api/message', isAuth, messageRouter);
+
+
 
 app.get('/', (req,res) => res.send('Server Running ...'));

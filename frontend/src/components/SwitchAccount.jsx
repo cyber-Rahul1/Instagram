@@ -48,7 +48,8 @@ const SwitchAccount = ({ setSwitchAccount }) => {
                 identifier: username,
                 password: pass
             }, { withCredentials: true });
-
+            
+            localStorage.setItem('token', result.data.jwt);
             setStatus(result.status)
             dispatch(setUserData(result.data));
             setUsername('')
@@ -112,7 +113,7 @@ const SwitchAccount = ({ setSwitchAccount }) => {
     }
 
     return (
-        <div onClick={(e) => { e.stopPropagation() }} className={` w-fit h-fit relative rounded-2xl flex flex-col items-center justify-center px-17 pt-25 ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>
+        <div onClick={(e) => { e.stopPropagation() }} className={`w-[94vw] md:w-fit h-[400px] md:h-fit relative rounded-2xl flex flex-col items-center z-50 justify-center px-17 pt-25 ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>
             <div onClick={() => { setSwitchAccount(false) }} className='absolute top-5 right-5 cursor-pointer'>
                 <RxCross2 size={24} className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`} />
             </div>

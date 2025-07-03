@@ -4,11 +4,11 @@ import { ThemeContext } from "../context/ContextProvider"
 const Explore = () => {
 
 
-    const { setActiveItem } = useContext(ThemeContext)
+    const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed } = useContext(ThemeContext)
 
   return (
 
-    <div onClick={() => setActiveItem('Explore')} className="flex min-h-screen w-full">
+    <div onClick={() => { setActiveItem('Explore'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} flex h-screen w-full`}>
       Explore Page
     </div>
   )

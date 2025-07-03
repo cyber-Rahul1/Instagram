@@ -33,7 +33,7 @@ export const createUser = async (req,res) => {
         return res.status(201).json({ message: 'User created successfully', user });
 
     } catch (error) {
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - createUser'  });
     }
 }
 
@@ -50,7 +50,7 @@ export const checkUsername = async (req,res) => {
             return res.status(200).json({ message: 'Username is available' });
         }
     } catch (error) {
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - checkUsername' });
     }
 }
 
@@ -83,7 +83,7 @@ export const loginUser = async (req,res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - loginUser' });
     }
 }
 
@@ -95,7 +95,7 @@ export const logoutUser = async (req,res) => {
         return res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - logoutUser' });
     }
 }
 
@@ -121,6 +121,7 @@ export const googleLogin = async (req, res) => {
             })
             return res.status(200).json({ message: 'Login successful', user });
         }else {
+           
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
             res.cookie('token', token, {
                 httpOnly: true,
@@ -133,7 +134,7 @@ export const googleLogin = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - googleLogin' });
     }
 }
 
@@ -163,7 +164,7 @@ export const forgotPassword = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({ message: 'Something went wrong - forgotPassword' });
     }
 }
 
@@ -193,7 +194,7 @@ export const confirmEmail = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({ message: 'Something went wrong - confirmEmail' });
     }
 }
 
@@ -217,13 +218,12 @@ export const checkOtp = async (req, res) => {
         res.status(200).json({ message: 'OTP verified successfully' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({ message: 'Something went wrong - checkOtp' });
     }
 }
 
 
 //------------------------------------------------------------------------------------------
-
 
 
 
@@ -245,6 +245,6 @@ export const resetPassword = async (req, res) => {
         return res.status(200).json({ message: 'Password reset successfully' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Something went wrong' });
+        res.status(500).json({ message: 'Something went wrong - resetPassword' });
     }
 }

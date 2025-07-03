@@ -163,7 +163,7 @@ const PrivacyPolicy = () => {
                                 If you have any questions about this Privacy Policy or our privacy practices, please contact us:
                             </p>
                             <div className="bg-gray-100 dark:bg-[#121212] border border-gray-300 dark:border-[#363636] rounded-lg p-4">
-                                <p className="text-gray-600 dark:text-[#c5c1bcc4] mb-2">Email: privacy@instagram.com</p>
+                                <p className="text-gray-600 dark:text-[#c5c1bcc4] mb-2">Email: instagramClone0@gmail.com</p>
                                 <p className="text-gray-600 dark:text-[#c5c1bcc4] mb-2">Address: 1601 Willow Road, Menlo Park, CA 94025</p>
                                 <p className="text-gray-600 dark:text-[#c5c1bcc4]">Phone: 1-650-543-4800</p>
                             </div>
@@ -173,10 +173,10 @@ const PrivacyPolicy = () => {
                     {/* Back to Login */}
                     <div className="text-center mt-12 mb-8">
                         <button
-                            onClick={() => navigate(page === 'signup' ? '/signup' : '/login')}
+                            onClick={() => navigate(page === 'signup' ? '/signup' : page === 'login' ? '/login' : '/')}
                             className="text-[#0087eb] hover:text-[#0087ebcc] cursor-pointer font-semibold text-sm transition-all duration-200 ease-in-out"
                         >
-                            ← Back to {page === 'signup' ? 'Sign Up' : 'Login'}
+                            ← Back to {page === 'signup' ? 'Sign Up' : page === 'login' ? 'Login' : 'Home'}
                         </button>
                     </div>
                 </div>

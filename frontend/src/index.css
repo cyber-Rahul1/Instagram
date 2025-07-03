@@ -7,4 +7,30 @@
     
 }
 
+.scrollable::-webkit-scrollbar-track {
+    background: #616161;  /* light gray */
+  }
+
+  
+  .scrollable::-webkit-scrollbar-thumb {
+    background: #ffffff;  /* gray */
+    border-radius: 4px;
+  }
+  
+  .scrollable::-webkit-scrollbar-thumb:hover {
+    background: #919191;  /* dark gray */
+  }
+  
 /* font-family: "Caveat", cursive; */
+
+
+.editScreen{
+    padding-top: 200px;
+}
+
+@media (width <= 400px) {
+    .editScreen{
+        padding-top: 430px;
+    }
+  
+}

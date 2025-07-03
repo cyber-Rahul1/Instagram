@@ -45,7 +45,7 @@ const ConfirmEmail = () => {
         username: userCredentials.username,
         birthdate: userCredentials.birthdate
       }, { withCredentials: true })
-
+      localStorage.setItem('token', result2.data.jwt);
       setMessage(result2.data.message)
       setTimeout(() => {
         setMessage('')
@@ -55,6 +55,7 @@ const ConfirmEmail = () => {
     } catch (error) {
       setLoading(false)
       setMessage(error.response.data.message)
+      localStorage.removeItem('token')
       setTimeout(() => {
         setMessage('')
       }, 5000);

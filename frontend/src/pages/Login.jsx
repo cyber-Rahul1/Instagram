@@ -53,18 +53,18 @@ const Login = () => {
         identifier: username,
         password: pass
       }, { withCredentials: true });
-
+      
       setStatus(result.status)
       dispatch(setUserData(result.data));
       setUsername('')
       setPassword('')
       setLoading(false)
       setPage('')
+      localStorage.setItem('token', result.data.jwt);
       navigate('/')
-
+     
 
     } catch (error) {
-
       setLoading(false)
       setStatus(error?.response?.status);
     }
@@ -127,6 +127,7 @@ const Login = () => {
         name,
         email
       }, { withCredentials: true });
+      localStorage.setItem('token', result.data.jwt);
       setLoading(false)
       setStatus(result.status)
       setPage('')

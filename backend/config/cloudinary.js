@@ -3,25 +3,30 @@ import fs from 'fs';
 
 
 const uploadOnCloudinary = async (filepath) => {
+    if (!filepath) return null;
 
         cloudinary.config({
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            cloud_name: process.env.CLOUDINARY_NAME,
             api_key: process.env.CLOUDINARY_API_KEY,
             api_secret: process.env.CLOUDINARY_API_SECRET 
         });
 
-       try {
-        if(!filepath) return null;
-           const uploadResult = await cloudinary.uploader.upload(filepath);
-           fs.unlinkSync(filepath);
-           return uploadResult.secure_url;
-           
-       } catch (error) {
-           fs.unlinkSync(filepath);
-           return res.status(500).json({ message: 'Something went wrong' });
-       }
+    try {
+        const uploadResult = await cloudinary.uploader.upload(filepath);
+        console.log('Cloudinary upload result:', uploadResult);
+        return uploadResult.secure_url;
+    } catch (error) {
+        console.error('Cloudinary upload error:', error);
+        throw error; 
+    } finally {
+      
+        fs.unlink(filepath, (err) => {
+            if (err) console.error('Failed to delete temp file:', err);
+        });
+    }
+        };
 
        
-}
+
 
 export default uploadOnCloudinary;

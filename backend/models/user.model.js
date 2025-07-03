@@ -34,16 +34,15 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-    },
-    website: {
-        type: String,
+        
     },
     bio: {
         type: String,
     },
-    phonenumber: {
-        type: String,
-    },
+    activity: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'

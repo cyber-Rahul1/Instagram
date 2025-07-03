@@ -13,7 +13,7 @@ export const getUser = async (req, res) => {
         return res.status(200).json({ user });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - getUser' });
     }
 }
 
@@ -25,36 +25,55 @@ export const updateUser = async (req, res) => {
         const userid = req.userId;
         const user = await User.findById(userid);
         if (!user) return res.status(404).json({ message: 'User not found' });
-        const { name, email, username, bio, gender, website, phonenumber } = req.body;
-        if (!name || !email) {
-            return res.status(400).json({ message: 'Name and email fields are required' });
-        }
+        const { username, bio, gender, website, phonenumber } = req.body;
+
         let imageUrl
-        if (req.files?.profilepic) {
-        imageUrl = await uploadOnCloudinary(req.files.profilepic[0].path);
+        if (req.file) {
+            console.log('File received:', req.file);
+            imageUrl = await uploadOnCloudinary(req.file.path);
+        } else {
+            console.log('No file received');
         }
 
-        const updatedUser = await User.findByIdAndUpdate(userid, { name, email, username, profilepic: imageUrl, bio, gender, website, phonenumber }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(userid, { username, profilepic: imageUrl, bio, gender, website, phonenumber }, { new: true });
         await updatedUser.save();
         return res.status(200).json({ message: 'User updated successfully', updatedUser });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - updateUser' });
     }
 }
 
 //------------------------------------------------------------------------------------------
 
 
-export const getOtherUser = async (req, res) => {
+export const removeProfilePic = async (req, res) => {
     try {
-        const { username } = req.params;
-        const user = await User.findOne({ username }).select('-password');
+        const user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        user.profilepic = "";
+        await user.save();
+        res.status(200).json({ message: "Profile picture removed successfully." });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - removeProfilePic' });
+    }
+  };
+
+
+//------------------------------------------------------------------------------------------
+
+
+
+export const getUserProfile = async (req, res) => {
+    try {
+        const { identifier } = req.params;
+        const user = await User.findOne({ $or: [{ username: identifier }, { _id: identifier }] }).select('-password').populate('followers following posts saved');
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - getUserProfile' });
     }
 }
 
@@ -63,10 +82,11 @@ export const getOtherUser = async (req, res) => {
 
 export const followAndUnfollow = async (req, res) => {
     try {
-
+        let { identifier } = req.params;
+        if (!identifier) return res.status(400).json({ message: 'Identifier is required' });
         let currentUser = await User.findById(req.userId);
         if (!currentUser) return res.status(404).json({ message: 'User not found' });
-        let otherUser = await User.findById(req.params.id);
+        let otherUser = await User.findOne({ $or: [{ username: identifier }, { _id: identifier }] });
         if (!otherUser) return res.status(404).json({ message: 'User not found' });
         if (currentUser.following.includes(otherUser._id)) {
             await Promise.all([
@@ -89,7 +109,7 @@ export const followAndUnfollow = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - followAndUnfollow' });
     }
 }
 
@@ -104,7 +124,7 @@ export const getAllMostFollowedUsers = async (req, res) => {
         return res.status(200).json({ users });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - getAllMostFollowedUsers' });
     }
 }
 
@@ -158,11 +178,11 @@ export const suggestedUsers = async (req, res) => {
                 followedBy: mutualFollowers
             };
         });
-        
+
         return res.status(200).json(usersWithMutuals);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - suggestedUsers' });
     }
 }
 
@@ -179,7 +199,7 @@ export const getFollowers = async (req, res) => {
         return res.status(200).json(followers);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - getFollowers' });
     }
 }
 
@@ -196,7 +216,7 @@ export const getFollowing = async (req, res) => {
         return res.status(200).json(following);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - getFollowing' });
     }
 }
 
@@ -210,16 +230,16 @@ export const addRecentUsers = async (req, res) => {
         const { username } = req.params;
         const user = await User.findOne({ username });
         if (!user) return res.status(404).json({ message: 'User not found' });
-        if(!currentUser.recentSearches.includes(user._id)){
+        if (!currentUser.recentSearches.includes(user._id)) {
             await User.findByIdAndUpdate(currentUser._id, { $push: { recentSearches: user._id } }, { new: true });
             return res.status(200).json({ message: 'User added to recent searches' });
         } else {
             return res.status(200).json({ message: 'User already in recent searches' });
         }
-        
+
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - addRecentUsers' });
     }
 }
 
@@ -235,7 +255,7 @@ export const getRecentUsers = async (req, res) => {
         return res.status(200).json(recentUsers);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - getRecentUsers' });
     }
 }
 
@@ -250,7 +270,7 @@ export const clearRecentUsers = async (req, res) => {
         return res.status(200).json({ message: 'Recent searches cleared' });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - clearRecentUsers' });
     }
 }
 
@@ -260,17 +280,19 @@ export const clearRecentUsers = async (req, res) => {
 export const clearOneRecentUser = async (req, res) => {
     try {
         const { username } = req.params;
-        if(!username) return res.status(400).json({ message: 'Username is required' });
+        if (!username) return res.status(400).json({ message: 'Username is required' });
         const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ message: 'User not found' }); 
+        if (!user) return res.status(404).json({ message: 'User not found' });
         const currentUser = await User.findById(req.userId);
         if (!currentUser) return res.status(404).json({ message: 'User not found' });
-        await User.findByIdAndUpdate(currentUser._id, { $pull: { recentSearches: user._id}}, { new: true });
+        await User.findByIdAndUpdate(currentUser._id, { $pull: { recentSearches: user._id } }, { new: true });
         return res.status(200).json({ message: 'Recent user cleared' });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong' });
+        return res.status(500).json({ message: 'Something went wrong - clearOneRecentUser' });
     }
 }
 
 //------------------------------------------------------------------------------------------
+
+

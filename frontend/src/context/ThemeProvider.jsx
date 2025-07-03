@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ThemeContext } from "./ContextProvider";
 
 
 
 
 const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('');
+    let image = useRef()
+    const [theme, setTheme] = useState('dark');
     const [activeItem, setActiveItem] = useState('Home');
+    const [active, setActive] = useState('POSTS')
     const [switchTheme, setSwitchTheme] = useState(false)
+    const [searchIsFocussed, setSearchIsFocussed] = useState(false)
+    const [activeSettings, setActiveSettings] = useState('settings')
+    const [notificationIsFocussed, setNotificationIsFocussed] = useState(false)
     return (
-        <ThemeContext.Provider value={{ theme, setTheme, activeItem, setActiveItem, switchTheme, setSwitchTheme }}>
+        <ThemeContext.Provider value={{ activeSettings, setActiveSettings, image ,theme, setTheme, activeItem, setActiveItem, active, setActive, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed }}>
             {children}
         </ThemeContext.Provider>
     )

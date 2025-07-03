@@ -20,6 +20,16 @@ import Settings from "./pages/Settings"
 import Activity from "./pages/Activity"
 import { ThemeContext } from "./context/ContextProvider"
 import WorkInProgess from "./pages/WorkInProgess"
+// import { useSelector } from "react-redux"
+import ProtectedRoute from "./functions/ProtectedRoute"
+import SearchWrapper from "./pages/SearchWrapper"
+import Saved from "./pages/Saved"
+import Posts from "./pages/Posts"
+import ProfileReels from "./pages/ProfileReels"
+import Tagged from "./pages/Tagged"
+import EditProfile from "./pages/EditProfile"
+import Archive from "./pages/Archive"
+import Notification from "./components/Notification"
 
 // import { useSelector } from "react-redux"
 
@@ -28,10 +38,11 @@ import WorkInProgess from "./pages/WorkInProgess"
 
 
 const App = () => {
-
-  const { theme} = useContext(ThemeContext);
-
   GetCurrentUser()
+  const { theme } = useContext(ThemeContext);
+  // const { userData } = useSelector((state) => state.user)
+
+
   useEffect(() => {
     console.log(
       "%cStop!",
@@ -53,6 +64,8 @@ const App = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+
+
   return (
     <>
       <Routes>
@@ -67,14 +80,28 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/data-deletion" element={<DataDeletion />} />
         <Route path="/soon" element={<WorkInProgess />} />
-        <Route path="/" element={<Home />}>
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>}>
           <Route path="/" element={<Suggested />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/reels" element={<Reels />} />
           <Route path="/messages" element={<Message />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/profile/:identifier" element={<Profile />} >
+            <Route path="/profile/:identifier" element={<Posts />} />
+            <Route path="/profile/:identifier/saved" element={<Saved />} />
+            <Route path="/profile/:identifier/reels" element={<ProfileReels />} />
+            <Route path="/profile/:identifier/tagged" element={<Tagged />} />
+          </Route>
+          <Route path="/archive/stories" element={<Archive />} />
+          <Route path="/settings" element={<Settings />} >
+            <Route path="/settings/:identifier/editprofile" element={<EditProfile />} />
+            <Route path="/settings/:identifier/soon" element={<WorkInProgess />} />
+          </Route>
           <Route path="/activity" element={<Activity />} />
+          <Route path="/search" element={<SearchWrapper />} />
         </Route>
       </Routes>
     </>
