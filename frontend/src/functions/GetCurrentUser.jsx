@@ -11,15 +11,11 @@ const GetCurrentUser = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const token = localStorage.getItem('token');
                 let result = await axios.get(`${serverUrl}/api/users/getuser`, {
-                    withCredentials: true,
-                    headers: {
-                        'Authorization': token ? `Bearer ${token}` : '',
-                        'Content-Type': 'application/json'
-                    }
+                    withCredentials: true,                    
                 });
                 dispatch(setUserData(result.data));
+                
             } catch (error) {
                 console.log(error);
             }
