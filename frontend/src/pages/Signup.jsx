@@ -301,7 +301,7 @@ const Signup = () => {
     usernameRef.current = setTimeout(async () => {
       if (value.length > 0) {
         try {
-          let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value });
+          let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
 
           if (useravailable.status === 400) {
             setAvailable(false)
@@ -331,7 +331,7 @@ const Signup = () => {
       const value = username?.toLowerCase().slice(0, 15);
 
       try {
-        let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value });
+        let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
 
         if (useravailable.status === 400) {
           setAvailable(false)
