@@ -69,7 +69,14 @@ export const removeProfilePic = async (req, res) => {
 export const getUserProfile = async (req, res) => {
     try {
         const { identifier } = req.params;
-        const user = await User.findOne({ $or: [{ username: identifier }, { _id: identifier }] }).select('-password').populate('followers following posts saved notifications recentSearches activity');
+
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
+
+        const user = await User.findOne({ $or: conditions }).select('-password').populate('followers following posts saved notifications recentSearches activity');
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {
@@ -87,7 +94,12 @@ export const followAndUnfollow = async (req, res) => {
         if (!identifier) return res.status(400).json({ message: 'Identifier is required' });
         let currentUser = await User.findById(req.userId);
         if (!currentUser) return res.status(404).json({ message: 'User not found' });
-        let otherUser = await User.findOne({ $or: [{ username: identifier }, { _id: identifier }] });
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
+        let otherUser = await User.findOne({ $or: conditions });
         if (!otherUser) return res.status(404).json({ message: 'User not found' });
         if (currentUser.following.includes(otherUser._id)) {
             await Promise.all([
@@ -197,8 +209,14 @@ export const suggestedUsers = async (req, res) => {
 
 export const getFollowers = async (req, res) => {
     try {
-        const { username } = req.params;
-        const user = await User.findOne({ username });
+        const { identifier } = req.params;
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
+
+        const user = await User.findOne({ $or: conditions });
         if (!user) return res.status(404).json({ message: 'User not found' });
         const followers = await User.find({ _id: { $in: user.followers } }).select('_id username profilepic name').sort({ username: -1 });
         if (!followers) return res.status(404).json({ message: 'Followers not found' });
@@ -214,8 +232,14 @@ export const getFollowers = async (req, res) => {
 
 export const getFollowing = async (req, res) => {
     try {
-        const { username } = req.params;
-        const user = await User.findOne({ username });
+        const { identifier } = req.params;
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
+
+        const user = await User.findOne({ $or: conditions });
         if (!user) return res.status(404).json({ message: 'User not found' });
         const following = await User.find({ _id: { $in: user.following } }).select('_id username profilepic name').sort({ username: -1 });
         if (!following) return res.status(404).json({ message: 'Following users not found' });

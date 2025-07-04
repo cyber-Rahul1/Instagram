@@ -44,7 +44,7 @@ const Sidebar = () => {
     { name: "Messages", icon: <BsSend size={23} />, activeIcon: <BsFillSendFill size={23} />, path: "/messages" },
     { name: "Notifications", icon: notificationIsFocussed ? <FaHeart size={24} /> : <FaRegHeart size={24} /> },
     { name: "Create", icon: <LuSquarePlus size={26} /> },
-    { name: "Profile", image: userData?.user?.profilepic || dp, path: userData ? `/profile/${userData.user?.username || userData.user?._id}` : "/profile" }
+    { name: "Profile", image: userData?.user?.profilepic || dp, path: userData ? `/profile/${ userData?.user?.username || userData?.user?._id}` : "/profile" }
   ];
 
   const extraMenuItems = [

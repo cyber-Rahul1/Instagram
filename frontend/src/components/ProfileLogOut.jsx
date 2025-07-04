@@ -3,12 +3,14 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../context/ContextProvider';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserData } from '../redux/userSlice';
 
 const ProfileLogOut = ({ setLogout }) => {
 
   const navigate = useNavigate()
   const { theme } = useContext(ThemeContext);
+  const dispatch = useDispatch()
   const { userData } = useSelector((state) => state.user)
 
   const menuItems = [
@@ -27,6 +29,7 @@ const ProfileLogOut = ({ setLogout }) => {
     try {
       let result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, { withCredentials: true })
       console.log(result);
+      dispatch(setUserData({}))
       localStorage.removeItem('token')
       navigate('/login', { replace: true })
     } catch (error) {

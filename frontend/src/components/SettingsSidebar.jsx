@@ -22,14 +22,16 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdOutlinePrivacyTip } from "react-icons/md";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ContextProvider";
 import axios from "axios";
+import { setUserData } from "../redux/userSlice";
 
 const SettingsSidebar = () => {
     const { theme, activeSettings, setActiveSettings } = useContext(ThemeContext)
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const { userData } = useSelector((state) => state.user)
 
 
@@ -82,6 +84,7 @@ const SettingsSidebar = () => {
         try {
             let result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, { withCredentials: true })
             console.log(result);
+            dispatch(setUserData(null))
             localStorage.removeItem('token')
             setTimeout(() => navigate('/login', { replace: true }), 1000)
         } catch (error) {

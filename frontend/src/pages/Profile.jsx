@@ -32,7 +32,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [logout, setLogout] = useState(false)
   const [message, setMessage] = useState('')
-  const [show, setShow] = useState(user?.bio.length > 50)
+  const [show, setShow] = useState(user?.bio?.length > 50)
   
   const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed, active, setActive, image, setActiveSettings } = useContext(ThemeContext);
   let buttonClass = same && theme === 'dark' ? ' bg-[#686565a4] hover:bg-[#68656575] text-white' : same && theme === 'light' ? 'bg-[#f0f0f0] hover:bg-[#cecdcd] text-black' : 'bg-[#0095f6] text-white'
@@ -190,15 +190,15 @@ const Profile = () => {
             </div>
             <div className="flex md:hidden flex-col items-start gap-4 font-semibold justify-center">
               <div className=" flex gap-2">
-                <p className="text-[18px] ">{user?.username ? user?.username : user?.name.length > 15 ? user?.name.slice(0, 10) + '...' : user?.name}</p>
+                <p className="text-[18px] ">{user?.username ? user?.username : user?.name?.length > 15 ? user?.name?.slice(0, 10) + '...' : user?.name}</p>
 
               </div>
 
               <div className='w-full h-fit'>
                 <div className="flex items-start gap-6  pb-4">
-                  <p className={`${pClass} text-sm flex flex-col`}><span className={spanClass}>{user?.posts.length}</span> posts</p>
-                  <p className={`${pClass} text-sm flex flex-col`}><span className={spanClass}>{user?.followers.length}</span> followers</p>
-                  <p className={`${pClass} text-sm flex flex-col`}><span className={spanClass}>{user?.following.length}</span> following</p>
+                  <p className={`${pClass} text-sm flex flex-col`}><span className={spanClass}>{user?.posts?.length}</span> posts</p>
+                  <p className={`${pClass} text-sm flex flex-col`}><span className={spanClass}>{user?.followers?.length}</span> followers</p>
+                  <p className={`${pClass} text-sm flex flex-col`}><span className={spanClass}>{user?.following?.length}</span> following</p>
                 </div>
               </div>
               
@@ -207,7 +207,7 @@ const Profile = () => {
           <div className="flex flex-col justify-start items-start md:pt-8 gap-2">
             <div className="hidden md:flex flex-col gap-2">
               <div className="flex items-center md:gap-2 lg:gap-4 font-semibold justify-center">
-                <p className="text-[20px] ">{user?.username ? user?.username : user?.name.length > 10 ? user?.name.slice(0, 10) + '...' : user?.name}</p>
+                <p className="text-[20px] ">{user?.username ? user?.username : user?.name?.length > 10 ? user?.name?.slice(0, 10) + '...' : user?.name}</p>
                 <div onClick={(e) => e.stopPropagation()} className=" flex gap-2">
                   <button onClick={handleClick1} className={`px-4 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${buttonClass}`}>{same ? 'Edit Profile' : 'Follow'}</button>
                   <button onClick={handleClick2} className={`px-4 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${buttonClass}`}>{same ? 'View archive' : 'Message'}</button>
@@ -215,14 +215,14 @@ const Profile = () => {
                 </div>
               </div>
               <div className="flex items-start gap-10  py-4">
-                <p className={`${pClass}`}><span className={spanClass} >{user?.posts.length}</span> posts</p>
-                <p className={`${pClass}`}><span className={spanClass} >{user?.followers.length}</span> followers</p>
-                <p className={`${pClass}`}><span className={spanClass}>{user?.following.length}</span> following</p>
+                <p className={`${pClass}`}><span className={spanClass} >{user?.posts?.length}</span> posts</p>
+                <p className={`${pClass}`}><span className={spanClass} >{user?.followers?.length}</span> followers</p>
+                <p className={`${pClass}`}><span className={spanClass}>{user?.following?.length}</span> following</p>
               </div>
             </div>
             <div className="flex flex-col w-50 md:w-100 flex-wrap gap-2 mt-3 pb-12 md:pb-0">
               <p className={`${nameClass}  text-[15px] font-medium`}>{user?.name}</p>
-              <p onClick={(e) => { e.stopPropagation(); setShow(!show); }} className={`"${pClass}  text-sm pb-2`}>{show ? user?.bio : user?.bio.slice(0, 50)} <span className={`text-[#708dff] cursor-pointer ${(user?.bio.length > 50 && !show) ? '' : 'hidden'}`}>...more</span> </p>
+              <p onClick={(e) => { e.stopPropagation(); setShow(!show); }} className={`"${pClass}  text-sm pb-2`}>{show ? user?.bio : user?.bio?.slice(0, 50)} <span className={`text-[#708dff] cursor-pointer ${(user?.bio?.length > 50 && !show) ? '' : 'hidden'}`}>...more</span> </p>
             </div>
           </div>
         </div>

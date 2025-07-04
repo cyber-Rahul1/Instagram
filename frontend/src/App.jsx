@@ -10,7 +10,6 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import DataDeletion from "./pages/DataDeletion"
 import Birthday from "./pages/Birthday"
 import ConfirmEmail from "./pages/ConfirmEmail"
-import GetCurrentUser from "./functions/GetCurrentUser"
 import Suggested from "./pages/Suggested"
 import Explore from "./pages/Explore"
 import Reels from "./pages/Reels"
@@ -20,7 +19,6 @@ import Settings from "./pages/Settings"
 import Activity from "./pages/Activity"
 import { ThemeContext } from "./context/ContextProvider"
 import WorkInProgess from "./pages/WorkInProgess"
-// import { useSelector } from "react-redux"
 import ProtectedRoute from "./functions/ProtectedRoute"
 import SearchWrapper from "./pages/SearchWrapper"
 import Saved from "./pages/Saved"
@@ -31,16 +29,15 @@ import EditProfile from "./pages/EditProfile"
 import Archive from "./pages/Archive"
 import Notification from "./components/Notification"
 
-// import { useSelector } from "react-redux"
 
 
 
 
 
 const App = () => {
-  GetCurrentUser()
+ 
+
   const { theme } = useContext(ThemeContext);
-  // const { userData } = useSelector((state) => state.user)
 
 
   useEffect(() => {
@@ -58,7 +55,6 @@ const App = () => {
     document.title = 'Instagram'
   }, [])
 
-  // const { userData } = useSelector((state) => state.user)
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -88,7 +84,7 @@ const App = () => {
           <Route path="/explore" element={<Explore />} />
           <Route path="/reels" element={<Reels />} />
           <Route path="/messages" element={<Message />} />
-          <Route path="/notification" element={<Notification />} />
+          <Route path="/notifications" element={<Notification />} />
           <Route path="/profile/:identifier" element={<Profile />} >
             <Route path="/profile/:identifier" element={<Posts />} />
             <Route path="/profile/:identifier/saved" element={<Saved />} />

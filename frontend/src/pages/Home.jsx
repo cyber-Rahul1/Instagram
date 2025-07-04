@@ -8,9 +8,10 @@ import SwitchAccount from '../components/SwitchAccount';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { FaRegHeart } from 'react-icons/fa6';
 import { RiMessengerLine } from 'react-icons/ri';
+import GetCurrentUser from '../functions/GetCurrentUser';
 
 const Home = () => {
-
+  GetCurrentUser()
   let dispatch = useDispatch();
   const { userEmail, identifier } = useSelector((state) => state.user);
   const { theme, setTheme, activeItem } = useContext(ThemeContext);
@@ -45,7 +46,7 @@ const Home = () => {
     } else {
       setTheme("system");
     }
-  }, []);
+  }, [ setTheme ]);
 
   return (
     <div className="md:flex h-screen w-full overflow-hidden">

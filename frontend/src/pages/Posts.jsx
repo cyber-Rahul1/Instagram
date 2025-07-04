@@ -8,7 +8,7 @@ const Posts = () => {
 
   return (
     <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10">
-      { userProfile?.posts.length === 0 && <EmptyPage page={'posts'} />}
+      { userProfile?.posts?.length === 0 && <EmptyPage page={'posts'} />}
     </div>
   )
 }

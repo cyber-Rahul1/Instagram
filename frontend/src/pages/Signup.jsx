@@ -18,6 +18,7 @@ import { ServerContext } from "../context/ContextProvider";
 
 
 
+
 const Signup = () => {
 
 
@@ -38,6 +39,7 @@ const Signup = () => {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [valid, setValid] = useState('');
+  const [message, setMessage] = useState('')
   const [isFocused, setIsFocused] = useState(null);
   const [PassValid, setPassValid] = useState('');
   const [same, setSame] = useState(false)
@@ -51,14 +53,7 @@ const Signup = () => {
   let dispatch = useDispatch();
 
 
-  const axiosInstance = axios.create({
-    baseURL: serverUrl,
-    withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  
+
 
   const resetInputStyle = (inputRef, boxRef) => {
     if (inputRef.current && boxRef.current) {
@@ -99,53 +94,49 @@ const Signup = () => {
 
   }, [setPage])
 
-  /**
-   * Handles the signup form submission
-   * Sends user registration data to the server and navigates to home page on success
-   * @param {Event} e - Form submission event
-   */
+  //------------------------------------------------------------------------------------
+
+
   const handleSignup = async (e) => {
     e.preventDefault()
-    // setLoading(true)
-    // try {
-    //   let result = await axios.post(`${serverUrl}/api/auth/register`, {
-    //     username,
-    //     email,
-    //     password: pass,
-    //     name
-    //   }, { withCredentials: true })
-    //   dispatch(setUserData(result.data));
-    //   setLoading(false)
-    //   navigate('/')
-    //   setEmail('')
-    //   setPassword('')
-    //   setName('')
-    //   setUsername('')
-    // } catch (error) {
-    //   error.response.status === 400 && setAvailable(false)
-    //   setLoading(false)
-    // }
+    setLoading(true)
+    try {
+      let result = await axios.post(`${serverUrl}/api/auth/checkemail`, {
+        email: email
+      }, { withCredentials: true })
+      if (result.status === 400) {
+        setMessage(result.data.message)
+        setTimeout(() => {
+          setMessage('')
+        }, 3000)
+      } else {
+        setMessage('')
+        navigate('/signup/birthday');
+      }
+    } catch (error) {
+      setMessage(error.response?.data.message)
+      setLoading(false)
+    }
+   
+      setTimeout(() => {
+        setMessage('')
+      }, 3000)
+    
     dispatch(setUserCredentials({
       username,
       email,
       password: pass,
       name
     }))
+    setLoading(false)
     setPage('')
-    navigate('/signup/birthday');
+
 
   }
 
+  //------------------------------------------------------------------------------------
 
 
-
-
-  /**
-   * Handles input field focus/interaction by animating the label
-   * Shrinks the label text and moves it to the top when user starts typing
-   * @param {React.RefObject} inputRef - Reference to the input label element
-   * @param {React.RefObject} boxRef - Reference to the input field element
-   */
   const handleInput = (inputRef, boxRef) => {
     if (inputRef.current && boxRef.current) {
       inputRef.current.style.fontSize = '10px';
@@ -154,12 +145,9 @@ const Signup = () => {
     }
   };
 
-  /**
-   * Handles input field blur event by resetting label animation
-   * Returns the label to its original position and size when field is empty
-   * @param {React.RefObject} inputRef - Reference to the input label element
-   * @param {React.RefObject} boxRef - Reference to the input field element
-   */
+  //------------------------------------------------------------------------------------
+
+
   const handleBlur = (inputRef, boxRef) => {
     if (boxRef.current?.value === '') {
       inputRef.current.style.fontSize = '';
@@ -169,11 +157,9 @@ const Signup = () => {
   };
 
 
+  //------------------------------------------------------------------------------------
 
-  /**
-   * Toggles password visibility for the password input field
-   * Automatically hides password after 1 second for security
-   */
+
   const handleShow = () => {
     setShow(!show)
     setTimeout(() => {
@@ -181,11 +167,9 @@ const Signup = () => {
     }, 1000)
   }
 
-  /**
-   * Validates email input using regex pattern with debounced validation
-   * Sets email state and validates format after 1.5 second delay
-   * @param {string} value - Email input value to validate
-   */
+  //------------------------------------------------------------------------------------
+
+
   const validateEmail = (value) => {
     setEmail(value.trim());
     clearTimeout(timerRef.current);
@@ -206,11 +190,9 @@ const Signup = () => {
     }
   };
 
-  /**
-   * Validates password input using regex pattern with debounced validation
-   * Requires at least 6 characters with letters, numbers, and special characters
-   * @param {string} value - Password input value to validate
-   */
+  //------------------------------------------------------------------------------------
+
+
   const handlePassword = (value) => {
     setPassword(value);
     clearTimeout(passwordRef.current);
@@ -238,11 +220,9 @@ const Signup = () => {
 
 
 
-  /**
-   * Handles username input changes with validation and suggestions
-   * Converts to lowercase, limits to 15 characters, and triggers availability check
-   * @param {Event} e - Input change event
-   */
+  //------------------------------------------------------------------------------------
+
+
   const handleUsername = async (e) => {
     const value = e.target.value.toLowerCase().trim().slice(0, 15);
     setUsername(value);
@@ -264,11 +244,9 @@ const Signup = () => {
 
   };
 
-  /**
-   * Generates alternative username suggestions when username is unavailable
-   * Creates two suggestions by appending random 3-digit and 4-digit numbers
-   * @param {string} value - Base username to generate suggestions from
-   */
+  //------------------------------------------------------------------------------------
+
+
   const handleSuggestions = (value) => {
     const regex = /^[a-zA-Z0-9._]+$/;
     let finalVal;
@@ -302,18 +280,14 @@ const Signup = () => {
     setRandomUser([first, second])
   }
 
+  //------------------------------------------------------------------------------------
 
-  /**
-   * Checks username availability with the server after a 700ms delay
-   * Makes API call to verify if username is already taken
-   * @param {string} value - Username to check availability for
-   */
   const handleName = (value) => {
 
     usernameRef.current = setTimeout(async () => {
       if (value.length > 0) {
         try {
-          let useravailable = await axiosInstance.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
+          let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
 
           if (useravailable.status === 200) {
             setAvailable(true)
@@ -332,7 +306,7 @@ const Signup = () => {
   }
 
 
-  
+
 
 
   useEffect(() => {
@@ -340,7 +314,7 @@ const Signup = () => {
       const value = username?.toLowerCase().slice(0, 15);
 
       try {
-        let useravailable = await axiosInstance.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
+        let useravailable = await axios.post(`${serverUrl}/api/auth/checkusername`, { username: value }, { withCredentials: true });
 
         if (useravailable.status === 200) {
           setAvailable(true)
@@ -357,7 +331,7 @@ const Signup = () => {
       fetchData();
     }
 
-  }, [username, serverUrl, axiosInstance]);
+  }, [username, serverUrl]);
 
 
 
@@ -368,18 +342,16 @@ const Signup = () => {
       let response = await signInWithPopup(auth, provider);
       let name = response.user.displayName;
       let email = response.user.email;
-
-      await axiosInstance.post(`${serverUrl}/api/auth/googlelogin`, {
-        name: name,
-        email: email
+      await axios.post(`${serverUrl}/api/auth/googlelogin`, {
+        name,
+        email
       }, { withCredentials: true });
-      setLoading(false)
-
       setEmail('')
       setPassword('')
       setName('')
       setUsername('')
       setPage('')
+      setLoading(false)
       navigate('/')
     } catch (error) {
       setLoading(false)
@@ -398,7 +370,7 @@ const Signup = () => {
   return (
     /* Main page container - Full screen background with centered content */
     <div className='w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-white dark:bg-black pt-2 md:pt-4'>
-
+      {message && <p className="text-gray-800 dark:text-[#ffffffd1] text-[15px]  w-full absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-gray-200 dark:bg-[#262626]">{message}</p>}
       <div className='w-fit h-fit flex flex-col'>
 
         {/* Main signup form container - Contains Instagram logo, form fields, and signup button */}
@@ -445,7 +417,7 @@ const Signup = () => {
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                 </div>
                 {pass?.length > 0 && <div className={`absolute flex items-center justify-center gap-2 right-3 ${PassValid === 'false' ? 'top-1' : 'top-2 '}`}>
-                  {(pass.length >= 5 && PassValid === 'true' && isFocused !== 'password') ? <FaRegCircleCheck size={22} className={`${(PassValid === 'false') ? 'hidden' : ''} dark:text-[#909090] text-[#909090]`} /> : <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(PassValid === 'false') ? '' : 'hidden'}`} />}
+                  {(pass?.length >= 5 && PassValid === 'true' && isFocused !== 'password') ? <FaRegCircleCheck size={22} className={`${(PassValid === 'false') ? 'hidden' : ''} dark:text-[#909090] text-[#909090]`} /> : <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(PassValid === 'false') ? '' : 'hidden'}`} />}
                   <p onClick={() => { handleShow() }} className={` cursor-pointer text-gray-700 dark:text-white font-semibold text-sm transition-all duration-300 ease-in-out hover:text-[#919191]`}>{show ? 'Hide' : 'Show'}</p>
                 </div>}
               </div>
@@ -484,7 +456,7 @@ const Signup = () => {
               {(!usernameValid && username?.length >= 3) && <p className={`text-[#ff3040]  text-xs pb-1 px-2 ${isFocused === 'username' ? 'text-[#ff3041bc]' : ''}`}>Usernames can only use letters, numbers,<br /> underscores and periods.</p>}
               <div className={`flex  justify-start items-center  ${username?.length <= 8 ? '' : 'gap-3 items-start flex-col'}`}>
                 {!available && randomuser.map((item, index) => (
-                  <div key={index} className={`flex ${item.length <= 9 ? 'gap-2' : 'gap-0 flex-col'} pb-1`}>
+                  <div key={index} className={`flex ${item?.length <= 9 ? 'gap-2' : 'gap-0 flex-col'} pb-1`}>
                     <p key={index} className="text-[#ffffff]  text-xs py-1 px-2">{index === 0 ? 'Try:  ' : ''}<span onClick={() => { setUsername(item); }} className={`${index === 0 && username?.length <= 8 ? 'ml-6' : 'ml-4'} text-[white] rounded-lg bg-[#474545] px-4 py-2 text-md font-semibold cursor-pointer ${(username?.length > 8 && index !== 0) ? 'ml-10' : ''}`}>{item}</span></p>
                   </div>
                 ))}

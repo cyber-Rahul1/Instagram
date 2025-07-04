@@ -70,10 +70,6 @@ const userSchema = new mongoose.Schema({
     recentSearches: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }],
-    notifications: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Notification'
     }]
 
 

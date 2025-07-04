@@ -31,22 +31,19 @@ const Login = () => {
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
 
-  const axiosInstance = axios.create({
-    baseURL: serverUrl,
-    withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
+
 
 
 
   let dispatch = useDispatch();
 
   const navigate = useNavigate()
-  
 
 
+
+  useEffect(() => {
+    dispatch(setUserData(null))
+  }, [dispatch])
 
 
 
@@ -56,19 +53,15 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     try {
-      let result = await axiosInstance.post(`${serverUrl}/api/auth/login`, {
+      let result = await axios.post(`${serverUrl}/api/auth/login`, {
         identifier: username,
         password: pass
       }, {
         withCredentials: true,
-         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+
       });
-      if (result.data.jwt) {
-        localStorage.setItem('token', result.data.jwt);
-      }
+      localStorage.setItem('token', result.data.jwt);
+
       setStatus(result.status)
       dispatch(setUserData(result.data));
       setUsername('')
@@ -92,7 +85,7 @@ const Login = () => {
     document.title = `Login - Instagram`;
     setPage('login')
 
-  }, [])
+  }, [setPage])
 
   useEffect(() => {
     if (pass === '') {
@@ -137,18 +130,15 @@ const Login = () => {
       let name = response.user.displayName;
       let email = response.user.email;
 
-      let result = await axiosInstance.post(`${serverUrl}/api/auth/googlelogin`, {
+      let result = await axios.post(`${serverUrl}/api/auth/googlelogin`, {
         name,
         email
-      }, { withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-       });
-      if (result.data.jwt) {
-        localStorage.setItem('token', result.data.jwt);
-      }
+      }, {
+        withCredentials: true,
+      });
+
+      localStorage.setItem('token', result.data.jwt);
+
       setLoading(false)
       setStatus(result.status)
       setPage('')
@@ -165,33 +155,34 @@ const Login = () => {
   return (
     <div className='w-full h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black pt-14 lg:pt-22'>
 
-      <div className=' h-fit flex flex-1 flex-col'>
+
+      <div className=' h-fit flex w-full flex-col'>
         <div className='flex justify-center items-center'>
           <div className='hidden lg:block w-fit h-fit'>
             <img src={instalogin} alt=" instagram login " className='w-[32vw]' />
           </div>
-          <div className='lg:w-[20vw] h-[48vh] flex flex-col  items-center rounded-xl'>
+          <div className=' flex-1 w-full max-w-[430px] h-[48vh] flex flex-col   items-center rounded-xl'>
             <h1 className='heading text-5xl tracking-tight font-medium text-[#262626] dark:text-gray-100  mb-8 md:mb-8'>Instagram</h1>
-            <form className='flex items-center flex-col justify-center mt-4'>
-              <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-10'>
-                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-[270px] h-[36px]  pl-3 border z-5 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6]  rounded-sm  mb-2' />
-                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-sm' />
+            <form className='flex flex-1 w-full max-w-[270px]  items-center flex-col justify-center mt-4'>
+              <div onKeyDown={() => { handleinput(inputRef1, inputBox); handleblur(inputRef1, inputBox) }} className='relative z-10 w-full'>
+                <input autoComplete="email" autoCorrect="off" required ref={inputBox} onBlur={() => handleblur(inputRef1, inputBox)} type="text" value={username} onChange={(e) => setUsername(e.target.value)} className='w-full h-[36px]  pl-3 border z-5 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6]  rounded-sm  mb-2' />
+                <div className='absolute top-0 left-0 w-full h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-sm' />
                 <div ref={inputRef1} onClick={() => { inputBox.current.focus() }} className='absolute top-[10px] sm:top-[9px] bg-[#fafafa] dark:bg-[#121212] left-3 text-xs -z-1  transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e] '>Username or email</p>
                 </div>
               </div>
-              <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-10'>
-                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-[270px] z-5 h-[36px] border pl-3 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6]   rounded-sm ' />
-                <div className='absolute top-0 left-0 w-[270px] h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-sm' />
+              <div onKeyDown={() => { handleinput(inputRef2, inputBox1); handleblur(inputRef2, inputBox1); }} className='relative z-10 w-full'>
+                <input autoComplete="current-password" autoCorrect="off" required ref={inputBox1} onBlur={() => handleblur(inputRef2, inputBox1)} type={show ? 'text' : 'password'} value={pass} onChange={(e) => setPassword(e.target.value)} className='w-full z-5 h-[36px] border pl-3 border-[#dbdbdb] dark:border-[#555555] outline-none text-xs dark:text-gray-300 text-[#000000d6]   rounded-sm ' />
+                <div className='absolute top-0 left-0 w-full h-[36px]  bg-[#fafafa] dark:bg-[#121212] -z-10 rounded-sm' />
                 <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className='absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
                   <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                 </div>
-                {pass.length > 0 && <div className='absolute top-2 right-3 cursor-pointer'>
+                {pass?.length > 0 && <div className='absolute top-2 right-3 cursor-pointer'>
                   <p onClick={() => { handleShow() }} className='text-white font-semibold text-sm transition-all duration-300 ease-in-out hover:text-[#919191]'>{show ? 'Hide' : 'Show'}</p>
                 </div>}
               </div>
-              <button disabled={username === '' || pass === '' || pass.length < 5} onClick={handleLogin} className={`${username === '' || pass.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
-                } w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}
+              <button disabled={username === '' || pass === '' || pass?.length < 5} onClick={handleLogin} className={`${username === '' || pass?.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
+                } w-full h-[34px] rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}
               >
                 {loading ? (
                   <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
@@ -227,6 +218,7 @@ const Login = () => {
 
         </div >
       </div>
+
       <LoginFooter page={'login'} />
     </div>
   )

@@ -15,7 +15,7 @@ const MobileSidebar = ({ userData, activeItem, setActiveItem, theme, setActiveSe
         { name: "Search", icon: <FiSearch size={26} />, path: "/search" },
         { name: "Create", icon: <LuSquarePlus size={28} /> },
         { name: "Reels", icon: <BiMoviePlay size={28} />, activeIcon: <BiSolidMoviePlay size={28} />, path: "/reels" },
-        { name: "Profile", icon: <img src={userData?.profilePic || dp} className={"w-6 h-6 rounded-full object-cover"} alt="Profile" />, path: `/profile/${userData?.user.username || userData?.user._id}` }
+        { name: "Profile", icon: <img src={userData?.user?.profilepic || dp} className={"w-6 h-6 rounded-full object-cover"} alt="Profile" />, path: `/profile/${ userData?.user?.username || userData?.user._id}` }
     ];
 
     return (

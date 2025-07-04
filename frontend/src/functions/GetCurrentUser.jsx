@@ -5,8 +5,9 @@ import { setUserData } from "../redux/userSlice";
 
 const GetCurrentUser = () => {
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
-    let dispatch = useDispatch()
+    
     let {userData} = useSelector((state) => state.user)
+    let dispatch = useDispatch()
   
     useEffect(() => {
         const fetchUser = async () => {

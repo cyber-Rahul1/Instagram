@@ -112,10 +112,10 @@ const DataDeletion = () => {
                     {/* Back to Login */}
                     <div className="text-center mt-12 mb-8">
                         <button
-                            onClick={() => navigate(page === 'signup' ? '/signup' : '/login')}
+                            onClick={() => navigate(page === 'signup' ? '/signup' : page === 'login' ? '/login' : '/')}
                             className="text-[#0087eb] hover:text-[#0087ebcc] cursor-pointer font-semibold text-sm transition-all duration-200 ease-in-out"
                         >
-                            ← Back to {page === 'signup' ? 'Sign Up' : 'Login'}
+                            ← Back to {page === 'signup' ? 'Sign Up' : page === 'login' ? 'Login' : 'Home'}
                         </button>
                     </div>
                 </div>

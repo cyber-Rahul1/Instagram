@@ -11,7 +11,8 @@ import SwitchAccount from "./SwitchAccount";
 import LogOutPopup from "./LogOutPopup";
 import axios from "axios";
 import Report from "./Report";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../redux/userSlice";
 
 
 
@@ -23,7 +24,7 @@ const More = ({ setBottomActive }) => {
     const [logout, setLogout] = useState(false)
     const [report, setReport] = useState(false)
     const { userProfile, userData } = useSelector((state) => state.user)
-
+    const dispatch = useDispatch()
     
 
     const settingsMenuItems = [
@@ -76,7 +77,7 @@ const More = ({ setBottomActive }) => {
        try {
            let result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, { withCredentials: true })
            console.log(result);
-           
+           dispatch(setUserData(null))
            setTimeout(() => {
                setLogout(false)
                localStorage.removeItem('token')

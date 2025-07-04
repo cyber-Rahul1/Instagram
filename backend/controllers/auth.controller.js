@@ -55,10 +55,32 @@ export const checkUsername = async (req,res) => {
             return res.status(200).json({ message: 'Username is available' });
         }
     } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: 'Something went wrong - checkUsername' });
     }
 }
 
+
+//-------------------------------------------------------------------------------------------
+
+
+export const checkEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+        const user = await User.findOne({ email });
+        if (user) {
+            return res.status(400).json({ message: 'User already exists' });
+        } else {
+            return res.status(200).json({ message: 'User is available' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - checkUsername' });
+    }
+}
 
 //-------------------------------------------------------------------------------------------
 
@@ -75,7 +97,7 @@ export const loginUser = async (req,res) => {
         if (!user) {
             return res.status(400).json({ message: 'Sorry, your password was incorrect. Please double-check your password.' });
         }
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Sorry, your password was incorrect. Please double-check your password.' });
         }

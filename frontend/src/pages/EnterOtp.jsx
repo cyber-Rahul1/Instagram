@@ -61,7 +61,7 @@ const EnterOtp = () => {
       const newOtp = [...otp];
       newOtp[i] = e.target.value;
       setOtp(newOtp);
-      if (e.target.value.length === 1 && i < newOtp.length - 1) {
+      if (e.target.value?.length === 1 && i < newOtp?.length - 1) {
         inputRefs[i + 1].current.focus();
       }
     }
@@ -79,11 +79,11 @@ const EnterOtp = () => {
   }
   const handlePaste = (e) => {
     const pastedData = e.clipboardData.getData('Text');
-    if (pastedData.length === letters.length) {
+    if (pastedData?.length === letters?.length) {
       const newOtp = pastedData.split('');
       setOtp(newOtp);
 
-      inputRefs[otp.length - 1].current.focus();
+      inputRefs[otp?.length - 1].current.focus();
     } else {
       e.preventDefault();
     }

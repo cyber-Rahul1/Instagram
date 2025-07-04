@@ -132,12 +132,12 @@ const SwitchAccount = ({ setSwitchAccount }) => {
                     <div ref={inputRef2} onClick={() => { inputBox1.current.focus() }} className={`absolute top-[10px] sm:top-[9px]  left-3 text-xs -z-1 transition-all duration-300 ease-in-out`}>
                         <p className='dark:text-[#b0abab] text-[#938e8e]'>Password</p>
                     </div>
-                    {pass.length > 0 && <div className='absolute top-2 right-3 cursor-pointer'>
+                    {pass?.length > 0 && <div className='absolute top-2 right-3 cursor-pointer'>
                         <p onClick={() => { handleShow() }} className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} font-semibold text-sm transition-all duration-300 ease-in-out hover:text-[#919191]`}>{show ? 'Hide' : 'Show'}</p>
                     </div>}
                 </div>
                 
-                <button disabled={username === '' || pass === '' || pass.length < 5} onClick={handleLogin} className={`${username === '' || pass.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
+                <button disabled={username === '' || pass === '' || pass?.length < 5} onClick={handleLogin} className={`${username === '' || pass?.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9] hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
                     } w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-6 transition-all duration-200 flex items-center justify-center`}
                 >
                     {loading ? (

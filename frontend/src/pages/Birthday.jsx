@@ -27,17 +27,20 @@ function Birthday() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const dob = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        console.log('DOB:', dob); // Format: YYYY-MM-DD
-        // You can now send this to the backend
+        console.log('DOB:', dob);
+
     };
 
+    //------------------------------------------------------------------------------------
+
     useEffect(() => {
-        if (!userCredentials || Object.keys(userCredentials).length === 0) {
+        if (!userCredentials || Object.keys(userCredentials)?.length === 0) {
             alert('Session expired. Please start again.');
             navigate('/signup', { replace: true });
         }
     }, [userCredentials, navigate]);
 
+    //------------------------------------------------------------------------------------
 
     const handleNext = async (e) => {
         e.preventDefault()

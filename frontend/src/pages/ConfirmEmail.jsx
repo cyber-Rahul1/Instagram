@@ -23,9 +23,13 @@ const ConfirmEmail = () => {
   let navigate = useNavigate()
   const { userCredentials } = useSelector((state) => state.user)
 
+  //------------------------------------------------------------------------------------
+
   useEffect(() => {
     document.title = `Confirm Email - Instagram`;
   }, []);
+
+  //------------------------------------------------------------------------------------
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -65,6 +69,8 @@ const ConfirmEmail = () => {
     }
   }
 
+  //------------------------------------------------------------------------------------
+
   const handleResend = async () => {
     setError(false)
     setLoading(true)
@@ -95,8 +101,10 @@ const ConfirmEmail = () => {
     }
   }
 
+  //------------------------------------------------------------------------------------
+
   useEffect(() => {
-    if (!userCredentials || Object.keys(userCredentials).length === 0) {
+    if (!userCredentials || Object.keys(userCredentials)?.length === 0) {
       navigate('/login', { replace: true });
     }
   }, [userCredentials, navigate]);
@@ -116,7 +124,7 @@ const ConfirmEmail = () => {
             <div className='flex gap-2 pt-6'>
               <input value={code} onChange={(e) => setCode(e.target.value)} maxLength={6} onKeyDown={(e) => { if (e.key === 'Enter') { handleSubmit(e) } }} type="text" placeholder='Confirmation Code' className='w-[270px] h-[38px]  pl-3 border border-gray-400 dark:border-[#55555593]  focus:border-gray-500 dark:focus:border-[#555555] outline-none text-sm text-gray-900 dark:text-white bg-white dark:bg-[#121212] rounded-sm  mb-2' />
             </div>
-            <button onClick={handleSubmit} disabled={code.length !== 6 || code === ''} className={`${code.length !== 6 || code === '' ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'hover:bg-[#4a5ef9b7] active:scale-95'} w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-2 transition-all duration-200 flex items-center justify-center bg-[#4a8df9]  text-white cursor-pointer `}>
+            <button onClick={handleSubmit} disabled={code?.length !== 6 || code === ''} className={`${code?.length !== 6 || code === '' ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'hover:bg-[#4a5ef9b7] active:scale-95'} w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-2 transition-all duration-200 flex items-center justify-center bg-[#4a8df9]  text-white cursor-pointer `}>
               {loading ? (
                 <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
               ) : (

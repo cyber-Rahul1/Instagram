@@ -9,6 +9,7 @@ import { LockClosedIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
 const ResetPassword = () => {
+  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   const { identifier } = useSelector((state) => state.user)
   const [isFocused, setIsFocused] = useState(null);
   const [PassValid, setPassValid] = useState('');
@@ -17,7 +18,6 @@ const ResetPassword = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   const inputRef2 = useRef(null)
   const inputBox1 = useRef(null)
   const inputBox2 = useRef(null)
@@ -25,7 +25,6 @@ const ResetPassword = () => {
   const passwordRef = useRef(null);
 
 
-  //  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   let navigate = useNavigate()
 
   useEffect(() => {
@@ -38,12 +37,9 @@ const ResetPassword = () => {
   }, [identifier, navigate]);
 
 
-  /**
-* Handles input field focus/interaction by animating the label
-* Shrinks the label text and moves it to the top when user starts typing
-* @param {React.RefObject} inputRef - Reference to the input label element
-* @param {React.RefObject} boxRef - Reference to the input field element
-*/
+  //--------------------------------------------------------------------------
+
+
   const handleInput = (inputRef, boxRef) => {
     if (inputRef.current && boxRef.current) {
       inputRef.current.style.fontSize = '10px';
@@ -52,12 +48,10 @@ const ResetPassword = () => {
     }
   };
 
-  /**
-   * Handles input field blur event by resetting label animation
-   * Returns the label to its original position and size when field is empty
-   * @param {React.RefObject} inputRef - Reference to the input label element
-   * @param {React.RefObject} boxRef - Reference to the input field element
-   */
+  
+  //--------------------------------------------------------------------------
+
+
   const handleBlur = (inputRef, boxRef) => {
     if (boxRef.current?.value === '') {
       inputRef.current.style.fontSize = '';
@@ -66,10 +60,9 @@ const ResetPassword = () => {
     }
   };
 
-  /**
-   * Toggles password visibility for the password input field
-   * Automatically hides password after 1 second for security
-   */
+//-------------------------------------------------------------------------
+
+
   const handleShow = () => {
     setShow(!show)
     setTimeout(() => {
@@ -77,11 +70,9 @@ const ResetPassword = () => {
     }, 1000)
   }
 
-  /**
-  * Validates password input using regex pattern with debounced validation
-  * Requires at least 6 characters with letters, numbers, and special characters
-  * @param {string} value - Password input value to validate
-  */
+ //------------------------------------------------------------------------
+
+
   const handlePassword = (value) => {
     setPassword(value);
     clearTimeout(passwordRef.current);
@@ -101,6 +92,8 @@ const ResetPassword = () => {
       }, 1000);
     }
   };
+
+  //------------------------------------------------------------------------
 
   const handlepass = async (e) => {
     e.preventDefault()
@@ -149,7 +142,7 @@ const ResetPassword = () => {
               <p className='text-[#b0abab]'>Enter New Password</p>
             </div>
             {pass?.length > 0 && <div className={`absolute flex items-center justify-center gap-2 right-3 ${PassValid === 'false' ? 'top-1' : 'top-2 '}`}>
-              {(pass.length >= 5 && PassValid === 'true') ? <FaRegCircleCheck size={22} className={`${(PassValid === 'false') ? 'hidden' : ''} text-[#909090]`} /> : <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(PassValid === 'false') ? '' : 'hidden'}`} />}
+              {(pass?.length >= 5 && PassValid === 'true') ? <FaRegCircleCheck size={22} className={`${(PassValid === 'false') ? 'hidden' : ''} text-[#909090]`} /> : <RxCrossCircled size={26} className={`text-[#ff3040] pt-[2px] ${(PassValid === 'false') ? '' : 'hidden'}`} />}
               <p onClick={() => { handleShow() }} className={` cursor-pointer text-gray-700 dark:text-white font-semibold text-sm transition-all duration-300 ease-in-out hover:text-[#919191]`}>{show ? 'Hide' : 'Show'}</p>
             </div>}
           </div>
@@ -160,9 +153,9 @@ const ResetPassword = () => {
             <div ref={inputRef2} onClick={() => { inputBox2.current.focus() }} className='absolute top-[9px] left-3 text-xs -z-1 transition-all duration-300 ease-in-out'>
               <p className='text-[#b0abab]'>Confirm Password</p>
             </div>
-            {(confirmPass !== pass && confirmPass.length > 0 && pass.length > 0) && <div className='flex items-start pt-1 pl-2 justify-start'><p className={` ${isFocused === 'password2' ? 'text-[#ff3041bc]' : ''} text-[#ff3040] text-xs pb-2 `}>Passwords do not match.</p></div>}
+            {(confirmPass !== pass && confirmPass?.length > 0 && pass?.length > 0) && <div className='flex items-start pt-1 pl-2 justify-start'><p className={` ${isFocused === 'password2' ? 'text-[#ff3041bc]' : ''} text-[#ff3040] text-xs pb-2 `}>Passwords do not match.</p></div>}
           </div>
-          <button disabled={confirmPass !== pass || pass === '' || pass.length < 5} onClick={handlepass} className={`${confirmPass !== pass || pass === '' || pass.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9]  hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
+          <button disabled={confirmPass !== pass || pass === '' || pass?.length < 5} onClick={handlepass} className={`${confirmPass !== pass || pass === '' || pass?.length < 5 ? 'bg-[#4cb5f9] text-[#f6fbff]' : 'bg-[#4a8df9]  hover:bg-[#4a5ef9b7] text-white cursor-pointer active:scale-95'
             } w-[270px] h-[34px] rounded-lg font-semibold text-sm mt-4 transition-all duration-200 flex items-center justify-center`}
           >
             {loading ? (
