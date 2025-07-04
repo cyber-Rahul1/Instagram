@@ -104,7 +104,7 @@ const Sidebar = () => {
   return (
     <>
       <div className="hidden md:block transition-all duration-200 ease-in-out">
-        <div className={`flex flex-col justify-between ${(theme === 'dark') ? 'text-white bg-black transition-all duration-200 ease-in-out border-[#363636b4]' : (theme === 'light') ? 'text-black  bg-white border-gray-200' : ' text-black dark:text-white border-gray-200 dark:border-[#363636b4] dark:bg-black bg-white'} pl-3 h-screen  pt-6 ${(searchIsFocussed || notificationIsFocussed || activeItem === 'Messages') ? 'w-[70px]' : '2xl:w-[340px] w-[70px] xl:w-[240px] '}  transition-all duration-200 ease-in-out border-r`}>
+        <div className={`flex flex-col justify-between ${(theme === 'dark') ? 'text-white bg-black transition-all duration-200 ease-in-out border-[#363636b4]' : (theme === 'light') ? 'text-black  bg-white border-gray-200' : ' text-black dark:text-white border-gray-200 dark:border-[#363636b4] dark:bg-black bg-white'} pl-3 h-screen  pt-6  ${activeItem === 'Messages' ? 'w-[70px]' : 'w-[70px] 2xl:w-[340px] xl:w-[240px]'} transition-all duration-200 ease-in-out border-r`}>
           <div className="flex flex-col gap-3">
             <div onClick={() => { setActiveItem('Home'); navigate('/') }} className="flex flex-col">
               <IoLogoInstagram size={38} className={`${(searchIsFocussed || notificationIsFocussed || activeItem === 'Messages') ? '' : 'xl:hidden'}  active:text-[#ffffff94] pl-1 ml-1 mb-8 pt-2 cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`} />
@@ -112,10 +112,10 @@ const Sidebar = () => {
             </div>
             <div className={`flex flex-col gap-[7px] `}>
               {menuItems.map((item) => (
-                <div key={item.name} onClick={() => { handleItemClick(item.name, item?.path); }} className={`active:text-[#ffffff94]  ${theme === 'dark' ? 'hover:bg-[#ffffff1a] ' : (theme === 'light') ? 'hover:bg-[#a09e9e2a] ' : ' dark:hover:bg-[#ffffff1a] hover:bg-[#a09e9e2a]  dark:text-white'} active:scale-95 relative py-3 flex items-center gap-4 pl-3 cursor-pointer mr-2 rounded-xl transition-all duration-200 ease-in-out`}>
+                <div key={item.name} onClick={() => { handleItemClick(item.name, item?.path); }} className={`active:text-[#ffffff94]  ${theme === 'dark' ? 'hover:bg-[#ffffff1a] ' : (theme === 'light') ? 'hover:bg-[#a09e9e2a] ' : ' dark:hover:bg-[#ffffff1a] hover:bg-[#a09e9e2a] dark:text-white'} active:scale-95 relative py-3 flex items-center gap-4 pl-3 cursor-pointer ${notificationIsFocussed || searchIsFocussed ? 'mr-[275px]' : 'mr-3'} rounded-xl transition-all duration-200 ease-in-out`}>
                   <div className={`${(searchIsFocussed && item.name === 'Search' && searchtop) || (notificationIsFocussed && item.name === 'Notifications' && notificationTop) ? 'block' : 'hidden'} ${(notificationIsFocussed && item.name === 'Notifications' && notificationTop) ? 'w-12 h-12 left-[1px]' : 'w-12 h-12 left-0.5'} absolute border-1 border-[#ffffffa4] rounded-lg  ${theme === 'dark' ? 'border-[#a09e9e5e]' : (theme === 'light') ? 'border-black' : ' border-[black] dark:border-[#ffffffa4]'}`} />
                   {(activeItem === "Profile" && item.name === "Profile") && <div className={`absolute w-7 h-7 rounded-full -translate-x-0.5 border-2 ${theme === 'dark' ? 'border-[white]' : (theme === 'light') ? 'border-[black]' : ' border-[black] dark:border-[white]'}`} />}
-                  {item.icon && <div className={`flex items-center`}>{activeItem === item.name ? item.activeIcon || item.icon : item.icon}</div>}
+                  {item.icon && <div className={`flex items-center `}>{activeItem === item.name ? item.activeIcon || item.icon : item.icon}</div>}
                   {item.image && <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center"><img src={item.image} className={"w-full h-full rounded-full object-cover"} alt="Profile" /></div>}
                   <p className={`text-md ${(searchIsFocussed || activeItem === 'Messages' || notificationIsFocussed) ? 'hidden' : 'hidden xl:block'}  ${activeItem === item.name ? 'font-bold' : 'font-normal'} transition-all duration-200 ease-in-out`}>{item.name}</p>
                 </div>
