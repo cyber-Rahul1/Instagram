@@ -31,7 +31,7 @@ export const updateUser = async (req, res) => {
         let imageUrl
         if (req.file) {
             console.log('File received:', req.file);
-            imageUrl = await uploadOnCloudinary(req.file.path);
+            imageUrl = await uploadOnCloudinary(req.file);
         } else {
             console.log('No file received');
         }
