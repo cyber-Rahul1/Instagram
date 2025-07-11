@@ -8,8 +8,18 @@ const storySchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true,
     },
+    caption: {
+        type: String,
+    },
+    views: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     createdAt: {
         type: Date,
         default: Date.now,
@@ -17,4 +27,6 @@ const storySchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model('Story', storySchema);
+const Story = mongoose.model('Story', storySchema);
+
+export default Story;

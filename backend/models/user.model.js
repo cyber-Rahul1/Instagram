@@ -70,6 +70,10 @@ const userSchema = new mongoose.Schema({
     recentSearches: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    tagged: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
     }]
 
 

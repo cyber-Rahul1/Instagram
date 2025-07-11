@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
             {/* Header */}
             <div className="w-full  bg-white dark:bg-black">
                 <div className='w-full h-fit fixed top-0 left-0'>
-                    <OtpNavbar />
+                    <OtpNavbar  page={page}/>
                 </div>
             </div>
 

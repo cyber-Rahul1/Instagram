@@ -21,12 +21,26 @@ export const getUser = async (req, res) => {
 //------------------------------------------------------------------------------------------
 
 
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).select('-password -email -activity -posts -saved -story -following -followers  -messages -isPrivate -recentSearches -birthdate -gender -phonenumber ');
+        if (!users) return res.status(404).json({ message: 'Users not found' });
+        return res.status(200).json({ users });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - getAllUsers' });
+    }
+}   
+
+//------------------------------------------------------------------------------------------
+
+
 export const updateUser = async (req, res) => {
     try {
         const userid = req.userId;
         const user = await User.findById(userid);
         if (!user) return res.status(404).json({ message: 'User not found' });
-        const { username, bio, gender, website, phonenumber } = req.body;
+        const { username, bio, gender, website, phonenumber, name } = req.body;
 
         let imageUrl
         if (req.file) {
@@ -36,7 +50,7 @@ export const updateUser = async (req, res) => {
             console.log('No file received');
         }
 
-        const updatedUser = await User.findByIdAndUpdate(userid, { username, profilepic: imageUrl, bio, gender, website, phonenumber }, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(userid, { username, profilepic: imageUrl, bio, gender, website, phonenumber, name }, { new: true }).select('-password');
         await updatedUser.save();
         return res.status(200).json({ message: 'User updated successfully', updatedUser });
     } catch (error) {
@@ -76,7 +90,7 @@ export const getUserProfile = async (req, res) => {
             conditions.push({ _id: identifier });
         }
 
-        const user = await User.findOne({ $or: conditions }).select('-password').populate('followers following posts saved notifications recentSearches activity');
+        const user = await User.findOne({ $or: conditions }).select('-password').populate('followers following posts saved notifications recentSearches activity tagged');
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {

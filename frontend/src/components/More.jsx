@@ -90,7 +90,7 @@ const More = ({ setBottomActive }) => {
     }
 
     return (
-        <div className=" flex flex-col w-full h-fit z-10">
+        <div className=" flex flex-col w-full h-fit z-70">
             <div className={`flex flex-col rounded-2xl ${switchTheme ? 'w-0 h-0 opacity-0 pointer-events-none transition-all duration-200' : 'w-[270px] h-fit '}  ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white ' : ' bg-white dark:bg-[#262626]'} transition-all duration-200 ease-in-out`}>
                 <div className="flex flex-col p-2 ">
                     {settingsMenuItems.map((item, index) => (

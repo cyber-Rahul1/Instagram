@@ -1,4 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
+
+
+
+
+
+
+
+export const getAllUsers = createAsyncThunk("user/getAllUsers", async () => {
+    const result = await axios.get(`${serverUrl}/api/users/getallusers`, {
+        withCredentials: true
+    });
+    return result.data;
+})
+
 
 const userSlice = createSlice({
     name: "user",
@@ -7,7 +24,10 @@ const userSlice = createSlice({
         userProfile: null,
         userEmail: null,
         identifier: null,
-        userCredentials: {}
+        userCredentials: {},
+        allUsers: null,
+        status: null,
+        error: null
     },
     reducers:{
         setUserData(state, action)  {
@@ -33,8 +53,22 @@ const userSlice = createSlice({
           }
         
        
+    },
+    extraReducers: (builder) => {
+        builder.addCase(getAllUsers.pending, (state) => {
+            state.status = 'loading'
+            state.allUsers = null
+        }).addCase(getAllUsers.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.error = null
+            state.allUsers = action.payload
+        }).addCase(getAllUsers.rejected, (state) => {
+            state.status = 'failed'
+            state.error = 'Something went wrong'
+            state.allUsers = null
+        })
     }
 })
 
 export const { setUserData, setUserEmail, setIdentifier, setUserCredentials, clearUserCredentials, setUserProfile } = userSlice.actions;
-export default userSlice.reducer
+export default userSlice.reducer      

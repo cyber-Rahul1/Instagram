@@ -28,6 +28,8 @@ import Tagged from "./pages/Tagged"
 import EditProfile from "./pages/EditProfile"
 import Archive from "./pages/Archive"
 import Notification from "./components/Notification"
+import Theme from "./pages/Theme"
+import SavedPageInSettings from "./pages/SavedPageInSettings"
 
 
 
@@ -94,7 +96,10 @@ const App = () => {
           <Route path="/archive/stories" element={<Archive />} />
           <Route path="/settings" element={<Settings />} >
             <Route path="/settings/:identifier/editprofile" element={<EditProfile />} />
+            <Route path="/settings/:identifier/saved" element={<SavedPageInSettings />} />
+            <Route path="/settings/:identifier/archive" element={<Archive />} />
             <Route path="/settings/:identifier/soon" element={<WorkInProgess />} />
+            <Route path="/settings/:identifier/theme" element={<Theme />} />
           </Route>
           <Route path="/activity" element={<Activity />} />
           <Route path="/search" element={<SearchWrapper />} />

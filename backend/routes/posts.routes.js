@@ -1,26 +1,30 @@
 import express from 'express';
 import upload from '../middlewares/multer.js';
-import { addReply, createPost, deletePost, getAllComments, getAllLikesOnComment, getAllLikesOnPost, getAllPosts, getAllReels, getSavedUsersOnPosts, getUserPosts, getUserReels, getUserSavedPosts, likeComment, likePost, postComment, saved } from '../controllers/post.controller.js';
+import { addReply, createPost, deletePost, getAllComments, getAllLikesOnComment, getAllLikesOnPost, getAllLikesOnReply, getAllPosts, getAllReels, getAllReplies, getSavedUsersOnPosts, getUserPosts, getUserReels, getUserSavedPosts, getUserTaggedPosts, likeComment, likePost, likeReply, postComment, saved } from '../controllers/post.controller.js';
 const postRouter = express.Router();
 
 
 
 postRouter.post('/createpost', upload.single('image'), createPost);
-postRouter.delete('/deletepost/:postid', deletePost);
+postRouter.post('/deletepost', deletePost);
 postRouter.get('/getallposts', getAllPosts);
 postRouter.get('/getallreels', getAllReels);
-postRouter.get('/getuserposts/:identifiier', getUserPosts);
-postRouter.get('/getuserreels/:identifiier', getUserReels);
-postRouter.post('/postcomment/:postid', postComment);
-postRouter.get('/getallcomments/:postid', getAllComments);
-postRouter.post('/addreply/:postid/:commentid', addReply);
-postRouter.put('/likecomment/:commentid', likeComment);
-postRouter.get('/getalllikesoncomment/:commentid', getAllLikesOnComment);
-postRouter.put('/likepost/:postid', likePost);
-postRouter.get('/getalllikesonpost/:postid', getAllLikesOnPost);
-postRouter.put('/saved/:postid', saved);
+postRouter.get('/getuserposts/:identifier', getUserPosts);
+postRouter.get('/getuserreels/:identifier', getUserReels);
+postRouter.post('/postcomment', postComment);
+postRouter.post('/getallcomments', getAllComments);
+postRouter.post('/addreply', addReply);
+postRouter.post('/getallreplies', getAllReplies);
+postRouter.get('/likecomment/:commentid', likeComment);
+postRouter.get('/getalllikesoncomment', getAllLikesOnComment);
+postRouter.put('/likepost', likePost);
+postRouter.post('/getalllikesonpost', getAllLikesOnPost);
+postRouter.get('/likereply/:replyid', likeReply);
+postRouter.get('/getalllikesonreply', getAllLikesOnReply);
+postRouter.get('/saved/:postid', saved);
 postRouter.get('/getsavedusersonposts/:postid', getSavedUsersOnPosts);
-postRouter.get('/getusersavedposts/:username', getUserSavedPosts);
+postRouter.get('/getusersavedposts', getUserSavedPosts);
+postRouter.get('/getusertaggedposts', getUserTaggedPosts);
 
 
 

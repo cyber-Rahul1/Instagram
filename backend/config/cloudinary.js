@@ -1,11 +1,10 @@
 import { v2 as cloudinary } from 'cloudinary';
-import fs from 'fs';
 import { Readable } from 'stream';
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+    cloud_name: "dv1sih7vk",
+    api_key: "144723284849423",
+    api_secret: "15tiDBiXn4yJflARZQBLxeuFEEo"
 });
 
 
@@ -13,23 +12,6 @@ cloudinary.config({
 
 const uploadOnCloudinary = async (file) => {
     if (!file) return null;
-
-    // try {
-    //     const uploadResult = await cloudinary.uploader.upload(filepath);
-    //     console.log('Cloudinary upload result:', uploadResult);
-    //     return uploadResult.secure_url;
-    // } catch (error) {
-    //     console.error('Cloudinary upload error:', error);
-    //     throw error; 
-    // } finally {
-
-    //     fs.unlink(filepath, (err) => {
-    //         if (err) console.error('Failed to delete temp file:', err);
-    //     });
-    // }
-
-
-
 
     try {
         if (file.buffer) {
@@ -41,7 +23,6 @@ const uploadOnCloudinary = async (file) => {
                             console.error('Cloudinary upload error:', error);
                             reject(error);
                         } else {
-                            console.log('Cloudinary upload result:', result);
                             resolve(result.secure_url);
                         }
                     }
@@ -55,7 +36,6 @@ const uploadOnCloudinary = async (file) => {
         // For disk storage (file is a path)
         else {
             const uploadResult = await cloudinary.uploader.upload(file);
-            console.log('Cloudinary upload result:', uploadResult);
             return uploadResult.secure_url;
         }
     } catch (error) {

@@ -1,5 +1,7 @@
 import express from 'express';
 const app = express();
+import dotenv from 'dotenv';
+dotenv.config();
 import cors from 'cors';
 app.use(cors({
     origin: ['http://localhost:5173', 'https://instagram-n6oq.onrender.com', 'https://instagram-n6oq.onrender.com/api/auth/googlelogin', process.env.FRONTEND_URL],
@@ -7,15 +9,16 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
-import dotenv from 'dotenv';
+
 import connectDB from './config/db.js';
 import userRouter from './routes/user.routes.js';
-dotenv.config();
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.routes.js';
 import isAuth from './middlewares/auth.js';
 import postRouter from './routes/posts.routes.js';
 import messageRouter from './routes/message.routes.js';
+import storyRouter from './routes/story.routes.js';
+
 
 const port = process.env.PORT || 3000;
 app.use(cookieParser());
@@ -38,6 +41,7 @@ app.listen(port, () => {
 app.use('/api/auth', authRouter);
 app.use('/api/users', isAuth, userRouter);
 app.use('/api/posts', isAuth, postRouter);
+app.use('/api/story', isAuth, storyRouter);
 app.use('/api/message', isAuth, messageRouter);
 
 

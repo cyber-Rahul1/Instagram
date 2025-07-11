@@ -16,7 +16,7 @@ import { RiMenuLine } from "react-icons/ri";
 import { IoLogoInstagram } from "react-icons/io";
 import dp from '../assets/dp.webp';
 import { useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../context/ContextProvider";
 import { useSelector } from "react-redux";
 import Search from "./Search";
@@ -24,15 +24,20 @@ import Notification from "../components/Notification";
 import More from "./More";
 import SwitchTheme from "./SwitchTheme";
 import MobileSidebar from "./MobileSidebar";
+import HandlePosts from "./HandlePosts";
+
 
 
 const Sidebar = () => {
   let navigate = useNavigate()
   const location = useLocation();
-  const { activeItem, setActiveItem, theme, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings } = useContext(ThemeContext)
+  const { activeItem, setActiveItem, viewPost, setViewPost, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings } = useContext(ThemeContext)
   const { userData } = useSelector((state) => state.user)
+  const [create, setCreate] = useState(false)
   const [bottomActive, setBottomActive] = useState('')
+  const [imgSelected, setImgSelected] = useState(false)
   const [searchtop, setSearchTop] = useState(false)
+  const fileInputRef = useRef(null);
   const [notificationTop, setNotificationTop] = useState(false)
 
 
@@ -44,7 +49,7 @@ const Sidebar = () => {
     { name: "Messages", icon: <BsSend size={23} />, activeIcon: <BsFillSendFill size={23} />, path: "/messages" },
     { name: "Notifications", icon: notificationIsFocussed ? <FaHeart size={24} /> : <FaRegHeart size={24} /> },
     { name: "Create", icon: <LuSquarePlus size={26} /> },
-    { name: "Profile", image: userData?.user?.profilepic || dp, path: userData ? `/profile/${ userData?.user?.username || userData?.user?._id}` : "/profile" }
+    { name: "Profile", image: userData?.user?.profilepic || dp, path: userData ? `/profile/${userData?.user?.username || userData?.user?._id}` : "/profile" }
   ];
 
   const extraMenuItems = [
@@ -69,6 +74,8 @@ const Sidebar = () => {
       setSearchTop(prev => !prev)
       setNotificationTop(true)
       setNotificationIsFocussed(prev => !prev)
+    } else if (name === 'Create') {
+      setCreate(true)
     }
     if (name === 'Home' || name === 'Explore') {
       document.title = 'Instagram';
@@ -103,8 +110,12 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="hidden md:block transition-all duration-200 ease-in-out">
-        <div className={`flex flex-col justify-between ${(theme === 'dark') ? 'text-white bg-black transition-all duration-200 ease-in-out border-[#363636b4]' : (theme === 'light') ? 'text-black  bg-white border-gray-200' : ' text-black dark:text-white border-gray-200 dark:border-[#363636b4] dark:bg-black bg-white'} pl-3 h-screen  pt-6  ${activeItem === 'Messages' ? 'w-[70px]' : 'w-[70px] 2xl:w-[340px] xl:w-[240px]'} transition-all duration-200 ease-in-out border-r`}>
+      { create && <div>
+        <HandlePosts setCreate={setCreate} imgSelected={imgSelected} fileInputRef={fileInputRef} setImgSelected={setImgSelected} />
+      </div> }
+      <div className="hidden relative md:block transition-all duration-200 ease-in-out">
+        <div className={`flex flex-col justify-between ${(theme === 'dark') ? 'text-white bg-black transition-all duration-200 ease-in-out border-[#363636b4]' : (theme === 'light') ? 'text-black  bg-white border-gray-200' : ' text-black dark:text-white border-gray-200 dark:border-[#363636b4] dark:bg-black bg-white'}  h-screen  pt-6  ${activeItem === 'Messages' ? 'w-[70px] mr-0 pl-2' : 'w-[70px] 2xl:w-[340px] xl:w-[240px] pl-3'} transition-all duration-200 ease-in-out border-r`}>
+          
           <div className="flex flex-col gap-3">
             <div onClick={() => { setActiveItem('Home'); navigate('/') }} className="flex flex-col">
               <IoLogoInstagram size={38} className={`${(searchIsFocussed || notificationIsFocussed || activeItem === 'Messages') ? '' : 'xl:hidden'}  active:text-[#ffffff94] pl-1 ml-1 mb-8 pt-2 cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`} />
@@ -131,13 +142,13 @@ const Sidebar = () => {
             ))}
           </div>
         </div>
-        {bottomActive === 'More' && <div onClick={() => setBottomActive('')} className='absolute top-0 z-5 left-0 w-full h-full bg-transparent' />}
+        {bottomActive === 'More' && <div onClick={() => setBottomActive('')} className='absolute top-0 z-5 left-0 w-screen h-full bg-transparent' />}
         {bottomActive === 'More' &&
-          <div className={`fixed bottom-18 z-50 left-[11px] rounded-2xl  transition-all duration-200 ease-in-out ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white shadow-2xl' : ' bg-white shadow-2xl dark:shadow-0 dark:bg-black'}`}>
+          <div className={`fixed bottom-18 z-50 left-[11px] rounded-2xl transition-all duration-200 ease-in-out ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white shadow-2xl' : ' bg-white shadow-2xl dark:shadow-0 dark:bg-black'}`}>
             <More setBottomActive={setBottomActive} />
           </div>}
 
-        {switchTheme && <div onClick={() => { setBottomActive(''); setSwitchTheme(false) }} className='absolute top-0 z-30 left-0 w-full h-full bg-transparent' />}
+        {switchTheme && <div onClick={() => { setBottomActive(''); setSwitchTheme(false) }} className='absolute top-0 z-30 left-0 w-screen h-full bg-transparent' />}
         {switchTheme && <div className={`fixed bottom-18 z-50 left-[11px] w-[270px] ${theme === 'dark' ? 'bg-[#262626] text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white text-black dark:text-white dark:bg-[#262626]'} transition-all duration-200 ease-in-out rounded-2xl shadow-xl `}>
           <SwitchTheme setTheme={setTheme} theme={theme} setSwitchTheme={setSwitchTheme} switchTheme={switchTheme} setBottomActive={setBottomActive} />
         </div>}
@@ -149,7 +160,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="block md:hidden">
-        <MobileSidebar menuItems={menuItems} userData={userData} activeItem={activeItem} setActiveItem={setActiveItem} theme={theme} handleItemClick={handleItemClick} setActiveSettings={setActiveSettings} />
+        <MobileSidebar viewPost={viewPost} setShowComment={setShowComment} setViewPost={setViewPost} menuItems={menuItems} userData={userData} activeItem={activeItem} setActiveItem={setActiveItem} theme={theme} handleItemClick={handleItemClick} setActiveSettings={setActiveSettings} />
       </div>
     </>
   )
