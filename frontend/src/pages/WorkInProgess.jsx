@@ -8,7 +8,7 @@ const WorkInProgess = () => {
     const { theme } = useContext(ThemeContext);
 
     return (
-        <div className="relative h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 w-full"><TiArrowLeftThick />
+        <div className="relative h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 w-full">
             <div onClick={() => { navigate(-1) }} className='h-fit w-fit absolute top-5 left-5 md:top-20 md:left-20 animate-pulse cursor-pointer active:scale-95 transition-all duration-200 ease-in-out'><TiArrowLeftThick  className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} md:text-5xl text-3xl`} /></div>
             <div className="text-center px-6">
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-800 dark:text-white mb-4">

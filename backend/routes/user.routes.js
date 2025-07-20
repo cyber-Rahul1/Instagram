@@ -1,5 +1,5 @@
 import express from 'express';
-import { followAndUnfollow, getAllMostFollowedUsers, getAllUsers, getFollowers, getFollowing, getUser, getUserProfile, removeProfilePic, suggestedUsers, updateUser } from '../controllers/user.controller.js';
+import { addRecentUsers, clearOneRecentUser, clearRecentUsers, followAndUnfollow, getAllMostFollowedUsers, getAllUsers, getFollowers, getFollowing, getRecentUsers, getUser, getUserProfile, removeProfilePic, suggestedUsers, updateUser } from '../controllers/user.controller.js';
 import upload from '../middlewares/multer.js';
 const userRouter = express.Router();
 
@@ -11,9 +11,13 @@ userRouter.put('/removeprofilepic', removeProfilePic);
 userRouter.get('/getuserprofile/:identifier', getUserProfile);
 userRouter.get('/getallmostfollowedusers', getAllMostFollowedUsers);
 userRouter.get('/getsuggestedusers', suggestedUsers);
-userRouter.put('/followandunfollow/:id', followAndUnfollow);
-userRouter.get('/getfollowers/:username', getFollowers);
-userRouter.get('/getfollowing/:username', getFollowing);
+userRouter.get('/followandunfollow/:identifier', followAndUnfollow);
+userRouter.get('/getfollowers/:identifier', getFollowers);
+userRouter.get('/getfollowing/:identifier', getFollowing);
+userRouter.post('/addrecentusers', addRecentUsers);
+userRouter.get('/getrecentusers', getRecentUsers);
+userRouter.get('/clearrecentusers', clearRecentUsers);
+userRouter.post('/clearonerecentuser', clearOneRecentUser);
 
 
 

@@ -1,5 +1,3 @@
-
-
 const ChangeProfileMenu = ({ changeProfilePhotoMenu, setUpdateImage, image, removePhoto, theme, loading, updateImage }) => {
 
     return (

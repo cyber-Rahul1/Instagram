@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
 const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
 
@@ -74,8 +75,8 @@ const postSlice = createSlice({
         allReels: null,
         userReels: null,
         userSavedPosts: null,
-        allComments: null,
-        allReplies: null,
+        allComments: [],
+        allReplies: [],
         userTaggedPosts: null
     },
     reducers: {
@@ -95,8 +96,9 @@ const postSlice = createSlice({
             state.userSavedPosts = action.payload
         },
         setAllComments(state, action) {
-            state.allComments = action.payload
+            state.allComments.unshift(action.payload)
         },
+        
     },
     extraReducers: (builder) => {
         builder.addCase(getUserPosts.pending, (state) => {
@@ -214,5 +216,5 @@ const postSlice = createSlice({
 
 
         
-export const { setUserPosts, setAllPosts, setAllReels, setUserReels, setUserSavedPosts, setAllComments, setAllReplies, setUserTaggedPosts } = postSlice.actions;
+export const { setUserPosts, setAllPosts, setAllReels, setUserReels, setUserSavedPosts, setAllComments, setAllReplies, setUserTaggedPosts,  } = postSlice.actions;
 export default postSlice.reducer

@@ -23,6 +23,14 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    hideLikes: {
+        type: Boolean,
+        default: false,
+    },
+    hideComments: {
+        type: Boolean,
+        default: false,
+    },
     description: {
         type: String,
     },

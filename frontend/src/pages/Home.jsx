@@ -57,7 +57,7 @@ const Home = () => {
         <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-85" />
         <SwitchAccount setSwitchAccount={setSwitchAccount} />
       </div>}
-      {activeItem === 'Home' && <div className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} w-full fixed top-0 z-10 flex md:hidden items-center justify-between p-4 border-b-1 border-[#a8a5a346]`}>
+      {(activeItem === 'Home' && activeItem !== 'Messages' && activeItem !== 'Search') && <div className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} w-full fixed top-0 z-10 flex md:hidden items-center justify-between p-4 border-b-1 border-[#a8a5a346]`}>
         <div onClick={() => { setSwitchAccount(true); }} className="active:scale-98 cursor-pointer active:text-[#ffffff94] transition-all duration-200 ease-in-out text-[15px] font-semibold flex items-center gap-1 justify-center"><h2 className="heading text-xl active:text-[#ffffff94] tracking-tight font-medium">Instagram</h2> <span><MdKeyboardArrowDown size={24} /></span></div>
         <div className="flex items-center gap-6">
           {MenuItems.map((item) => (

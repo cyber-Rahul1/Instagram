@@ -24,12 +24,12 @@ export const createUser = async (req,res) => {
             password: hashPassword
         });
 
-        const token =  jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token =  jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
         res.cookie('token', token,{
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', 
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 30 * 24 * 60 * 60 * 1000
         } )
         await user.save();
         return res.status(201).json({ message: 'User created successfully', user });
@@ -101,14 +101,14 @@ export const loginUser = async (req,res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Sorry, your password was incorrect. Please double-check your password.' });
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-            maxAge: 7 * 24 * 60 * 60 * 1000
+            maxAge: 30 * 24 * 60 * 60 * 1000
         })
-        return res.status(200).json({ message: 'Login successful', user });
+        return res.status(200).json({ message: 'Login successful', user , jwt: token });
 
     } catch (error) {
         console.log(error);
@@ -143,24 +143,24 @@ export const googleLogin = async (req, res) => {
         if (!user) {
             let user = await User.create({email,name});
             user = await user.save();
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000
             })
-            return res.status(200).json({ message: 'Login successful', user });
+            return res.status(200).json({ message: 'Login successful', user , jwt: token });
         }else {
            
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',  
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',                
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000
             })
-            return res.status(200).json({ message: 'Login successful', user });
+            return res.status(200).json({ message: 'Login successful', user , jwt: token });
         }
         
         

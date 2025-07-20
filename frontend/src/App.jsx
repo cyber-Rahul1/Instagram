@@ -30,16 +30,26 @@ import Archive from "./pages/Archive"
 import Notification from "./components/Notification"
 import Theme from "./pages/Theme"
 import SavedPageInSettings from "./pages/SavedPageInSettings"
+import io from 'socket.io-client';
+import { setAllComments } from "./redux/postSlice"
+import { useDispatch } from "react-redux"
+import MainPage from "./pages/MainPage"
+import MessageArea from "./components/MessageArea"
 
 
 
 
+const socket = io(import.meta.env.VITE_SERVER_URL || 'http://localhost:8000');
 
 
 const App = () => {
- 
 
-  const { theme } = useContext(ThemeContext);
+
+  const { theme, setCommentLikes, setAllCommentsInMain, setShowReplies, setRecentUsers } = useContext(ThemeContext);
+  const dispatch = useDispatch();
+
+
+
 
 
   useEffect(() => {
@@ -62,6 +72,79 @@ const App = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+
+    socket.on('newComment', (comment) => {
+      console.log('New comment received:', comment);
+      dispatch(setAllComments(comment));
+    });
+
+    // socket.on('newLike', ({ user, liked }) => {
+    //   setLikedUsers(prev => {
+    //     const safePrev = Array.isArray(prev) ? prev : [];
+    //     if (liked) {
+    //       return safePrev.some(u => u._id === user._id) ? safePrev : [...safePrev, user];
+    //     } else {
+    //       return safePrev.filter(u => u._id !== user._id);
+    //     }
+    //   });
+    // });
+
+    socket.on('newCommentLike', ({ commentId, user }) => {
+      setCommentLikes(prev => {
+        const index = prev.findIndex(item => item.commentId === commentId);
+
+        if (index !== -1) {
+          const updated = [...prev];
+          const isLiked = updated[index].likedUser.some(u => u._id === user._id);
+
+          if (isLiked) {
+            updated[index].likedUser = updated[index].likedUser.filter(u => u._id !== user._id);
+          } else {
+            updated[index].likedUser = [...updated[index].likedUser, user];
+          }
+
+          return updated;
+        } else {
+          return [...prev, { commentId, likedUser: [user] }];
+        }
+      });
+    });
+
+   socket.on('newReply', ({ commentId, reply }) => {
+    console.log('New reply received:', reply);
+      setAllCommentsInMain(prev => {
+        return prev.map(comment => {
+          if (comment._id === commentId) {
+            return {
+              ...comment,
+              replies: [reply, ...comment.replies]
+            };
+          }
+          return comment;
+        });
+      });
+      setShowReplies(prev => ({ ...prev, [commentId]: !prev[commentId] }))
+    });
+
+
+    socket.on('clearOneRecentUser', (user) => {
+      setRecentUsers(prev => prev.filter(u => u._id !== user._id || u.username !== user.username));
+    });
+    
+
+
+
+
+    return () => {
+      socket.off('newComment');
+      socket.off('newLike');
+      socket.off('newCommentLike');
+      socket.off('newReply');
+      socket.off('clearOneRecentUser');
+    };
+  }, []);
+
 
 
   return (
@@ -82,10 +165,13 @@ const App = () => {
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>}>
-          <Route path="/" element={<Suggested />} />
+          <Route path="/" element={<MainPage />} />
+          <Route path="/suggested" element={<Suggested />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/reels" element={<Reels />} />
-          <Route path="/messages" element={<Message />} />
+          <Route path="/messages" element={<Message />}>
+            <Route path="/messages/:identifier" element={<MessageArea />} />
+          </Route>
           <Route path="/notifications" element={<Notification />} />
           <Route path="/profile/:identifier" element={<Profile />} >
             <Route path="/profile/:identifier" element={<Posts />} />

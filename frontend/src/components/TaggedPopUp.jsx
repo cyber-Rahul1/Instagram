@@ -12,7 +12,7 @@ const TaggedPopUp = ({ setInput, handleInputChange, input, theme, suggestedUsers
             setTaggedpopup(false)
             setTaggedUsersLength(false)
             setMessage(false)
-        } else if (taggedUser){
+        } else if (taggedUser) {
             setInput('');
             setTaggedUsersLength(true)
             setTaggedpopup(false)

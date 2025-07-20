@@ -3,13 +3,14 @@ import mongoose from "mongoose";
 import uploadOnCloudinary from "../config/cloudinary.js";
 import User from "../models/user.model.js";
 import Notification from "../models/notification.model.js";
+import { io } from "../index.js";
 
 
 
 export const getUser = async (req, res) => {
     try {
         const userid = req.userId;
-        const user = await User.findById(userid).select('-password');
+        const user = await User.findById(userid).select('-password').populate('recentSearches notifications');
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {
@@ -129,9 +130,12 @@ export const followAndUnfollow = async (req, res) => {
             await Promise.all([
                 User.findByIdAndUpdate(currentUser._id, { $push: { following: otherUser._id } }),
                 User.findByIdAndUpdate(otherUser._id, { $push: { followers: currentUser._id } }),
-                notification = await Notification.create({ sender: currentUser._id, receiver: otherUser._id, type: 'follow', message: `${currentUser.username} started following you.` }),
-                User.findByIdAndUpdate(otherUser._id, { $push: { notifications: notification._id } })
+                notification = await Notification.create({ sender: currentUser._id, receiver: otherUser._id, type: 'follow', message: `${currentUser.username || currentUser.name} started following you.` }),
             ])
+            if (!currentUser._id.equals(otherUser._id)) {
+                await User.findByIdAndUpdate(otherUser._id, { $push: { notifications: notification._id } })
+                io.emit('newNotification', notification, otherUser._id);
+            }
             await currentUser.save();
             await otherUser.save();
             console.log("Followed");
@@ -271,11 +275,17 @@ export const addRecentUsers = async (req, res) => {
     try {
         const currentUser = await User.findById(req.userId);
         if (!currentUser) return res.status(404).json({ message: 'User not found' });
-        const { username } = req.params;
-        const user = await User.findOne({ username });
+        const { identifier } = req.body;
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
+        const user = await User.findOne({ $or: conditions });
         if (!user) return res.status(404).json({ message: 'User not found' });
         if (!currentUser.recentSearches.includes(user._id)) {
             await User.findByIdAndUpdate(currentUser._id, { $push: { recentSearches: user._id } }, { new: true });
+            io.emit('newRecentUser', user);
             return res.status(200).json({ message: 'User added to recent searches' });
         } else {
             return res.status(200).json({ message: 'User already in recent searches' });
@@ -323,13 +333,20 @@ export const clearRecentUsers = async (req, res) => {
 
 export const clearOneRecentUser = async (req, res) => {
     try {
-        const { username } = req.params;
+        const { identifier } = req.body;
+        const username = identifier;
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
         if (!username) return res.status(400).json({ message: 'Username is required' });
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ $or: conditions });
         if (!user) return res.status(404).json({ message: 'User not found' });
         const currentUser = await User.findById(req.userId);
         if (!currentUser) return res.status(404).json({ message: 'User not found' });
         await User.findByIdAndUpdate(currentUser._id, { $pull: { recentSearches: user._id } }, { new: true });
+        io.emit('clearOneRecentUser', user);
         return res.status(200).json({ message: 'Recent user cleared' });
     } catch (error) {
         console.log(error);

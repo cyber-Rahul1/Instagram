@@ -61,14 +61,13 @@ const Login = () => {
 
       });
       localStorage.setItem('token', result.data.jwt);
-
-      setStatus(result.status)
       dispatch(setUserData(result.data));
+      navigate('/')
+      setStatus(result.status)
       setUsername('')
       setPassword('')
       setLoading(false)
       setPage('')
-      navigate('/')
 
 
     } catch (error) {
@@ -138,11 +137,11 @@ const Login = () => {
       });
 
       localStorage.setItem('token', result.data.jwt);
-
+      dispatch(setUserData(result.data));
+      navigate('/')
       setLoading(false)
       setStatus(result.status)
       setPage('')
-      navigate('/')
     } catch (error) {
       setLoading(false)
       setStatus(error?.response?.status);
