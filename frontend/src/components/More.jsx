@@ -41,6 +41,9 @@ const More = ({ setBottomActive }) => {
         { name: "Report a problem", icon: <TbMessageReport size={21} /> }
     ];
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleClick = (path, name) => {
         if (name === 'Switch appearance') {
             setSwitchTheme(true);
@@ -71,6 +74,9 @@ const More = ({ setBottomActive }) => {
 
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleLogOut = async () => {
 
         setLogout(true);
@@ -88,6 +94,9 @@ const More = ({ setBottomActive }) => {
           console.log(error)
        }
     }
+
+    //-----------------------------------------------------------------------------------
+
 
     return (
         <div className=" flex flex-col w-full h-fit z-70">

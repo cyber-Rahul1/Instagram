@@ -21,20 +21,26 @@ const Tagged = () => {
     const [viewReels, setViewReels] = useState(false)
   
      
-    
+  //-----------------------------------------------------------------------------------
     
     useEffect(() => {   
       dispatch(getUserTaggedPosts());   
     }, [dispatch])   
     
+  //-----------------------------------------------------------------------------------    
+    
     const { userProfile } = useSelector((state) => state.user);   
     const { userTaggedPosts, status } = useSelector((state) => state.post);   
 
+
+  //-----------------------------------------------------------------------------------
     
   useEffect(() => {
     setTaggedPosts(userTaggedPosts?.taggedPosts)   
   }, [userTaggedPosts])
   
+  //-----------------------------------------------------------------------------------    
+
   
   return (
     <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10 px-1">

@@ -32,12 +32,19 @@ const ThemeProvider = ({ children }) => {
     const [postIdInMain, setPostIdInMain] = useState('')
     const [showReplies, setShowReplies] = useState({})
     const inputRef = useRef(null)
+    const [viewed, setViewed] = useState(true)
     const [notificationIsFocussed, setNotificationIsFocussed] = useState(false)
     const [authorId, setAuthorId] = useState('')
     const [recentUsers, setRecentUsers] = useState([])
-    
+    const [editPostId, setEditPostId] = useState('')
+    const [viewStory, setViewStory] = useState(false)
+    const [showCross , setShowCross] = useState(false)
+    const [authorName, setAuthorName] = useState('')
+
+
+
     return (
-        <ThemeContext.Provider value={{ recentUsers, setRecentUsers, showReplies, setShowReplies, postIdInMain, setPostIdInMain, inputRef, allCommentsInMain, setAllCommentsInMain, authorId, setAuthorId, reply, setReply, loading, setLoading, comment, setComment, post, setPost, indexval, setIndexval, commentLikes, setCommentLikes, likedUsers, setLikedUsers, commentId, setCommentId, hideCommenting, setHideCommenting, showLikes, setShowLikes, aboutAcc, setAboutAcc, sameData, setSameData, editPost, setEditPost, postId, setPostId, showComment, setShowComment, viewPost, setViewPost, activeSettings, setActiveSettings, image ,theme, setTheme, activeItem, setActiveItem, active, setActive, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed }}>
+        <ThemeContext.Provider value={{ authorName, setAuthorName, showCross, setShowCross, viewStory, setViewStory, editPostId, setEditPostId, viewed, setViewed, recentUsers, setRecentUsers, showReplies, setShowReplies, postIdInMain, setPostIdInMain, inputRef, allCommentsInMain, setAllCommentsInMain, authorId, setAuthorId, reply, setReply, loading, setLoading, comment, setComment, post, setPost, indexval, setIndexval, commentLikes, setCommentLikes, likedUsers, setLikedUsers, commentId, setCommentId, hideCommenting, setHideCommenting, showLikes, setShowLikes, aboutAcc, setAboutAcc, sameData, setSameData, editPost, setEditPost, postId, setPostId, showComment, setShowComment, viewPost, setViewPost, activeSettings, setActiveSettings, image, theme, setTheme, activeItem, setActiveItem, active, setActive, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed }}>
             {children}
         </ThemeContext.Provider>
     )

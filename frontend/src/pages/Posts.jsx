@@ -14,18 +14,18 @@ const Posts = () => {
 
   const dispatch = useDispatch();
   const { theme, viewPost, setViewPost, showComment, setShowComment, postId, setPostId } = useContext(ThemeContext)
-  const { userPosts, status, error } = useSelector((state) => state.post)
   
   const { identifier } = useParams();
   const [posts, setPosts] = useState([])
   const [indexval, setIndexval] = useState(0)
   const [showReplies, setShowReplies] = useState({})
   const [viewReels, setViewReels] = useState(false)
-
-
-
-
-
+  
+  
+  
+  
+  
+  
   useEffect(() => {
     dispatch(getUserPosts(identifier))
     if (postId !== '') {
@@ -33,10 +33,11 @@ const Posts = () => {
       dispatch(getAllReplies(postId));
     }
   }, [dispatch, identifier, postId])
-
-  const { userProfile } = useSelector((state) => state.user)
- 
   
+  const { userPosts, status, error } = useSelector((state) => state.post)
+  const { userProfile } = useSelector((state) => state.user)
+
+
 
   useEffect(() => {
     setPosts(userPosts?.posts);
@@ -47,6 +48,7 @@ const Posts = () => {
 
   return (
     <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10 px-1 ">
+      
       {userProfile?.posts?.length === 0 && <EmptyPage page={'posts'} />}
       {userProfile?.posts?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={posts} setShowComment={setShowComment} userProfile={userProfile} setViewPost={setViewPost} setIndexval={setIndexval} status={status} error={error} setPostId={setPostId} setShowReplies={setShowReplies} />}
       {viewPost && <ViewPostCards viewPost={viewPost} viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={postId} setIndexval={setIndexval} indexval={indexval} posts={posts} setPosts={setPosts} />}

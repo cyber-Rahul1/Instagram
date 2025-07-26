@@ -27,6 +27,7 @@ const FollowPopUp = ({ setFollowPopup, userProfile, userData, setUserProfile2 })
         { label: "Unfollow", icon: null }
     ];
 
+    //-----------------------------------------------------------------------------------
 
     const handleClick = async (label) => {
         if (label === "Unfollow") {
@@ -60,6 +61,8 @@ const FollowPopUp = ({ setFollowPopup, userProfile, userData, setUserProfile2 })
             setFollowPopup(false);
         }
     }
+
+    //-----------------------------------------------------------------------------------
 
   return (
     <div onClick={(e) => { e.stopPropagation() }} className={`w-[80%] md:w-[400px] h-fit relative rounded-xl flex flex-col overflow-hidden items-center justify-center ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>

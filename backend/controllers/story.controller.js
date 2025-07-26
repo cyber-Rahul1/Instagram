@@ -6,27 +6,49 @@ import User from "../models/user.model.js";
 
 export const createStory = async (req, res) => {
     try {
-        const { caption } = req.body;
+        const { description } = req.body;
         const author = await User.findById(req.userId);
         if (!author) return res.status(404).json({ message: 'Author not found' });
         let imageUrl;
         if (req.file) {
             imageUrl = await uploadOnCloudinary(req.file);
         }
-        const story = new Story({
-            author,
+        if(author.story) {
+            await Story.findByIdAndDelete(author.story);
+        }
+        const story = await Story.create({
+            author: author._id,
             image: imageUrl,
-            caption,
+            caption: description,
         });
-        await User.findByIdAndUpdate(author._id, { $push: { story: story._id } });
+        await User.findByIdAndUpdate(author._id, { story: story._id });
         await author.save();
-        await story.save();
         return res.status(201).json({ message: 'Story created successfully', story });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Something went wrong - createStory' });
     }
 }
+
+
+//------------------------------------------------------------------------------------------
+
+
+export const deleteStory = async (req, res) => {
+    try {
+        const { storyid } = req.params;
+        if (!storyid) return res.status(400).json({ message: 'Story id is required' });
+        const story = await Story.findById(storyid);
+        if (!story) return res.status(404).json({ message: 'Story not found' });
+        await Story.findByIdAndDelete(storyid);
+        await User.findByIdAndUpdate(story.author, { story: null });
+        return res.status(200).json({ message: 'Story deleted successfully' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - deleteStory' });
+    }
+}
+
 
 //------------------------------------------------------------------------------------------
 
@@ -52,7 +74,13 @@ export const getStory = async (req, res) => {
     try {
         const { storyid } = req.params;
         if (!storyid) return res.status(400).json({ message: 'Story id is required' });
-        const story = await Story.findById(storyid).populate('author views likes');
+        const story = await Story.findById(storyid).populate('author views likes').populate({
+            path: 'author',
+            populate: {
+                path: 'story',
+                model: 'Story',
+            }
+        });
         if (!story) return res.status(404).json({ message: 'Story not found' });
         return res.status(200).json({ story });
     } catch (error) {
@@ -62,6 +90,7 @@ export const getStory = async (req, res) => {
 }
 
 //------------------------------------------------------------------------------------------
+
 
 
 export const getCurrentUserStories = async (req, res) => {
@@ -113,10 +142,10 @@ export const likeStory = async (req, res) => {
         if (!user) return res.status(404).json({ message: 'User not found' });
         if (story.likes.includes(user._id)) {
             await Story.findByIdAndUpdate(story._id, { $pull: { likes: user._id } });
-            return res.status(200).json({ message: 'Story unliked' });
+            return res.status(200).json({ message: 'Story unliked', story });
         } else {
             await Story.findByIdAndUpdate(story._id, { $push: { likes: user._id } });
-            return res.status(200).json({ message: 'Story liked' });
+            return res.status(200).json({ message: 'Story liked', story });
         }
     } catch (error) {
         console.log(error);

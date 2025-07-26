@@ -21,6 +21,7 @@ const EnterOtp = () => {
   const { userEmail, identifier } = useSelector((state) => state.user)
   let navigate = useNavigate()
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     if (identifier === null) {
@@ -30,6 +31,7 @@ const EnterOtp = () => {
     }
   }, [identifier, navigate]);
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     if (inputRefs[0]?.current) {
@@ -49,11 +51,15 @@ const EnterOtp = () => {
 
   }, [])
 
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     if (timer === 0) {
       setResend(true)
     }
   }, [timer])
+
+  //-----------------------------------------------------------------------------------
 
   const handleotpinput = (e, i) => {
 
@@ -68,6 +74,8 @@ const EnterOtp = () => {
 
   }
 
+  //-----------------------------------------------------------------------------------
+
   const handleKeyDown = (e, i) => {
     if (e.key === 'Backspace' && i > 0) {
       inputRefs[i - 1].current.focus();
@@ -77,6 +85,9 @@ const EnterOtp = () => {
     }
 
   }
+
+  //-----------------------------------------------------------------------------------
+
   const handlePaste = (e) => {
     const pastedData = e.clipboardData.getData('Text');
     if (pastedData?.length === letters?.length) {
@@ -89,12 +100,16 @@ const EnterOtp = () => {
     }
   }
 
+  //-----------------------------------------------------------------------------------
+
   const handleEnter = (e) => {
     if (e.key === 'Enter') { handleSubmit() }
   }
 
+  //-----------------------------------------------------------------------------------
+
   const handleSubmit = async () => {
-    
+
     const otpData = [...otp]
     const lettersofotp = otpData.join('');
     setLoading(true)
@@ -119,6 +134,8 @@ const EnterOtp = () => {
     setOtp(letters);
     inputRefs[0].current.focus();
   }
+
+  //-----------------------------------------------------------------------------------
 
   const handleResend = async () => {
     if (inputRefs[0]?.current) {
@@ -146,6 +163,8 @@ const EnterOtp = () => {
 
   }
 
+  //-----------------------------------------------------------------------------------
+
 
   return (
     <div className="relative w-full h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black pt-28 md:pt-50 z-2 overflow-x-hidden ">
@@ -169,12 +188,12 @@ const EnterOtp = () => {
           })}
 
         </div>
-        
+
         <div className=" text-center  flex flex-col items-center justify-center">
           <p className="dark:text-[#ffffffac] text-[13px] ml-25 w-full  flex items-center mt-4">Didn`t receive an OTP?<button onClick={() => handleResend()} disabled={!resend} className={` ${resend ? 'text-[#0087eb]' : 'text-[#0085eb7c]'}  ml-2 cursor-pointer`}>Resend Otp</button></p>
           {timer >= 0 && <p className="text-[#ffffffac] text-[13px] ml-40 w-full pt-1 flex  items-center">Resend after {timer} seconds</p>}
         </div>
-        <button onKeyDown={(e) =>handleEnter(e)} onClick={() => handleSubmit()} disabled={otp.includes('')} className={`bg-blue-500 mb-30 text-white font-bold mt-4 py-2 px-10 cursor-pointer  rounded-lg  ${otp.includes('') ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 active:scale-95'}`}>{loading ? (
+        <button onKeyDown={(e) => handleEnter(e)} onClick={() => handleSubmit()} disabled={otp.includes('')} className={`bg-blue-500 mb-30 text-white font-bold mt-4 py-2 px-10 cursor-pointer  rounded-lg  ${otp.includes('') ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 active:scale-95'}`}>{loading ? (
           <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
         ) : (
           'Verify'
@@ -183,7 +202,7 @@ const EnterOtp = () => {
       </div>
 
       <div className="w-full hidden lg:block">
-        <LoginFooter  page={"Otp"}/>
+        <LoginFooter page={"Otp"} />
       </div>
       {message && <div className="w-full absolute bottom-0 left-0 px-5 py-4 z-5 md:block bg-[#262626]">
         <p className="text-[#ffffffd1] text-[15px]  w-full  flex items-center">{message}</p>

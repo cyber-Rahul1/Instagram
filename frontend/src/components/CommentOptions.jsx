@@ -5,18 +5,25 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const CommentOptions = ({ postId, setShowOptions, postIdInMain, page , setViewPost, authorId, authorName }) => {
-    const { theme, editPost, setEditPost, sameData, aboutAcc, setAboutAcc } = useContext(ThemeContext)
+const CommentOptions = ({ postId, setShowOptions, editPostId, page , setViewPost }) => {
+    const { theme, setEditPost, sameData, aboutAcc, setAboutAcc, authorId, authorName } = useContext(ThemeContext)
     const [loading, setLoading] = useState(false)
     const [currentPost, setCurrentPost] = useState({})
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
     const [id, setId] = useState('')
 
+
+    //-----------------------------------------------------------------------------------
+
+
     useEffect(() => {
-        setId(page === 'main' ? postIdInMain : postId)
-    }, [page, postId , postIdInMain])
+        setId(page === 'main' ? editPostId : postId)
+    }, [page, postId , editPostId])
 
     const navigate = useNavigate()
+
+
+    //-----------------------------------------------------------------------------------
 
 
     useEffect(() => {
@@ -33,7 +40,8 @@ const CommentOptions = ({ postId, setShowOptions, postIdInMain, page , setViewPo
         fetchPost();
     }, [id, serverUrl, page])
 
-    console.log(currentPost)
+    //-----------------------------------------------------------------------------------
+
 
     const postOptions = sameData ? [
         { name: "Delete", action: "delete", style: "danger" },
@@ -55,6 +63,7 @@ const CommentOptions = ({ postId, setShowOptions, postIdInMain, page , setViewPo
         { name: "Cancel", action: "cancel" }
     ]
 
+    //-----------------------------------------------------------------------------------
 
 
 
@@ -90,14 +99,9 @@ const CommentOptions = ({ postId, setShowOptions, postIdInMain, page , setViewPo
                 }
                 break;
             case "go_to_post":
-                if(page === 'main'){
-                    navigate(`/profile/${authorName || authorId}`);
-                }else{
-                    navigate(`/profile/${currentPost?.post?.author?.username || currentPost?.post?.author?._id}`);
-                }
+                navigate(`/profile/${authorName || authorId}`);
                 setViewPost(false)
                 window.scrollTo(0, 0)
-                console.log("go_to_post");
                 break;
             case "share":
                 console.log("share");
@@ -127,7 +131,7 @@ const CommentOptions = ({ postId, setShowOptions, postIdInMain, page , setViewPo
 
     return (
         <>
-            <div className={`w-fit h-fit flex flex-col z-50 items-center justify-center rounded-xl ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>
+            <div className={`w-fit h-fit flex flex-col z-100 items-center justify-center rounded-xl ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>
                 {loading ? (
                     <div className="absolute top-50 left-50 h-10 w-10 border-t-1 border-b-1 z-50 border-[white] rounded-full animate-spin transition-all duration-500 ease-in-out" />
                 ) : (
@@ -138,11 +142,6 @@ const CommentOptions = ({ postId, setShowOptions, postIdInMain, page , setViewPo
                     ))
 
                 )}
-                {editPost &&
-                    <div className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center justify-center">
-
-                    </div>}
-                
             </div>
 
         </>

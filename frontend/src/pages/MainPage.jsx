@@ -25,19 +25,23 @@ import Suggested from "./Suggested";
 import LoginFooter from "../components/LoginFooter";
 import { setUserData } from "../redux/userSlice";
 import AboutAccount from "../components/AboutAccount";
+import EditPost from "../components/EditPost";
+import Stories from "../components/Stories";
+import ViewStoryCards from "../components/ViewStoryCards";
 
 
 
 const MainPage = () => {
 
 
-  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, viewPost, setViewPost, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, aboutAcc, setAboutAcc } = useContext(ThemeContext);
+  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, viewPost, setViewPost, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, aboutAcc, setAboutAcc, editPost, setEditPost, showCross, setAuthorName } = useContext(ThemeContext);
   const [emoji, setEmoji] = useState(false)
   const { allComments, allReplies } = useSelector((state) => state.post)
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  let items = ['','','','','']
   let textTheme = theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'
   let mainTextTheme = theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'
   let bgTheme = theme === 'dark' ? 'bg-[black] md:bg-[#212328] border-l-1 border-[#363636]' : (theme === 'light') ? 'bg-white border-l-1 border-[#d3d3d3]' : ' bg-white dark:bg-[#212328]'
@@ -51,6 +55,10 @@ const MainPage = () => {
   const [showLike, setShowLike] = useState(false)
   const [posts, setPosts] = useState([])
   const [viewReels, setViewReels] = useState(false)
+  const [editPostId, setEditPostId] = useState('')
+  const [viewStory, setViewStory] = useState(false)
+  const [storyId, setStoryId] = useState('')
+
 
 
 
@@ -58,6 +66,9 @@ const MainPage = () => {
   useEffect(() => {
     document.title = 'Instagram';
   }, []);
+
+
+  //-----------------------------------------------------------------------------------
 
   register('short', (number, index) => {
     return [
@@ -77,6 +88,7 @@ const MainPage = () => {
     ][index];
   });
 
+  //-----------------------------------------------------------------------------------
 
 
   useEffect(() => {
@@ -87,33 +99,43 @@ const MainPage = () => {
   }, [post, likedUsers, setLikedUsers])
 
 
+  //-----------------------------------------------------------------------------------
 
 
   useEffect(() => {
     dispatch(getAllPosts());
   }, [dispatch])
 
+  //-----------------------------------------------------------------------------------
+
   const { allPosts, status } = useSelector((state) => state.post)
   const { userData } = useSelector((state) => state.user)
 
+  //-----------------------------------------------------------------------------------
 
 
   const handleClick = (post) => {
-    setPostIdInMain(post._id)
     if (post.type === 'Reel') {
+      setPostIdInMain(post._id)
       setViewPost(true);
       setViewReels(true);
     } else if (post.type === 'Post') {
+      setPostIdInMain(post._id)
       setViewPost(true);
       setViewReels(false);
     }
 
   }
 
+
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     if (allPosts) setPosts(allPosts?.posts);
   }, [allPosts])
 
+
+  //-----------------------------------------------------------------------------------
 
   const handleAddComment = async () => {
     setLoading(true)
@@ -129,6 +151,8 @@ const MainPage = () => {
       setLoading(false)
     }
   }
+
+  //-----------------------------------------------------------------------------------
 
 
 
@@ -156,16 +180,24 @@ const MainPage = () => {
   //   }
   // }
 
-  const handleClickOptions = (authorId) => {
+  //-----------------------------------------------------------------------------------
+
+  const handleClickOptions = (authorId, postId, authorName) => {
     setShowOptions(!showOptions);
     setSameData(authorId === userData?.user?._id)
     setAuthorId(authorId)
+    setEditPostId(postId)
+    setAuthorName(authorName)
   }
+
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     if (allPosts) setUserSaved(allPosts?.posts)
   }, [allPosts, userSaved])
 
+
+  //-----------------------------------------------------------------------------------
 
   const handleSave = async (post) => {
     try {
@@ -194,6 +226,8 @@ const MainPage = () => {
       console.log(error);
     }
   }
+
+  //-----------------------------------------------------------------------------------
 
 
   const handleLike = async (post) => {
@@ -232,6 +266,8 @@ const MainPage = () => {
     }
   };
 
+  //-----------------------------------------------------------------------------------
+
   const handleFollow = async (authorId) => {
     try {
       let result = await axios.get(`${serverUrl}/api/users/followandunfollow/${authorId}`, { withCredentials: true });
@@ -246,27 +282,57 @@ const MainPage = () => {
     }
   }
 
-  if (status === 'loading') {
-    return <div className={`w-screen h-screen fixed top-0 flex items-center justify-center flex-col ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}`}>
-        <p className="text-sm text-[#ffffffa5]">Loading <span className="animate-pulse">. . .</span></p>
-    </div>
+  //-----------------------------------------------------------------------------------
+
+
+  const handleViewStory = (story) => {
+    setViewStory(true);
+    setStoryId(story._id);
+    setTimeout(() => {
+      setViewStory(false);
+    }, 3000);
   }
+
+  //-----------------------------------------------------------------------------------
 
 
 
   return (
     <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen w-full overflow-y-auto overflow-x-hidden `}>
-      <div className="w-screen lg:w-2/3 h-screen flex flex-col items-center justify-start gap-4 lg:pl-45 pt-12 ">
+     
+      {(viewStory) &&
+        <div onClick={() => { setViewStory(false); }} className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center bg-[#1A1A1A] justify-center">
+          <ViewStoryCards storyId={storyId} setViewStory={setViewStory} />
+        </div>}
+      <div className="w-screen lg:w-2/3 h-screen flex flex-col items-center justify-start gap-4 lg:pl-45 pt-15 md:pt-4">
+        <div className="w-full md:w-150 h-fit flex items-center justify-center">
+          <Stories />
+        </div>
         <div className="flex flex-col items-start justify-center w-full sm:w-110 h-fit z-0 pb-10">
+          {editPost &&
+            <div onClick={() => { setEditPost(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center bg-[#000000b1] justify-center">
+              <EditPost page={'main'} postId={editPostId} />
+            </div>}
+          
 
-
-          {(allPosts?.posts?.length === 0 || status === 'loading') &&
+          {(allPosts?.posts?.length === 0) &&
             <div className={`w-full h-fit flex flex-col items-center justify-center pb-17 border-b-1 ${(theme === 'dark') ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3]' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
               <img src={main} alt="Main Page" className="w-25 h-25  object-cover rounded-full" />
               <p className="text-xl pt-2">You're all caught up</p>
               <p className="text-sm text-[#ffffffa5]">You've seen all new posts from the past 3 days.</p>
             </div>}
-          {(posts && posts?.length > 0) && posts?.map((post) => (
+          {!allPosts && <div className={`w-full h-full flex items-center justify-start flex-col pt-10`}>
+            {items.map((item, index) => (
+              <div key={index} className={`animate-pulse w-fit h-fit flex flex-col items-start justify-center gap-5 pb-5`}>
+                <div className="w-full h-fit flex items-start justify-start gap-3">
+                  <div className={`w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+                  <div className={`w-40 h-5 rounded-md mt-2 ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+                </div>
+                <div className={`w-100 h-120 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+              </div>
+            ))}
+          </div>}
+          {allPosts && (posts && posts?.length > 0) && posts?.map((post) => (
             <div key={post._id} className={`w-full h-full flex flex-col items-center justify-center md:border-b-1 py-5 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
               {aboutAcc &&
                 <div onClick={() => { setAboutAcc(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#0000003b] items-center justify-center" >
@@ -275,12 +341,14 @@ const MainPage = () => {
               }
               {showOptions &&
                 <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen flex bg-[#00000031] items-center justify-center" >
-                  <CommentOptions setViewPost={setViewPost} postIdInMain={postIdInMain} authorId={post?.author?._id} authorName={post?.author?.username} postId={post?._id} setPostIdInMain={setPostIdInMain} setAboutAcc={setAboutAcc} page={'main'} setShowOptions={setShowOptions} />
+                  <CommentOptions setViewPost={setViewPost} editPostId={editPostId} postId={post?._id} setPostIdInMain={setPostIdInMain} setAboutAcc={setAboutAcc} page={'main'} setShowOptions={setShowOptions} />
                 </div>
               }
               <div className="w-full h-fit flex items-center justify-between">
                 <div className={`w-fit h-fit flex items-start justify-start px-4 md:px-1 pb-4 `}>
-                  <img src={post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 rounded-full object-cover" />
+                  <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${(post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id)) ? 'bg-[#363636]' : (post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id)) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : 'bg-transparent'}`}>
+                    <img src={post?.author?.profilepic || dp} alt="author image" className={`w-9 h-9 rounded-full object-cover border-1 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`} />
+                  </div>
                   <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-medium ml-2 cursor-pointer">{post?.author?.username}</p>
                   <LuDot size={20} className={`text-sm p-0 ${theme === 'dark' ? 'text-[#ffffffa5]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[#ffffffa5]'}`} />
                   <p className={`text-sm ${theme === 'dark' ? 'text-[#ffffffa5]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[#ffffffa5]'}`}>{format(post.createdAt, 'short')}</p>
@@ -288,7 +356,7 @@ const MainPage = () => {
                   {post?.author?._id !== userData?.user?._id && <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>}
                 </div>
                 <div className="w-10 h-full pr-3 flex items-center justify-center cursor-pointer">
-                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
+                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
                 </div>
               </div>
               <div className={`w-full h-100 md:h-150 border-1 rounded-sm mb-3 ${post?.type === 'Reel' ? 'px-15' : ''} ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3] bg-[black]' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
@@ -321,11 +389,11 @@ const MainPage = () => {
           ))}
         </div>
 
-        {(!loading && viewPost) && <div onClick={() => { dispatch(getAllPosts()); setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} className="fixed top-0 left-0 w-screen z-90 hidden md:flex h-screen flex-col items-center justify-center bg-[#000000a5]">
+        {(!loading && viewPost) && <div onClick={() => { dispatch(getAllPosts()); setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} className="fixed top-0 left-0 w-screen z-50 hidden md:flex h-screen flex-col items-center justify-center bg-[#000000a5]">
 
 
           <ViewPostCards handleLike={handleLike} posts={posts} setPosts={setPosts} liked={liked} page={'main'} postIdInMain={postIdInMain} setPostIdInMain={setPostIdInMain} setViewPost={setViewPost} viewPost={viewPost} viewReels={viewReels} setShowComment={setShowComment} showComment={showComment} reply={reply} setReply={setReply} />
-          <RxCross2 onClick={() => { setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} size={24} className={`absolute top-5 right-15 cursor-pointer ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} active:scale-95 transition-all duration-200 ease-in-out`} />
+          {!showCross && <RxCross2 onClick={() => { setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} size={24} className={`absolute z-50 top-5 right-15 cursor-pointer ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} active:scale-95 transition-all duration-200 ease-in-out`} />}
 
 
         </div>}
@@ -337,7 +405,7 @@ const MainPage = () => {
                 <div className={`${bgTheme} w-full h-fit fixed z-20 top-52 left-0 flex items-center justify-center pt-0 py-4 gap-3 rounded-t-xl`}>
                   <p className={`${mainTextTheme} text-sm font-medium`}>Comments</p>
                 </div>
-                <PostComments page={'main'} reply={reply} setReply={setReply} showReplies={showReplies} setShowReplies={setShowReplies} post={post} status={status} showComment={showComment} postIdInMain={postIdInMain} setPostIdInMain={setPostIdInMain} allComments={allComments} allReplies={allReplies} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} />
+                <PostComments page={'main'} reply={reply} setReply={setReply} showReplies={showReplies} setShowReplies={setShowReplies} post={post} status={status} showComment={showComment} postIdInMain={postIdInMain} setPostIdInMain={setPostIdInMain} allComments={allComments} allReplies={allReplies} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddComment={handleAddComment} setLoading={setLoading} />
               </div>
               {<div className={`${bgTheme} w-full h-fit fixed z-100 bottom-0 left-0 flex items-center justify-center pt-0 p-3 gap-3 ${(post?.hideComments) ? 'hidden' : ''}`}>
                 <CommentInput theme={theme} reply={reply} commentId={commentId} setCommentId={setCommentId} comment={comment} setComment={setComment} setReply={setReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} setEmoji={setEmoji} emoji={emoji} postIdInMain={postIdInMain} page={'main'} post={post} />
@@ -349,7 +417,7 @@ const MainPage = () => {
       <div className="w-170 h-screen hidden xl:flex flex-col items-start justify-start gap-4 pt-10 pl-5">
         <div className="w-70 h-fit flex items-center justify-between">
           <div className="w-full h-fit flex items-center justify-center gap-3 ">
-            <img src={userData?.user?.profilepic} alt="Profile Pic" className="w-11 h-11 rounded-full object-cover" />
+            <img src={userData?.user?.profilepic || dp} alt="Profile Pic" className="w-11 h-11 rounded-full object-cover" />
             <div className="w-full h-fit flex flex-col items-start justify-center">
               <p className="text-sm font-medium ">{userData?.user?.username}</p>
               <p className="text-sm text-[#ffffffa5]">{userData?.user?.name}</p>

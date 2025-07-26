@@ -70,6 +70,9 @@ function Birthday() {
         navigate('/signup/birthday/confirmemail')
     }
 
+
+    //-----------------------------------------------------------------------------------
+
     return (
         <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-white dark:bg-black pt-18 md:pt-16 z-2 ">
             {message && <p className="text-gray-800 dark:text-[#ffffffd1] text-[15px]  w-full h-[40px] absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-gray-200 dark:bg-[#262626]">{message}</p>}

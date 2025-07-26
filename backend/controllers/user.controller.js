@@ -10,7 +10,26 @@ import { io } from "../index.js";
 export const getUser = async (req, res) => {
     try {
         const userid = req.userId;
-        const user = await User.findById(userid).select('-password').populate('recentSearches notifications');
+        const user = await User.findById(userid).select('-password').populate('recentSearches story').populate({
+            path: 'story',
+            populate: {
+                path: 'author',
+                model: 'User',
+            }
+        }).populate({
+            path: 'notifications',
+            options: { sort: { createdAt: -1 } },
+            populate: {
+                path: 'post',
+                model: 'Post',
+            }
+        }).populate({
+            path: 'notifications',
+            populate: {
+                path: 'sender',
+                model: 'User',
+            },
+        });
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {
@@ -91,7 +110,7 @@ export const getUserProfile = async (req, res) => {
             conditions.push({ _id: identifier });
         }
 
-        const user = await User.findOne({ $or: conditions }).select('-password').populate('followers following posts saved notifications recentSearches activity tagged');
+        const user = await User.findOne({ $or: conditions }).select('-password').populate('followers following posts saved notifications recentSearches activity tagged story');
         if (!user) return res.status(404).json({ message: 'User not found' });
         return res.status(200).json({ user });
     } catch (error) {
@@ -124,7 +143,8 @@ export const followAndUnfollow = async (req, res) => {
             ])
             await currentUser.save();
             console.log("Unfollowed");
-            return res.status(200).json({ message: 'User unfollowed successfully' });
+            const updatedUser = await User.findById(currentUser._id).populate('notifications');
+            return res.status(200).json({ message: 'User unfollowed successfully', updatedUser });
         } else {
             let notification;
             await Promise.all([
@@ -134,12 +154,14 @@ export const followAndUnfollow = async (req, res) => {
             ])
             if (!currentUser._id.equals(otherUser._id)) {
                 await User.findByIdAndUpdate(otherUser._id, { $push: { notifications: notification._id } })
-                io.emit('newNotification', notification, otherUser._id);
+                await User.findByIdAndUpdate(otherUser._id, { $set: { viewed: false } })
+                io.emit('newNotification', otherUser._id );
             }
             await currentUser.save();
             await otherUser.save();
             console.log("Followed");
-            return res.status(200).json({ message: 'User followed successfully' });
+            const updatedUser = await User.findById(currentUser._id).populate('notifications');
+            return res.status(200).json({ message: 'User followed successfully', updatedUser });
         }
 
 
@@ -154,10 +176,14 @@ export const followAndUnfollow = async (req, res) => {
 
 export const getAllMostFollowedUsers = async (req, res) => {
     try {
-        let currentUser = req.userId
-        const users = await User.find({ _id: { $ne: currentUser } }).sort({ followers: -1 }).limit(10).select('-password');
+        const currentUser = await User.findById(req.userId);
+        const users = await User.find({ _id: { $ne: currentUser._id } }).sort({ followers: -1 }).limit(10).select('-password');
         if (!users) return res.status(404).json({ message: 'Users not found' });
-        return res.status(200).json({ users });
+        const notFollowingUsers = users.filter(user => !currentUser.following.includes(user._id));
+        if (notFollowingUsers.length === 0) {
+            return res.status(200).json({ users: [] });
+        }
+        return res.status(200).json({ users: notFollowingUsers });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Something went wrong - getAllMostFollowedUsers' });

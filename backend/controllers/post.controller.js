@@ -58,6 +58,32 @@ export const createPost = async (req, res) => {
 //------------------------------------------------------------------------------------------
 
 
+export const updatePost = async (req, res) => {
+    try {
+        let { postid } = req.params;
+        if (!postid) return res.status(400).json({ message: 'Post id is required' });
+        let post = await Post.findById(postid);
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+        let author = await User.findById(req.userId);
+        if (!author) return res.status(404).json({ message: 'Author not found' });
+        if (author._id.toString() !== post.author.toString()) {
+            return res.status(401).json({ message: 'You are not authorized to update this post' });
+        } else {
+            let { description } = req.body;
+            if (!description) return res.status(400).json({ message: 'Description is required' });
+            await Post.findByIdAndUpdate(post._id, { $set: { description } });
+            return res.status(200).json({ message: 'Post updated successfully' });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - updatePost' });
+    }
+}   
+
+
+//------------------------------------------------------------------------------------------
+
+
 export const deletePost = async (req, res) => {
     try {
         const { postid } = req.params;
@@ -86,7 +112,13 @@ export const deletePost = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
     try {
-        let posts = await Post.find().sort({ createdAt: -1 }).populate('author likes comments tagged');
+        let posts = await Post.find().sort({ createdAt: -1 }).populate('author likes comments tagged').populate({
+            path: 'author',
+            populate: {
+                path: 'story',
+                model: 'Story',
+            }
+        });
         if (!posts) return res.status(404).json({ message: 'Posts not found' });
         return res.status(200).json({ posts });
     } catch (error) {
@@ -102,7 +134,17 @@ export const getPost = async (req, res) => {
     try {
         let { postid } = req.params;
         if (!postid) return res.status(400).json({ message: 'Post id is required' });
-        let post = await Post.findById(postid).populate('author likes comments tagged');
+        let post = await Post.findById(postid).populate('author likes comments tagged').populate({
+            path: 'author',
+            populate: {
+                path: 'story',
+                model: 'Story',
+                populate: {
+                    path: 'author',
+                    model: 'User',
+                }
+            }
+        });
         if (!post) return res.status(404).json({ message: 'Post not found' });
         return res.status(200).json({ post });
     } catch (error) {   
@@ -116,7 +158,13 @@ export const getPost = async (req, res) => {
 
 export const getAllReels = async (req, res) => {
     try {
-        let posts = await Post.find({ type: 'Reel' }).sort({ createdAt: -1 }).populate('author likes comments tagged');
+        let posts = await Post.find({ type: 'Reel' }).sort({ createdAt: -1 }).populate('author likes comments tagged').populate({
+            path: 'author',
+            populate: {
+                path: 'story',
+                model: 'Story',
+            }
+        });
         if (!posts) return res.status(404).json({ message: 'Posts not found' });
         return res.status(200).json({ posts });
     } catch (error) {
@@ -193,7 +241,8 @@ export const postComment = async (req, res) => {
             let notification = await Notification.create({ sender: author._id, receiver: post.author, type: 'comment', message: `${author.username || author.name} commented on your post.`, post: post._id })
             if (!author._id.equals(post.author)) {
                 await User.findByIdAndUpdate(post.author, { $push: { notifications: notification._id } })
-                io.emit('newNotification', notification, post.author);
+                await User.findByIdAndUpdate(post.author, { $set: { viewed: false } })
+                io.emit('newNotification', post.author._id );
             }
             io.emit('newComment', newComment);
         }
@@ -245,10 +294,28 @@ export const getAllComments = async (req, res) => {
         let post = await Post.findById(postid);
         if (!post) return res.status(404).json({ message: 'Post not found' });
         let comments = await Comment.find({ _id: { $in: post.comments } }).sort({ createdAt: -1 }).populate('author likes').populate({
+            path: 'author',
+            populate: {
+                path: 'story',
+                model: 'Story',
+                populate: {
+                    path: 'author',
+                    model: 'User',
+                }
+            }
+        }).populate({
             path: 'replies',
             populate: {
                 path: 'author',
                 model: 'User',
+                populate: {
+                    path: 'story',
+                    model: 'Story',
+                    populate: {
+                        path: 'author',
+                        model: 'User',
+                    }
+                }
             }});
         if (!comments)
         if (!comments) return res.status(404).json({ message: 'Comments not found' });
@@ -287,7 +354,8 @@ export const addReply = async (req, res) => {
             let notification = await Notification.create({ sender: author._id, receiver: comment.author, type: 'comment', message: `${author.username || author.name} replied to your comment.`, post: post._id })
             if (!author._id.equals(post.author)) {
                 await User.findByIdAndUpdate(post.author, { $push: { notifications: notification._id } })
-                io.emit('newNotification', notification, comment.author);
+                await User.findByIdAndUpdate(post.author, { $set: { viewed: false } })
+                io.emit('newNotification', post.author._id );
             }
             }
         }
@@ -336,7 +404,23 @@ export const getAllReplies = async (req, res) => {
         if (!postid) return res.status(400).json({ message: 'Post id is required' });
         let post = await Post.findById(postid);
         if (!post) return res.status(404).json({ message: 'Post not found' });
-        let replies = await Reply.find().sort({ createdAt: -1 }).populate('author');
+        let replies = await Reply.find().sort({ createdAt: -1 }).populate('author').populate({
+            path: 'comment',
+            populate: {
+                path: 'author',
+                model: 'User',
+            }
+        }).populate({
+            path: 'author',
+            populate: {
+                path: 'story',
+                model: 'Story',
+                populate: {
+                    path: 'author',
+                    model: 'User',
+                }
+            }
+        });
         if (!replies) return res.status(404).json({ message: 'Replies not found' });
         return res.status(200).json(replies);
     } catch (error) {
@@ -365,7 +449,8 @@ export const likeComment = async (req, res) => {
             let notification = await Notification.create({ sender: user._id, receiver: comment.author, type: 'like', message: `${user.username} liked your comment.`, post: comment.post })
             if (!user._id.equals(comment.author)) {
                 await User.findByIdAndUpdate(comment.author, { $push: { notifications: notification._id } })
-                io.emit('newNotification', notification, comment.author);
+                await User.findByIdAndUpdate(comment.author, { $set: { viewed: false } })
+                io.emit('newNotification', comment.author._id );
             }
             io.emit('newCommentLike', { commentId: commentid, user });
             return res.status(200).json({ message: 'Comment liked' });
@@ -395,7 +480,8 @@ export const likeReply = async (req, res) => {
             let notification = await Notification.create({ sender: user._id, receiver: reply.author, type: 'like', message: `${user.username} liked your reply.`, post: reply.post })
             if (!user._id.equals(reply.author)) {
                 await User.findByIdAndUpdate(reply.author, { $push: { notifications: notification._id } })
-                io.emit('newNotification', notification, reply.author);
+                await User.findByIdAndUpdate(reply.author, { $set: { viewed: false } })
+                io.emit('newNotification', reply.author._id );
             }
             io.emit('newReplyLike', { replyId: replyid, user });
             return res.status(200).json({ message: 'Reply liked' });
@@ -521,7 +607,8 @@ export const likePost = async (req, res) => {
             let notification = await Notification.create({ sender: user._id, receiver: post.author, type: 'like', message: `${user.username || user.name} liked your post.`, post: post._id })
             if (!user._id.equals(post.author)) {
                 await User.findByIdAndUpdate(post.author, { $push: { notifications: notification._id } })
-                io.emit('newNotification', notification, post.author);
+                await User.findByIdAndUpdate(post.author, { $set: { viewed: false } })
+                io.emit('newNotification', post.author._id );
             }
             const likedUsers = await User.find({ _id: { $in: post.likes.filter(id => id.toString() !== user._id.toString()) } })
                 .select('_id username profilepic name');
@@ -629,6 +716,21 @@ export const getUserTaggedPosts = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Something went wrong - getUserTaggedPosts' });
+    }
+}
+
+//------------------------------------------------------------------------------------------
+
+
+export const setViewed = async (req, res) => {
+    try {
+        let user = await User.findById(req.userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        await User.findByIdAndUpdate(user._id, { $set: { viewed: true } });
+        return res.status(200).json({ message: 'Viewed', viewed: user.viewed });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - setViewed' });
     }
 }
 

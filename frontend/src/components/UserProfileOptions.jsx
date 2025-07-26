@@ -12,6 +12,8 @@ const UserProfileOptions = ({setMenuOptions , setAboutAccount }) => {
 
     const menuOptions = [{ label: "Block" }, { label: "Restrict" }, { label: "Report" }, { label: "Share to..." }, { label: "About this account" }, { label: "Send message" }, { label: "Cancel" }];
 
+  //-----------------------------------------------------------------------------------
+
     const handleOptions = (label) => {
         if (label === "Cancel") {
             setMenuOptions(false);
@@ -23,6 +25,8 @@ const UserProfileOptions = ({setMenuOptions , setAboutAccount }) => {
             setMenuOptions(false);
         }
     }
+
+  //-----------------------------------------------------------------------------------
 
   return (
     <div className={`w-fit h-fit relative rounded-xl flex flex-col items-center justify-center  ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>

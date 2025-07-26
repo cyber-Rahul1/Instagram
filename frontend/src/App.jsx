@@ -32,7 +32,7 @@ import Theme from "./pages/Theme"
 import SavedPageInSettings from "./pages/SavedPageInSettings"
 import io from 'socket.io-client';
 import { setAllComments } from "./redux/postSlice"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import MainPage from "./pages/MainPage"
 import MessageArea from "./components/MessageArea"
 
@@ -45,10 +45,11 @@ const socket = io(import.meta.env.VITE_SERVER_URL || 'http://localhost:8000');
 const App = () => {
 
 
-  const { theme, setCommentLikes, setAllCommentsInMain, setShowReplies, setRecentUsers } = useContext(ThemeContext);
+  const { theme, setCommentLikes, setAllCommentsInMain, setShowReplies, setRecentUsers, setViewed } = useContext(ThemeContext);
   const dispatch = useDispatch();
 
 
+  const { userData } = useSelector((state) => state.user)
 
 
 
@@ -79,17 +80,7 @@ const App = () => {
       dispatch(setAllComments(comment));
     });
 
-    // socket.on('newLike', ({ user, liked }) => {
-    //   setLikedUsers(prev => {
-    //     const safePrev = Array.isArray(prev) ? prev : [];
-    //     if (liked) {
-    //       return safePrev.some(u => u._id === user._id) ? safePrev : [...safePrev, user];
-    //     } else {
-    //       return safePrev.filter(u => u._id !== user._id);
-    //     }
-    //   });
-    // });
-
+  
     socket.on('newCommentLike', ({ commentId, user }) => {
       setCommentLikes(prev => {
         const index = prev.findIndex(item => item.commentId === commentId);
@@ -133,6 +124,11 @@ const App = () => {
     });
     
 
+    socket.on('newNotification', (id) => {
+      if (id === userData?.user?._id) {
+        setViewed(false);
+      }
+    });
 
 
 
@@ -142,6 +138,7 @@ const App = () => {
       socket.off('newCommentLike');
       socket.off('newReply');
       socket.off('clearOneRecentUser');
+      socket.off('newNotification');
     };
   }, []);
 

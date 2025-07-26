@@ -23,6 +23,11 @@ import CommentOptions from '../components/CommentOptions';
 import AboutAccount from '../components/AboutAccount';
 import { LuDot } from 'react-icons/lu';
 import { setUserData } from '../redux/userSlice';
+import EditPost from '../components/EditPost';
+import dp from '../assets/dp.webp'
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+
 
 
 
@@ -37,15 +42,19 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   const rightRef = useRef(null);
   const leftRef = useRef(null);
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     setId(page === 'main' ? postIdInMain : postId)
   }, [page, postId, postIdInMain])
 
 
-  const { theme, setSameData, aboutAcc, setAboutAcc, commentId, setCommentId, likedUsers, setLikedUsers, comment, setComment, loading, setLoading, reply, setReply } = useContext(ThemeContext)
+  //-----------------------------------------------------------------------------------
+
+  const { theme, setSameData, aboutAcc, setAboutAcc, commentId, setCommentId, likedUsers, setLikedUsers, comment, setComment, loading, setLoading, reply, setReply, editPost, setEditPost } = useContext(ThemeContext)
 
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     if (postId !== '' && page !== 'main') {
@@ -57,6 +66,9 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
       dispatch(getAllReplies(postIdInMain));
     }
   }, [dispatch, identifier, postId, postIdInMain, page])
+
+
+  //-----------------------------------------------------------------------------------
 
   const handleRight = () => {
     const nextIndex = indexval + 1;
@@ -70,7 +82,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     dispatch(getAllComments(posts[nextIndex]?._id));
   };
 
-  
+
+  //-----------------------------------------------------------------------------------
 
 
   const handleLeft = () => {
@@ -85,6 +98,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     dispatch(getUserPosts(identifier))
     dispatch(getAllComments(posts[prevIndex]?._id));
   };
+
+  //-----------------------------------------------------------------------------------
 
   const { userPosts, allComments, allReplies, status } = useSelector((state) => state.post)
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
@@ -103,6 +118,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   const [likes, setLikes] = useState([])
 
 
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     if (page !== 'main' && viewPost) {
       setPosts(userPosts?.posts)
@@ -110,8 +127,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   }, [userPosts, setPosts, page, viewPost])
 
 
-  
-
+  //-----------------------------------------------------------------------------------
 
   const handleAddComment = async () => {
     setLoading(true)
@@ -127,6 +143,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
       setLoading(false)
     }
   }
+
+  //-----------------------------------------------------------------------------------
 
   const handleAddReply = async () => {
     setLoading(true)
@@ -145,6 +163,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     }
   }
 
+  //-----------------------------------------------------------------------------------
+
 
   useEffect(() => {
     const currentPost = page === 'main' ? post : posts?.[indexval];
@@ -153,6 +173,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     }
   }, [posts, indexval, userPosts, likedUsers, setLikedUsers, postId, post, page])
 
+
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     if (page === 'main') {
@@ -163,34 +185,39 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   }, [viewPost, likedUsers, post, page])
 
 
+  //-----------------------------------------------------------------------------------
+
   const handleLike = async () => {
 
     try {
-        const result = await axios.put(`${serverUrl}/api/posts/likepost`, { postid: id }, {
-          withCredentials: true
-        });
-        console.log(result.data);
-        if (result.data.message === 'Post liked' && (post?.likes?.some(user => user._id === userData?.user?._id))) {
-          setPosts(prev => prev?.map(post => {
-            if (post?._id === id) {
-              return { ...post, likes: [...post.likes, userData?.user] }
-            }
-            return post
-          }))
-          setPost(prev => ({ ...prev, likes: [...prev.likes, userData?.user] }))
-        } else {
-          setPosts(prev => prev?.map(post => {
-            if (post?._id === id) {
-              return { ...post, likes: post?.likes?.filter(user => user._id !== userData?.user?._id) }
-            }
-            return post
-          }))
-          setPost(prev => ({ ...prev, likes: post?.likes?.filter(user => user?._id !== userData?.user?._id) }))
-        }
+      const result = await axios.put(`${serverUrl}/api/posts/likepost`, { postid: id }, {
+        withCredentials: true
+      });
+      console.log(result.data);
+      if (result.data.message === 'Post liked') {
+        setPosts(prev => prev?.map(post => {
+          if (post?._id === id) {
+            return { ...post, likes: [...post.likes, userData?.user] }
+          }
+          return post
+        }))
+        setPost(prev => ({ ...prev, likes: [...prev.likes, userData?.user] }))
+      } else {
+        setPosts(prev => prev?.map(post => {
+          if (post?._id === id) {
+            return { ...post, likes: post?.likes?.filter(user => user._id !== userData?.user?._id) }
+          }
+          return post
+        }))
+        setPost(prev => ({ ...prev, likes: post?.likes?.filter(user => user?._id !== userData?.user?._id) }))
+      }
     } catch (error) {
       console.log(error);
     }
   }
+
+
+  //-----------------------------------------------------------------------------------
 
   const handleLike2 = async () => {
     try {
@@ -205,7 +232,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
           }
           return post
         }))
-      } else if (result.data.message === 'Post unliked' && posts[indexval]?.likes?.some(user => user._id === userData?.user?._id) ) {
+      } else if (result.data.message === 'Post unliked' && posts[indexval]?.likes?.some(user => user._id === userData?.user?._id)) {
         setPosts(prev => prev?.map(post => {
           if (post?._id === id) {
             return { ...post, likes: post?.likes?.filter(user => user._id !== userData?.user?._id) }
@@ -219,7 +246,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   }
 
 
- 
+  //-----------------------------------------------------------------------------------
+
 
 
   const handleSave = async () => {
@@ -251,21 +279,24 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     }
   }
 
+
+  //-----------------------------------------------------------------------------------
+
   const handleSave2 = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/posts/saved/${id}`, {
+      const result = await axios.get(`${serverUrl}/api/posts/saved/${posts[indexval]?._id}`, {
         withCredentials: true
       });
       if (result.data.message === 'Post saved' && !posts[indexval]?.saved?.some(user => user === userData?.user?._id)) {
         setPosts(prev => prev?.map(post => {
-          if (post?._id === id) {
+          if (post?._id === posts[indexval]?._id) {
             return { ...post, saved: [...post.saved, userData?.user?._id] }
           }
           return post
         }))
       } else if (result.data.message === 'Post unsaved') {
         setPosts(prev => prev?.map(post => {
-          if (post?._id === id) {
+          if (post?._id === posts[indexval]?._id) {
             return { ...post, saved: post?.saved?.filter(user => user !== userData?.user?._id) }
           }
           return post
@@ -277,8 +308,10 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   }
 
 
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
-    if (page === 'main') {
+    if (page === 'main' && id !== '') {
       const fetchPost = async () => {
         try {
           let result = await axios.get(`${serverUrl}/api/posts/getpost/${id}`, { withCredentials: true });
@@ -298,16 +331,20 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   }, [id, serverUrl, aboutAcc, page, postIdInMain, postId, setUserPost, setPost])
 
 
+  //-----------------------------------------------------------------------------------
+
   const handleClickOptions = (authorId) => {
     setShowOptions(!showOptions);
     setSameData(authorId === userData?.user?._id)
   }
 
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     setCountry("India")
   }, [aboutAcc]);
 
-
+  //-----------------------------------------------------------------------------------
 
 
 
@@ -325,12 +362,27 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     }
   }
 
-  
 
+  //-----------------------------------------------------------------------------------
+
+
+  useGSAP(() => {
+    gsap.fromTo(
+      ".post-cards",
+      { scale: 1.2, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      }
+    );
+  }, []);
 
   return (
-    <div className={`fixed top-0 left-0 w-screen h-screen flex items-center justify-center py-10 lg:px-0 md:px-18 overflow-y-auto overflow-x-hidden ${viewReels ? 'pb-20 pt-15' : ''}`}>
-      <div className="fixed top-0 left-0 z-10 w-screen bg-[#000000b9] h-screen" onClick={() => { setComment(''); setReply(false); setIndexval(0); setViewPost(false); setShowComment(false); }} />
+    <div className={`post-cards fixed top-0 left-0 w-screen h-screen flex items-center justify-center py-10 lg:px-0 md:px-18 overflow-y-auto overflow-x-hidden ${viewReels ? 'pb-20 pt-15' : ''}`}>
+      <div className="fixed top-0 left-0 z-10 w-screen bg-[#000000b9] h-screen" onClick={() => { setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} />
+
       {page !== 'main' && <div ref={leftRef} className={`absolute top-100 left-3 2xl:left-10 z-10 cursor-pointer ${(indexval === 0 || page === 'main') ? "hidden" : ""} `} onClick={(e) => { e.stopPropagation(); handleLeft(); }}>
         <IoIosArrowDropleftCircle size={40} className="text-white hidden md:block" />
       </div>}
@@ -348,17 +400,17 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
             {page !== 'main' ? <div className="w-full h-fit flex items-center justify-start">
               {posts?.map((post) => (
                 <div key={post._id} className={`w-fit h-fit flex items-center justify-start p-4 gap-2 ${indexval === posts?.indexOf(post) ? "" : "hidden"}`}>
-                  <img src={post?.author?.profilepic} alt="author image" className="w-9 h-9 z-0 md:z-10 rounded-full object-cover" />
+                  <img src={post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 z-0 md:z-10 rounded-full object-cover" />
                   <p onClick={() => { setViewPost(false); setIndexval(null); navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className={` text-sm font-medium cursor-pointer ml-2 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'}`}>{post.author?.username}</p>
                   {post?.author?._id !== userData?.user?._id && <div className="w-fit h-fit flex items-center justify-start">
                     <LuDot size={20} />
-                    <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium text-[#008cff] cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>
+                    <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>
                   </div>}
                 </div>
               ))}
             </div> :
               <div className={`w-fit h-fit flex items-center justify-start p-4 gap-2 `}>
-                <img src={post?.author?.profilepic} alt="author image" className="w-9 h-9 z-0 md:z-10 rounded-full object-cover" />
+                <img src={post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 z-0 md:z-10 rounded-full object-cover" />
                 <p className={` text-sm font-medium ml-2 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'}`}>{post?.author?.username}</p>
                 {post?.author?._id !== userData?.user?._id && <div className="w-fit h-fit flex items-center justify-start">
                   <LuDot size={20} />
@@ -370,9 +422,12 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
               <BsThreeDots onClick={() => { handleClickOptions(page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
             </div>
           </div>
+          {editPost &&
+            <div onClick={() => { setEditPost(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center bg-[#000000b1] justify-center">
+              <EditPost page={'posts'} postId={post?._id} />
+            </div>}
           {showOptions &&
-            <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center" >
-              <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen  bg-[#00000087] blur-6xl opacity-85" />
+            <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen bg-[#00000087] flex items-center justify-center" >
               <CommentOptions setViewPost={setViewPost} postId={postId} authorId={post?.author?._id} authorName={post?.author?.username} postIdInMain={postIdInMain} page={page} setShowOptions={setShowOptions} />
             </div>
           }
@@ -430,7 +485,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
           </div>
           {emoji && <div onClick={() => { setEmoji(false) }} className=" fixed hidden md:block top-0 left-0 w-full h-full" >
             <div className="absolute bottom-65 right-110">
-              <EmojiPicker onEmojiClick={(emojiObject, e) => { e.stopPropagation(); console.log(emojiObject); setComment(prev => prev + emojiObject.emoji); setEmoji(false); }}  height={300} width={250} theme={theme === 'dark' ? 'dark' : 'light'} emojiStyle="apple" searchDisabled={true} className='shadow-xl' />
+              <EmojiPicker onEmojiClick={(emojiObject, e) => { e.stopPropagation(); console.log(emojiObject); setComment(prev => prev + emojiObject.emoji); setEmoji(false); }} height={300} width={250} theme={theme === 'dark' ? 'dark' : 'light'} emojiStyle="apple" searchDisabled={true} className='shadow-xl' />
             </div>
           </div>}
 

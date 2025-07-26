@@ -13,6 +13,8 @@ const Theme = () => {
     const { theme, setTheme, switchTheme, setSwitchTheme } = useContext(ThemeContext)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+    //-----------------------------------------------------------------------------------
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -23,11 +25,15 @@ const Theme = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    //-----------------------------------------------------------------------------------
+
     useEffect(() => {
         if (windowWidth > 700) {
             navigate(-1, { replace: true });
         }
     }, [navigate, windowWidth]);
+
+    //-----------------------------------------------------------------------------------
 
     return (
         <div className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} flex flex-col h-screen w-full`}>

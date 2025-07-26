@@ -17,10 +17,14 @@ const Suggested = ({ page }) => {
     const navigate = useNavigate()
     const { userData } = useSelector((state) => state.user)
 
+    //-----------------------------------------------------------------------------------
+
     useEffect(() => {
         document.title = 'Instagram';
     }, []);
 
+
+    //-----------------------------------------------------------------------------------
 
     useEffect(() => {
         setLoading(true);
@@ -38,12 +42,15 @@ const Suggested = ({ page }) => {
         fetchMostFollowedUsers();
     }, [serverUrl]);
 
+    //-----------------------------------------------------------------------------------
+
     useEffect(() => {
         if (page === 'main') {
             setMostFollowedUsersInMain(mostFollowedusers?.slice(0, 5));
         }
     }, [page, mostFollowedusers]);
 
+    //-----------------------------------------------------------------------------------
 
     const handleFollow = async (user) => {
         try {
@@ -59,12 +66,15 @@ const Suggested = ({ page }) => {
         }
     }
 
+    //-----------------------------------------------------------------------------------
 
     if (loading) {
         return <div className="w-screen h-screen flex items-center justify-center">
             <div className="h-10 w-10 border-t-1 border-b-1  border-[white] rounded-full animate-spin transition-all duration-500 ease-in-out" />
         </div>
     }
+
+    //-----------------------------------------------------------------------------------
 
     if (page === 'main') {
         return mostFollowedusersInMain?.map((user, index) => {
@@ -86,6 +96,8 @@ const Suggested = ({ page }) => {
             )
         })
     }
+
+    //-----------------------------------------------------------------------------------
 
 
 

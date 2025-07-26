@@ -104,6 +104,8 @@ const SettingsSidebar = () => {
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
     const handleTheme = (path, name) => {
         setSwitchTheme(true);
         navigate(path, { replace: true });

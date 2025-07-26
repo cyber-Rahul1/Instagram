@@ -23,13 +23,17 @@ const MobileSearch = () => {
   const navigate = useNavigate()
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     dispatch(getAllUsers())
   }, [dispatch]);
 
+  //-----------------------------------------------------------------------------------
 
   const { allUsers } = useSelector((state) => state.user)
 
+  //-----------------------------------------------------------------------------------
 
  
 
@@ -46,6 +50,8 @@ const MobileSearch = () => {
     }, 1000);
   }
 
+  //-----------------------------------------------------------------------------------
+
   const handleSearch = async (username, id) => {
     try {
       let result = await axios.post(`${serverUrl}/api/users/addrecentusers`, { identifier: username || id }, { withCredentials: true });
@@ -59,6 +65,7 @@ const MobileSearch = () => {
     }
   }
 
+  //-----------------------------------------------------------------------------------
 
   const handleInput = async () => {
     try {
@@ -71,6 +78,8 @@ const MobileSearch = () => {
     setIsFocused(true);
   }
 
+  //-----------------------------------------------------------------------------------
+
   const handleClearRecentUsers = async () => {
     try {
       let result = await axios.get(`${serverUrl}/api/users/clearrecentusers`, { withCredentials: true });
@@ -80,6 +89,8 @@ const MobileSearch = () => {
       console.log(error)
     }
   }
+  
+  //-----------------------------------------------------------------------------------
 
   const handleClearOneRecentUser = async (id, username) => {
     try {
@@ -89,6 +100,8 @@ const MobileSearch = () => {
       console.log(error)
     }
   }
+
+  //-----------------------------------------------------------------------------------
 
 
 

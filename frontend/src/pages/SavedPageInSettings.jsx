@@ -8,29 +8,42 @@ import PostCards from "../components/PostCards"
 import { getUserSavedPosts } from "../redux/postSlice"
 import { IoIosArrowBack } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
+import ViewPostCards from "./ViewPostCards"
 
 const SavedPageInSettings = () => {
 
   const dispatch = useDispatch();
   const [postType, setPostType] = useState('All')
   const [posts, setPosts] = useState([])
+  const [viewReels, setViewReels] = useState(null)
+  const [showReplies, setShowReplies] = useState({})
+  const [savedPostId, setSavedPostId] = useState('')
+  const [savedindexval, setSavedIndexval] = useState(0)
+
+
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     dispatch(getUserSavedPosts())
   }, [dispatch])
   
 
+  //-----------------------------------------------------------------------------------
 
-  const { theme } = useContext(ThemeContext)
+  const { theme, setViewPost, setShowComment, viewPost, showComment } = useContext(ThemeContext)
   const { userProfile } = useSelector((state) => state.user)
   const { userSavedPosts, status } = useSelector((state) => state.post)
   const navigate = useNavigate()
   const Allposts = userSavedPosts?.savedPosts
 
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     setPostType('All')
     setPosts(Allposts)
   }, [Allposts])
+
+  //-----------------------------------------------------------------------------------
 
   const handlePostType = (type) => {
     setPostType(type)
@@ -45,6 +58,8 @@ const SavedPageInSettings = () => {
     }
   }
 
+  //-----------------------------------------------------------------------------------
+
   return (
     <div className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} w-full  lg:w-[950px] h-fit flex flex-col items-center justify-start px-1 mt-0 m-auto`}>
       <div onClick={() => { navigate(-1) }} className="cursor-pointer active:scale-95 w-full h-fit flex items-center justify-start py-3 gap-2">
@@ -58,7 +73,8 @@ const SavedPageInSettings = () => {
       </div>
       <div className="w-full xl:w-[950px] flex-1 h-fit flex flex-col items-center justify-center pb-10 px-1 ">
         {userProfile?.saved?.length === 0 && <EmptyPage page={'saved'} />}
-        {userProfile?.saved?.length > 0 && <PostCards posts={posts} userProfile={userProfile} status={status} />}
+        {userProfile?.saved?.length > 0 && <PostCards posts={posts} setViewReels={setViewReels} viewReels={viewReels} setViewPost={setViewPost} setIndexval={setSavedIndexval} setShowComment={setShowComment} setPostId={setSavedPostId} setShowReplies={setShowReplies} userProfile={userProfile} status={status} page={'saved'} />}
+        {viewPost && <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={savedPostId} setSavedPostId={setSavedPostId} setIndexval={setSavedIndexval} indexval={savedindexval} posts={posts} setPosts={setPosts} />}
         <div className="w-full h-fit pt-10">
           <LoginFooter theme={theme} page={'posts'} />
         </div>

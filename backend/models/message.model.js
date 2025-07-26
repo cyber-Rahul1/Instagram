@@ -18,7 +18,17 @@ const messageSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-    }
+    },
+    post: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+    },
+    story: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Story',
+    },
+
+
 
 }, { timestamps: true });
 

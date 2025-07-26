@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     },
     profilepic: {
         type: String,
-        default:""
+        default: ""
     },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        
+
     },
     bio: {
         type: String,
@@ -51,14 +51,18 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
     }],
-    story: [{
+    story: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Story'
-    }],
+    },
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
     }],
+    viewed: {
+        type: Boolean,
+        default: true,
+    },
     messages: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message',
@@ -77,7 +81,7 @@ const userSchema = new mongoose.Schema({
     }]
 
 
-},{timestamps: true})
+}, { timestamps: true })
 
 const User = mongoose.model('User', userSchema);
 

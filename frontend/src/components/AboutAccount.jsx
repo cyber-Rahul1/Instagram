@@ -14,7 +14,7 @@ const AboutAccount = ({ setAboutAcc, theme, country, userPost, page, post, user 
             < div onClick={() => { setAboutAcc(false) }} className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center  justify-center" >
 
                 {/* Modal content container */}
-                < div className={`w-fit h-fit flex flex-col items-center justify-center rounded-2xl ${theme === 'dark' ? 'bg-[black]' : (theme === 'light') ? 'bg-[#f2f2f2]' : ' bg-[#f2f2f2] dark:bg-[black]'} `}>
+                < div className={`w-fit h-fit flex flex-col items-center justify-center rounded-2xl  ${theme === 'dark' ? 'bg-[black] border-l-1 border-r-1  border-[#3636367b]' : (theme === 'light') ? 'bg-[#f2f2f2] ' : ' bg-[#f2f2f2] dark:bg-[black]'} `}>
                     <p className={`text-xs  md:text-[16px] w-full text-center rounded-t-2xl font-semibold py-3 ${theme === 'dark' ? 'text-white bg-[#363636]' : (theme === 'light') ? 'text-black bg-[#f2f2f2]' : ' text-black dark:text-white '} border-b-1 border-[#8584846f] `}>About this account</p>
                     <div className="md:w-100 h-fit flex flex-col items-center justify-center gap-5 px-3">
                         <div className={`w-full h-fit flex flex-col items-center justify-center gap-2 py-3 `}>

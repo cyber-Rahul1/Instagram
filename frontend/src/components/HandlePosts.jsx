@@ -10,7 +10,7 @@ import axios from 'axios'
 import EditOrCreatePost from './EditOrCreatePost'
 
 
-const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) => {
+const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected, page, Type }) => {
 
     const [frontendImg, setFrontendImg] = useState('')
     const [taggedUsersLength, setTaggedUsersLength] = useState(false)
@@ -34,17 +34,20 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
     const { theme } = useContext(ThemeContext)
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
+    //-----------------------------------------------------------------------------------
+
     useEffect(() => {
         dispatch(getAllUsers())
     }, [dispatch])
 
-    const { allUsers, status, error } = useSelector((state) => state.user)
+    //-----------------------------------------------------------------------------------
+
+    const { allUsers } = useSelector((state) => state.user)
 
 
+    //-----------------------------------------------------------------------------------
 
-    useEffect(() => {
-        console.log(allUsers, status, error)
-    }, [allUsers, status, error])
+
 
     useEffect(() => {
         if (next === 'caption') {
@@ -56,12 +59,18 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
         }
     }, [next])
 
+    //-----------------------------------------------------------------------------------
+
+
 
     const handleImg = (e) => {
         setFrontendImg(URL.createObjectURL(e.target.files[0]));
         setBackendImg(e.target.files[0]);
         setImgSelected(true);
     }
+
+    //-----------------------------------------------------------------------------------
+
 
 
     const handleCreate = () => {
@@ -74,6 +83,9 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleDiscard = () => {
         setDiscard(false)
         setCreate(false)
@@ -82,10 +94,15 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
         setBackendImg('')
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleCancel = () => {
         setDiscard(false)
-
     }
+
+    //-----------------------------------------------------------------------------------
+
 
     const handleBack = () => {
         if (next === 'caption') {
@@ -95,6 +112,9 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleNext = (e) => {
         if (next === '') {
             setNext('caption')
@@ -103,20 +123,38 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleShare = async (e) => {
         e.preventDefault()
         setLoading(true)
         const formData = new FormData();
+       
         formData.append('image', backendImg);
         formData.append('description', description);
-        formData.append('type', type);
-        formData.append('tagged', taggedUser);
+        if (type !== 'Story' && Type !== 'story'){
+            formData.append('type', type);
+            formData.append('tagged', taggedUser);
+        } else {
+            formData.append('type', 'Story');
+        }
+        let result;
         try {
-            let result = await axios.post(`${serverUrl}/api/posts/createpost`, formData, {
-                withCredentials: true, headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+            if ((Type === 'story' && page === 'story') || type === 'Story' ) { 
+                result = await axios.post(`${serverUrl}/api/story/createstory`, formData, {
+                    withCredentials: true, headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            } else {
+                 result = await axios.post(`${serverUrl}/api/posts/createpost`, formData, {
+                    withCredentials: true, headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            }
+            
             console.log(result);
             setCreate(false)
             setImgSelected(false)
@@ -127,7 +165,9 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
             setInput('')
             setSuggestedUsers([])
             setNext('')
-            window.location.reload();
+           if (type !== 'Story' && Type !== 'story'){
+               window.location.reload();
+           }
             setLoading(false)
         } catch (error) {
             console.log(error)
@@ -136,7 +176,8 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
     }
 
 
-  
+    //-----------------------------------------------------------------------------------
+
    
 
 
@@ -160,6 +201,9 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
         return () => clearTimeout(timerRef.current);
     }, [input, allUsers, suggestedUsers]);
 
+    //-----------------------------------------------------------------------------------
+
+
 
 
     return (
@@ -177,13 +221,13 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
                 <div onClick={(e) => { e.stopPropagation(); }} className={` ${imgSelected ? 'h-full w-fit' : ' flex-1 md:w-120 lg:w-160 h-80 rounded-2xl'}  md:h-140 lg:h-170 gap-2 z-60 flex flex-col items-center justify-center ${theme === 'dark' ? 'bg-[black] text-[#ffffffd1]' : (theme === 'light') ? 'bg-white text-[#000000] ' : ' bg-white dark:bg-[black]'}  overflow-hidden md:rounded-2xl`}>
                     {!imgSelected && <div className={`relative text-md w-full flex items-center justify-center h-8 pt-1 font-medium rounded-t-2xl text-[#ffffffd1] ${theme === 'dark' ? 'bg-[black] text-[#ffffffd1]' : (theme === 'light') ? 'bg-white text-[#000000]' : ' bg-white dark:bg-[black]'} z-60`}>
                         <hr className={`absolute top-[36px] h-[1px] w-full bg-[#7a7a7a] border-none outline-none ${next === 'caption' ? 'opacity-50' : 'opacoty-80 pointer-events-none'}`} />
-                        <p className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black ' : ' text-black dark:text-white'} text-md font-medium  z-60`}>Create new post</p> </div>}
+                        <p className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black ' : ' text-black dark:text-white'} text-md font-medium  z-60`}>{page === 'story' ? 'Create new story' : 'Create new post'}</p> </div>}
                     {imgSelected && <div className={`text-md w-full flex items-center pt-1 justify-center h-4 font-medium rounded-t-2xl  ${theme === 'dark' ? 'bg-[#464646] text-[#ffffffd1]' : (theme === 'light') ? 'bg-white text-[#000000] ' : ' bg-white text-[#000000] dark:text-[#ffffffd1] dark:bg-[#262626]'} z-60`}>
-                        <div className={`flex items-center justify-between px-4 w-full py-2 ${theme === 'dark' ? 'bg-[black]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[black]'}`}>
-                            <FaArrowLeft onClick={() => { handleBack() }} size={25} className={`pt-3 cursor-pointer active:scale-95 ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black ' : ' text-black dark:text-white'} transition-all duration-200 ease-in-out `} />
-                            <p className={`text-md font-medium ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} z-60 pt-2`}>Crop</p>
+                        <div className={`flex items-center justify-between px-4 h-fit w-full pt-2 ${theme === 'dark' ? 'bg-[#000000]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[black]'}`}>
+                            <FaArrowLeft onClick={() => { handleBack() }} size={25} className={`pt-3 mt-2 cursor-pointer active:scale-95 ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black ' : ' text-black dark:text-white'} transition-all duration-200 ease-in-out `} />
+                            <p className={`text-md font-medium ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} z-60 pt-5`}>Crop</p>
 
-                            <button onClick={(e) => { handleNext(e) }} disabled={next === 'caption' && description === ''} className="text-md font-medium text-[#2571ffd1] z-60 pt-2 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out">{next === 'caption' ? 'Share' : 'Next'}</button>
+                            <button onClick={(e) => { handleNext(e) }} disabled={next === 'caption' && description === ''} className="text-md font-medium text-[#2571ffd1] z-60 pt-5 cursor-pointer active:scale-95 transition-all duration-200 ease-in-out">{next === 'caption' ? 'Share' : 'Next'}</button>
                         </div>
                     </div>}
                     {!imgSelected ?
@@ -192,7 +236,7 @@ const HandlePosts = ({ setCreate, imgSelected, fileInputRef, setImgSelected }) =
                             <p className={`text-sm md:text-lg lg:text-xl ${theme === 'dark' ? 'text-white font-medium ' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Drag photos and videos here</p>
                             <button onClick={() => { fileInputRef.current.click(); setCreate(true) }} className={`text-sm md:text-md  font-medium text-white bg-[#0095f6] px-4 py-[5px] mt-2 rounded-lg hover:bg-[#0085ebd4] cursor-pointer active:scale-95 transition-all duration-300 ease-in-out `}>Select from device</button>
                         </div> :
-                        <EditOrCreatePost page="create" setDescription={setDescription} setEmoji={setEmoji} setShowtag={setShowtag} next={next} type={type} setTaggedpopup={setTaggedpopup} taggedpopup={taggedpopup} setInput={setInput} frontendImg={frontendImg} taggedUser={taggedUser} showtag={showtag} setTaggedUser={setTaggedUser} setMessage={setMessage} setTaggedUsersLength={setTaggedUsersLength} suggestedUsers={suggestedUsers} setType={setType} userData={userData} setTotal={setTotal} total={total} description={description} emoji={emoji} input={input} />
+                        <EditOrCreatePost page={page} Type={Type} setDescription={setDescription} setEmoji={setEmoji} setShowtag={setShowtag} next={next} type={type} setTaggedpopup={setTaggedpopup} taggedpopup={taggedpopup} setInput={setInput} frontendImg={frontendImg} taggedUser={taggedUser} showtag={showtag} setTaggedUser={setTaggedUser} setMessage={setMessage} setTaggedUsersLength={setTaggedUsersLength} suggestedUsers={suggestedUsers} setType={setType} userData={userData} setTotal={setTotal} total={total} description={description} emoji={emoji} input={input} />
                         }
                 </div>
             </div>}

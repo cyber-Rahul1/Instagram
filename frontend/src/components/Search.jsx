@@ -23,6 +23,7 @@ const Search = () => {
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
 
+    //-----------------------------------------------------------------------------------
 
     useEffect(() => {
         dispatch(getAllUsers())
@@ -33,6 +34,7 @@ const Search = () => {
 
 
 
+    //-----------------------------------------------------------------------------------
 
     const handleChange = (e) => {
         setSearch(e.target.value)
@@ -52,6 +54,8 @@ const Search = () => {
         }, 1000);
     }
 
+    //-----------------------------------------------------------------------------------
+
     const handleSearch = async (username, id) => {
         try {
             let result = await axios.post(`${serverUrl}/api/users/addrecentusers`, { identifier: username || id }, { withCredentials: true });
@@ -66,6 +70,7 @@ const Search = () => {
         }
     }
 
+    //-----------------------------------------------------------------------------------
 
     const handleInput = async () => {
         try {
@@ -78,6 +83,8 @@ const Search = () => {
         setIsFocused(true);
     }
 
+    //-----------------------------------------------------------------------------------
+
     const handleClearRecentUsers = async () => {
         try {
             let result = await axios.get(`${serverUrl}/api/users/clearrecentusers`, { withCredentials: true });
@@ -88,6 +95,8 @@ const Search = () => {
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
     const handleClearOneRecentUser = async (id, username) => {
         try {
             let result = await axios.post(`${serverUrl}/api/users/clearonerecentuser`, { identifier: id || username }, { withCredentials: true });
@@ -96,6 +105,8 @@ const Search = () => {
             console.log(error)
         }
     }
+
+    //-----------------------------------------------------------------------------------
 
 
     return (
@@ -114,7 +125,7 @@ const Search = () => {
                 </div>}
             </div>
             {filteredUsers?.length === 0 && <hr className={`h-[1px] w-full bg-[#363636] absolute top-39 right-0 ${(theme === 'dark') ? ' border-[#363636b4]' : (theme === 'light') ? 'border-gray-300' : ' border-gray-300 dark:border-[#363636b4]'}`} />}
-            {( !recentUsers && recentUsers?.length === 0 && filteredUsers?.length === 0) && <div className="h-full w-full">
+            {(!recentUsers && recentUsers?.length === 0 && filteredUsers?.length === 0) && <div className="h-full w-full">
                 <p className={`text-[16px] font-medium mt-4 ml-2 ${(theme === 'dark') ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Recent</p>
                 <div className="w-full h-full flex items-center justify-center">
                     <p className={`text-[13px] font-medium ${(theme === 'dark') ? 'text-white' : (theme === 'light') ? 'text-[#686767d8]' : ' text-[#686767d8] dark:text-white'}`}>No recent searches.</p>
@@ -134,11 +145,11 @@ const Search = () => {
                         )
                     })}
                 </div>}
-                    {noResults && search !== '' && <div className="h-50 w-full flex items-center justify-center">
-                        <p className={`text-[13px] font-medium ${theme === 'dark' ? 'text-[#ffffffe7]' : (theme === 'light') ? 'text-[#000000d0]' : ' text-black dark:text-[#ffffff7c]'} `}>No results found.</p>
-                    </div>  }
+            {noResults && search !== '' && <div className="h-50 w-full flex items-center justify-center">
+                <p className={`text-[13px] font-medium ${theme === 'dark' ? 'text-[#ffffffe7]' : (theme === 'light') ? 'text-[#000000d0]' : ' text-black dark:text-[#ffffff7c]'} `}>No results found.</p>
+            </div>}
             {
-                ( recentUsers && recentUsers?.length > 0) &&
+                (recentUsers && recentUsers?.length > 0) &&
                 <div className="h-full w-full flex flex-col items-start justify-start px-3 gap-3">
                     <div className="flex w-full items-center justify-between">
                         <p className={`text-sm font-medium ${theme === 'dark' ? 'text-[#ffffffe7]' : (theme === 'light') ? 'text-[#000000d0]' : ' text-black dark:text-[#ffffff7c]'} `}>Recent</p>

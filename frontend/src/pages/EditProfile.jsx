@@ -53,6 +53,8 @@ const EditProfile = () => {
     { name: "Prefer not to say", value: "Prefer not to say" },
   ];
 
+  //-----------------------------------------------------------------------------------
+
   useEffect(() => {
     setFormData({
       name: userData?.user?.name || '',
@@ -61,6 +63,8 @@ const EditProfile = () => {
       gender: userData?.user?.gender || ''
     })
   }, [])
+
+  //-----------------------------------------------------------------------------------
 
 
   const uploadPhoto = async (e) => {
@@ -88,6 +92,8 @@ const EditProfile = () => {
     setTimeout(() => setMessage(''), 3000);
   }
 
+  //-----------------------------------------------------------------------------------
+
   const removePhoto = async () => {
     setLoading(true);
     try {
@@ -107,6 +113,8 @@ const EditProfile = () => {
     setTimeout(() => setMessage(''), 3000);
   };
 
+  //-----------------------------------------------------------------------------------
+
   const handleChange = async (e) => {
     setFormData(prev => {
       return {
@@ -119,6 +127,8 @@ const EditProfile = () => {
     }
 
   }
+
+  //-----------------------------------------------------------------------------------
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -146,6 +156,8 @@ const EditProfile = () => {
     setLoading(false)
     setTimeout(() => setMessage(''), 3000);
   }
+
+  //-----------------------------------------------------------------------------------
 
 
   return (

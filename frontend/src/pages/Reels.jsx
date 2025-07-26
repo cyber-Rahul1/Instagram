@@ -19,40 +19,47 @@ import dp from '../assets/dp.webp';
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import { setUserData } from "../redux/userSlice";
-import EmojiPicker from "emoji-picker-react";
+import EditPost from "../components/EditPost";
+import ViewStoryCards from "../components/ViewStoryCards";
 
 
 const Reels = () => {
 
 
-  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, setViewReels, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId } = useContext(ThemeContext);
+  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, setViewReels, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, editPost, setEditPost, setAuthorName } = useContext(ThemeContext);
   const [emoji, setEmoji] = useState(false)
   const dispatch = useDispatch();
-  
+
   const { allReels, status } = useSelector((state) => state.post)
   const { userData } = useSelector((state) => state.user)
   const navigate = useNavigate()
 
+  //-----------------------------------------------------------------------------------
+
   const handleClick = (post) => {
     setPostIdInMain(post._id)
     setViewReels(true);
-    
   }
-  
-  
+
+
+  //-----------------------------------------------------------------------------------
+
+
   useEffect(() => {
     if (allReels) setPosts(allReels?.posts);
   }, [allReels])
 
-  
-  
-  
+
+  //-----------------------------------------------------------------------------------
+
+
   useEffect(() => {
     dispatch(getAllComments(postIdInMain));
   }, [dispatch, postIdInMain])
-  
 
- 
+
+  //-----------------------------------------------------------------------------------
+
 
   const { allComments, allReplies } = useSelector((state) => state.post)
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
@@ -67,11 +74,18 @@ const Reels = () => {
   const [userSaved, setUserSaved] = useState({})
   const [showLike, setShowLike] = useState(false)
   const [posts, setPosts] = useState([])
+  const [editPostId, setEditPostId] = useState('')
+  const [viewStory, setViewStory] = useState(false)
+  const [storyId, setStoryId] = useState('')
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     document.title = 'Instagram';
   }, []);
+
+
+  //-----------------------------------------------------------------------------------
 
   register('short', (number, index) => {
     return [
@@ -92,6 +106,7 @@ const Reels = () => {
   });
 
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     const currentPost = post;
@@ -102,18 +117,17 @@ const Reels = () => {
   }, [post, likedUsers, setLikedUsers])
 
 
+  //-----------------------------------------------------------------------------------
 
 
   useEffect(() => {
     dispatch(getAllReels());
   }, [dispatch])
 
-  
+
+  //-----------------------------------------------------------------------------------
 
 
-
-  
- 
 
   const handleAddComment = async () => {
     setLoading(true)
@@ -131,18 +145,26 @@ const Reels = () => {
     }
   }
 
+  //-----------------------------------------------------------------------------------
 
-  const handleClickOptions = (authorId) => {
+
+  const handleClickOptions = (authorId, postId, authorName) => {
     setShowOptions(!showOptions);
     setSameData(authorId === userData?.user?._id)
     setAuthorId(authorId)
+    setEditPostId(postId)
+    setAuthorName(authorName)
   }
+
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     if (allReels) setUserSaved(allReels?.posts)
     console.log(userSaved)
   }, [allReels, userSaved])
 
+
+  //-----------------------------------------------------------------------------------
 
   const handleSave = async (post) => {
     setLoading(true)
@@ -174,6 +196,8 @@ const Reels = () => {
       setLoading(false)
     }
   }
+
+  //-----------------------------------------------------------------------------------
 
 
   const handleLike = async (post) => {
@@ -211,6 +235,8 @@ const Reels = () => {
     }
   };
 
+  //-----------------------------------------------------------------------------------
+
 
   const handleFollow = async (authorId) => {
     try {
@@ -226,12 +252,29 @@ const Reels = () => {
     }
   }
 
+  //-----------------------------------------------------------------------------------
+
+
+  const handleViewStory = (story) => {
+    setViewStory(true);
+    setStoryId(story._id);
+    setTimeout(() => {
+      setViewStory(false);
+    }, 3000);
+  }
+
+  //-----------------------------------------------------------------------------------
 
 
   return (
     <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'} flex h-screen w-full items-center justify-center `}>
-      <div className="w-screen h-screen flex flex-col items-center justify-start pt-10 overflow-y-scroll snap-y snap-mandatory snap-always scroll-smooth xl:pr-70 md:scroll-pt-16">
-        <div className="flex flex-col items-start justify-center w-full sm:w-120 h-fit z-0 pb-10">
+      {viewStory &&
+        <div onClick={() => { setViewStory(false); }} className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center bg-[#1A1A1A] justify-center">
+          <ViewStoryCards storyId={storyId} setViewStory={setViewStory} />
+        </div>}
+      <div className="w-screen h-screen flex flex-col items-center justify-start pt-10 overflow-y-scroll overflow-x-hidden snap-y snap-mandatory snap-always scroll-smooth xl:pr-70 md:scroll-pt-16">
+
+        <div className="flex flex-col items-start justify-center w-full sm:w-120 h-fit z-0 pb-10 ">
           {showOptions &&
             <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center" >
               <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen  bg-[#000000b9] blur-6xl opacity-85" />
@@ -242,25 +285,32 @@ const Reels = () => {
           </div>}
           {(posts && posts?.length > 0) && posts?.map((post) => (
             <div key={post._id} className={`relative h-screen w-full md:w-109 xl:w-110 md:h-185 xl:h-200 flex flex-col items-center justify-center `}>
+              {editPost &&
+                <div onClick={() => { setEditPost(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center bg-[#000000b1] justify-center">
+                  <EditPost page={'posts'} postId={editPostId} />
+                </div>}
               <div className={`w-full h-full snap-start md:shadow-2xl border-1 rounded-md ${theme === 'dark' ? 'border-[#363636] shadow-[#ffffff93]' : (theme === 'light') ? 'border-[#d3d3d3] bg-[#0000009a] shadow-black' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
                 <img src={post?.image} alt="Post Image" className="w-full h-full object-cover rounded-sm" />
                 <div className="absolute bottom-15 left-3 md:left-5 w-full h-fit flex flex-col items-start justify-between">
                   <div className={` w-fit h-fit flex items-center justify-start px-4 md:px-1`}>
-                    <img src={post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 rounded-full object-cover" />
+                    <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-[#363636]' : 'bg-transparent'}`}>
+                      {console.log(post?.author?.story) }
+                      <img src={post?.author?.profilepic || dp} alt="author image" className={`w-9 h-9 rounded-full object-cover border-1 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`} />
+                    </div>
                     <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-semibold ml-2 cursor-pointer">{post?.author?.username}</p>
                     {post?.author?._id !== userData?.user?._id && <LuDot size={20} className={`text-sm p-0 ${theme === 'dark' ? 'text-[#ffffffa5]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[#ffffffa5]'}`} />}
-                    {post?.author?._id !== userData?.user?._id && <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow' }</p>}
+                    {post?.author?._id !== userData?.user?._id && <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>}
                   </div>
                   {(post?.description) ? <p className={`text-sm px-4 md:px-1 pt-2`}>
                     {showDescription ? post?.description : post?.description?.slice(0, 30)}
                     {post?.description.length > 30 && <span onClick={() => { setShowDescription(!showDescription) }} className={`cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{showDescription ? '...read less' : '...read more'}</span>} </p> : ''}
                 </div>
               </div>
-              <div className="absolute bottom-15 -right-45 md:-right-65 w-full h-fit flex flex-col items-center justify-center px-4 md:px-0 gap-5">
-                <div  className="w-fit h-fit flex flex-col items-center justify-start gap-5">
+              <div className="absolute bottom-15 -right-42 md:-right-65 w-full h-fit flex flex-col items-center justify-center px-4 md:px-0 gap-5">
+                <div className="w-fit h-fit flex flex-col items-center justify-start gap-5">
                   <div onClick={() => { handleLike(post) }} className="w-fit h-fit flex flex-col items-center justify-center">
                     {(post && Array.isArray(post?.likes) && post?.likes?.some(user => user._id === userData?.user?._id)) ? <img src={heartfill} alt="liked" className="w-7 h-7 cursor-pointer transition-all duration-200 ease-in-out" /> : <GoHeart size={27} className={`${mainTextTheme}  cursor-pointer transition-all duration-200 ease-in-out`} />}
-                    {<p className={`${post?.likes?.length === 0 ? 'hidden' : ''} text-sm `}>{post?.likes?.length} {(post?.likes?.length === 1) ? 'like' : 'likes'}</p>}
+                    {<p className={`${post?.likes?.length === 0 ? 'hidden' : ''} text-sm flex`}>{post?.likes?.length}&nbsp;<span className="hidden md:block">{post?.likes?.length === 1 ? `like` : `likes`}</span></p>}
                   </div>
                   <div className="w-fit h-fit flex flex-col items-center justify-center">
                     <FiMessageCircle onClick={() => { setShowComment(!showComment); handleClick(post); dispatch(getAllComments(post._id)); }} size={27} className={`${mainTextTheme} cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />
@@ -272,7 +322,7 @@ const Reels = () => {
                   {(post?.saved && post?.saved?.some(user => user === userData?.user?._id)) ? <RiBookmarkFill size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out  `} /> : <BiBookmark size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />}
                 </div>
                 <div className="w-10 h-full flex items-center justify-center cursor-pointer">
-                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
+                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
                 </div>
               </div>
               <div className="w-full h-fit flex flex-col items-start justify-center pt-2 px-4 md:px-0">
@@ -297,7 +347,7 @@ const Reels = () => {
                 <div className="w-full md:w-90 h-full z-100 overflow-y-auto overflow-x-hidden pb-20">
                   <PostComments page={'reels'} reply={reply} setReply={setReply} showReplies={showReplies} setShowReplies={setShowReplies} post={post} status={status} showComment={showComment} postIdInMain={postIdInMain} setPostIdInMain={setPostIdInMain} allComments={allComments} allReplies={allReplies} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} />
                 </div>
-                
+
                 {<div className={`${bgTheme} w-full md:w-90 h-fit fixed hidden z-100 md:top-162 md:rounded-b-md md:right-30 md:flex items-center justify-center pt-0 p-3 gap-3 ${(post?.hideComments) ? 'hidden' : ''}`}>
                   <CommentInput theme={theme} reply={reply} commentId={commentId} setCommentId={setCommentId} comment={comment} setComment={setComment} setReply={setReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} setEmoji={setEmoji} emoji={emoji} postIdInMain={postIdInMain} page={'reels'} post={post} />
                 </div>}

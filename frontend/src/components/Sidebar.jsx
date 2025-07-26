@@ -25,13 +25,15 @@ import More from "./More";
 import SwitchTheme from "./SwitchTheme";
 import MobileSidebar from "./MobileSidebar";
 import HandlePosts from "./HandlePosts";
+import axios from "axios";
 
 
 
 const Sidebar = () => {
+  const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   let navigate = useNavigate()
   const location = useLocation();
-  const { activeItem, setActiveItem, viewPost, setViewPost, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings } = useContext(ThemeContext)
+  const { activeItem, setActiveItem, viewPost, setViewPost, viewed, setViewed, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings } = useContext(ThemeContext)
   const { userData } = useSelector((state) => state.user)
   const [create, setCreate] = useState(false)
   const [bottomActive, setBottomActive] = useState('')
@@ -58,6 +60,20 @@ const Sidebar = () => {
     { name: "More", icon: <RiMenuLine size={26} /> }
   ];
 
+
+  //-----------------------------------------------------------------------------------
+
+   const handleViewed = async () => {
+     try {
+       let result = await axios.get(`${serverUrl}/api/posts/setviewed`, { withCredentials: true });
+       setViewed(result.data.viewed)
+     } catch (error) {
+       console.log(error);
+     }
+   }
+
+  //-----------------------------------------------------------------------------------
+
   const handleItemClick = (name, path) => {
     if (name !== 'Search' && name !== 'Notifications' && name !== 'Create') {
       setSearchTop(false)
@@ -71,6 +87,8 @@ const Sidebar = () => {
       setNotificationTop(prev => !prev)
       setSearchIsFocussed(prev => !prev)
     } else if (name === 'Notifications') {
+      setViewed(true)
+      handleViewed();
       setSearchTop(prev => !prev)
       setNotificationTop(true)
       setNotificationIsFocussed(prev => !prev)
@@ -86,6 +104,9 @@ const Sidebar = () => {
     }
 
   }
+
+
+  //-----------------------------------------------------------------------------------
 
 
   useEffect(() => {
@@ -106,6 +127,7 @@ const Sidebar = () => {
   }, [location.pathname, setActiveItem])
 
 
+  //-----------------------------------------------------------------------------------
 
 
   return (
@@ -124,10 +146,14 @@ const Sidebar = () => {
             {(notificationIsFocussed || searchIsFocussed) && <div onClick={() => {setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className='absolute top-0 z-5 left-20 w-screen h-full bg-transparent' />}
             <div className={`flex flex-col gap-[7px] `}>
               {menuItems.map((item) => (
-                <div key={item.name} onClick={() => { handleItemClick(item.name, item?.path); }} className={`active:text-[#ffffff94]  ${theme === 'dark' ? 'hover:bg-[#ffffff1a] ' : (theme === 'light') ? 'hover:bg-[#a09e9e2a] ' : ' dark:hover:bg-[#ffffff1a] hover:bg-[#a09e9e2a] dark:text-white'} active:scale-95 relative py-3 flex items-center gap-4 pl-3 cursor-pointer ${notificationIsFocussed || searchIsFocussed ? 'mr-[275px]' : 'mr-3'} rounded-xl transition-all duration-200 ease-in-out`}>
+                <div key={item.name} onClick={() => { handleItemClick(item.name, item?.path); }} className={`active:text-[#ffffff94]  ${theme === 'dark' ? 'hover:bg-[#ffffff1a] ' : (theme === 'light') ? 'hover:bg-[#a09e9e2a] ' : ' dark:hover:bg-[#ffffff1a] hover:bg-[#a09e9e2a] dark:text-white'} active:scale-95 relative py-3 flex items-center gap-4  cursor-pointer ${notificationIsFocussed || searchIsFocussed ? 'pl-3 mr-[275px]' : 'pl-3 mr-3'} rounded-xl transition-all duration-200 ease-in-out`}>
                   <div className={`${(searchIsFocussed && item.name === 'Search' && searchtop) || (notificationIsFocussed && item.name === 'Notifications' && notificationTop) ? 'block' : 'hidden'} ${(notificationIsFocussed && item.name === 'Notifications' && notificationTop) ? 'w-12 h-12 left-[1px]' : 'w-12 h-12 left-0.5'} absolute border-1 border-[#ffffffa4] rounded-lg  ${theme === 'dark' ? 'border-[#a09e9e5e]' : (theme === 'light') ? 'border-black' : ' border-[black] dark:border-[#ffffffa4]'}`} />
                   {(activeItem === "Profile" && item.name === "Profile") && <div className={`absolute w-7 h-7 rounded-full -translate-x-0.5 border-2 ${theme === 'dark' ? 'border-[white]' : (theme === 'light') ? 'border-[black]' : ' border-[black] dark:border-[white]'}`} />}
-                  {item.icon && <div className={`flex items-center `}>{activeItem === item.name ? item.activeIcon || item.icon : item.icon}</div>}
+                  {item.icon && <div className={`relative flex items-center `}>{activeItem === item.name ? item.activeIcon || item.icon : item.icon}
+                    {item.name === 'Notifications' && !viewed && (
+                      <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                    )}
+                    </div>}
                   {item.image && <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center"><img src={item.image} className={"w-full h-full rounded-full object-cover"} alt="Profile" /></div>}
                   <p className={`text-md ${(searchIsFocussed || activeItem === 'Messages' || notificationIsFocussed) ? 'hidden' : 'hidden xl:block'}  ${activeItem === item.name ? 'font-bold' : 'font-normal'} transition-all duration-200 ease-in-out`}>{item.name}</p>
                 </div>
@@ -136,7 +162,7 @@ const Sidebar = () => {
           </div>
           <div className="flex flex-col gap-[7px] pl-1 mb-5">
             {extraMenuItems.map((item) => (
-              <div key={item.name} onClick={() => { setBottomActive(item.name); navigate(item?.path) }} className=" flex active:text-[#ffffff94] active:scale-95  items-center gap-4  hover:bg-[#ffffff1a] pl-2  cursor-pointer mr-3 py-3 rounded-xl transition-all duration-200 ease-in-out">
+              <div key={item.name} onClick={() => { setBottomActive(item.name); navigate(item?.path) }} className={`flex active:text-[#ffffff94] active:scale-95  items-center gap-4  hover:bg-[#ffffff1a]   cursor-pointer ${notificationIsFocussed || searchIsFocussed ? 'mr-[275px] pl-3' : 'mr-3 pl-3'} py-3 rounded-xl transition-all duration-200 ease-in-out`}>
                 <div className="flex items-center">{item.icon}</div>
                 <p className={`text-md  ${bottomActive === item.name ? 'font-bold' : 'font-normal'} ${(searchIsFocussed || activeItem === 'Messages' || notificationIsFocussed) ? 'hidden' : 'hidden xl:block'}`}>{item.name}</p>
               </div>
@@ -150,13 +176,13 @@ const Sidebar = () => {
           </div>}
 
         {switchTheme && <div onClick={() => { setBottomActive(''); setSwitchTheme(false) }} className='absolute top-0 z-30 left-0 w-screen h-full bg-transparent' />}
-        {switchTheme && <div className={`fixed bottom-18 z-50 left-[11px] w-[270px] ${theme === 'dark' ? 'bg-[#262626] text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white text-black dark:text-white dark:bg-[#262626]'} transition-all duration-200 ease-in-out rounded-2xl shadow-xl `}>
+        {switchTheme && <div className={`fixed bottom-18 z-50 left-[11px]  transition-all duration-200 ease-in-out rounded-2xl shadow-xl `}>
           <SwitchTheme setTheme={setTheme} theme={theme} setSwitchTheme={setSwitchTheme} switchTheme={switchTheme} setBottomActive={setBottomActive} />
         </div>}
         <div style={{ boxShadow: '8px 0 20px -6px rgba(0, 0, 0, 0.2)' }} className={`${searchtop ? 'z-12' : ''} fixed top-0 left-[70px] h-screen rounded-r-2xl ${(searchIsFocussed) ? ' w-[400px]  border-r  bg-black' : 'w-0 opacity-0 pointer-events-none'} ${theme === 'dark' ? 'bg-black border-[#363636b4]' : (theme === 'light') ? 'bg-white border-gray-300' : ' dark:bg-black bg-white border-gray-200 dark:border-[#363636b4]'} transition-all duration-300 ease-in-out`}>
           <Search />
         </div>
-        <div style={{ boxShadow: '8px 0 20px -6px rgba(0, 0, 0, 0.2)' }} className={`${notificationTop ? 'z-12' : ''} fixed top-0 left-[70px]  h-screen rounded-r-2xl ${(notificationIsFocussed) ? ' w-[400px]  border-r  bg-black' : 'w-0 opacity-0 pointer-events-none'} ${theme === 'dark' ? 'bg-black border-[#363636b4]' : (theme === 'light') ? 'bg-white border-gray-300' : ' dark:bg-black bg-white border-gray-200 dark:border-[#363636b4]'} transition-all duration-300 ease-in-out`}>
+        <div style={{ boxShadow: '8px 0 20px -6px rgba(0, 0, 0, 0.2)' }} className={`${notificationTop ? 'z-12' : ''} overflow-hidden fixed top-0 left-[70px]  h-screen rounded-r-2xl ${(notificationIsFocussed) ? ' w-[400px]  border-r  bg-black' : 'w-0 opacity-0 pointer-events-none'} ${theme === 'dark' ? 'bg-black border-[#363636b4]' : (theme === 'light') ? 'bg-white border-gray-300' : ' dark:bg-black bg-white border-gray-200 dark:border-[#363636b4]'} transition-all duration-300 ease-in-out`}>
           <Notification />
         </div>
       </div>

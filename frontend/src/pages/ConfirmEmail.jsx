@@ -110,6 +110,8 @@ const ConfirmEmail = () => {
   }, [userCredentials, navigate]);
 
 
+  //-----------------------------------------------------------------------------------
+
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center bg-white dark:bg-black pt-25 md:pt-22 z-2 ">
       {message && <p className="text-gray-800 dark:text-[#ffffffd1] text-[15px]  w-full absolute bottom-0 left-0 px-5 py-2 z-5 md:block bg-gray-200 dark:bg-[#262626]">{message}</p>}

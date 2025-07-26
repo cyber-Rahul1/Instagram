@@ -22,6 +22,7 @@ const ForgotPassword = () => {
 
   const navigate = useNavigate()
 
+  //-----------------------------------------------------------------------------------
 
   const handleinput1 = () => {
 
@@ -31,6 +32,8 @@ const ForgotPassword = () => {
 
   }
 
+  //-----------------------------------------------------------------------------------
+
   const handleblur = () => {
     if (inputBox.current?.value === '') {
       inputRef1.current.style.fontSize = '';
@@ -39,6 +42,8 @@ const ForgotPassword = () => {
     }
   }
 
+  //-----------------------------------------------------------------------------------
+
   function customMaskEmail(email) {
     const [name, domain] = email.split('@');
     const [domainName, tld] = domain.split('.');
@@ -46,6 +51,8 @@ const ForgotPassword = () => {
     return `${name[0]}**@${domainName[0]}**.${tld}`;
   }
 
+
+  //-----------------------------------------------------------------------------------
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -87,12 +94,15 @@ const ForgotPassword = () => {
   }
 
 
+  //-----------------------------------------------------------------------------------
 
 
   useEffect(() => {
     inputBox.current.focus()
     document.title = `Reset Password - Instagram`;
   }, [])
+
+  //-----------------------------------------------------------------------------------
 
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-around md:justify-start items-center dark:bg-black md:pt-36 z-2">

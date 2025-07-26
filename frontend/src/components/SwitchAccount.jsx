@@ -5,6 +5,8 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 import { ServerContext, ThemeContext } from '../context/ContextProvider';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 
 
 
@@ -30,6 +32,8 @@ const SwitchAccount = ({ setSwitchAccount }) => {
 
     let dispatch = useDispatch();
 
+    //-----------------------------------------------------------------------------------
+
     const navigate = useNavigate()
     const { theme } = useContext(ThemeContext);
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
@@ -39,6 +43,7 @@ const SwitchAccount = ({ setSwitchAccount }) => {
 
 
 
+    //-----------------------------------------------------------------------------------
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -57,6 +62,7 @@ const SwitchAccount = ({ setSwitchAccount }) => {
             setLoading(false)
             setPage('')
             navigate('/')
+            setSwitchAccount(false)
 
 
         } catch (error) {
@@ -66,6 +72,7 @@ const SwitchAccount = ({ setSwitchAccount }) => {
         }
     }
 
+    //-----------------------------------------------------------------------------------
 
 
     useEffect(() => {
@@ -75,6 +82,8 @@ const SwitchAccount = ({ setSwitchAccount }) => {
         setPage('login')
 
     }, [])
+
+    //-----------------------------------------------------------------------------------
 
     useEffect(() => {
         if (pass === '') {
@@ -89,12 +98,16 @@ const SwitchAccount = ({ setSwitchAccount }) => {
         }
     }, [pass, username]);
 
+    //-----------------------------------------------------------------------------------
+
 
     const handleinput = (inputRef, inputBox) => {
         inputRef.current.style.fontSize = '10px';
         inputRef.current.style.top = '4px';
         inputBox.current.style.paddingTop = '12px';
     }
+
+    //-----------------------------------------------------------------------------------
 
 
     const handleblur = (inputRef, inputBox) => {
@@ -105,6 +118,8 @@ const SwitchAccount = ({ setSwitchAccount }) => {
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
     const handleShow = () => {
         setShow(!show)
         setTimeout(() => {
@@ -112,8 +127,23 @@ const SwitchAccount = ({ setSwitchAccount }) => {
         }, 1000)
     }
 
+    //-----------------------------------------------------------------------------------
+
+    useGSAP(() => {
+        gsap.fromTo(
+            ".switch-account",
+            { scale: 1.1, opacity: 0 },
+            {
+                scale: 1,
+                opacity: 1,
+                duration: 0.2,
+                ease: "power2.out",
+            }
+        );
+    }, []);
+
     return (
-        <div onClick={(e) => { e.stopPropagation() }} className={`w-[94vw] md:w-fit h-[400px] md:h-fit relative rounded-2xl flex flex-col items-center z-50 justify-center px-17 pt-25 ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>
+        <div onClick={(e) => { e.stopPropagation() }} className={`switch-account w-[94vw] md:w-fit h-[400px] md:h-fit relative rounded-2xl flex flex-col items-center z-50 justify-center px-17 pt-25 ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'}`}>
             <div onClick={() => { setSwitchAccount(false) }} className='absolute top-5 right-5 cursor-pointer'>
                 <RxCross2 size={24} className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`} />
             </div>

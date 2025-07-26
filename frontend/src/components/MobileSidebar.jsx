@@ -39,8 +39,11 @@ const MobileSidebar = ({ userData, activeItem, setActiveItem, theme, setActiveSe
         }
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     return (
-        <div className={`flex fixed bottom-0 z-40 left-0 w-full items-center border-t justify-around gap-1 ${theme === 'dark' ? 'bg-black border-[#363636]' : (theme === 'light') ? 'bg-white border-[#f2f2f2]' : ' bg-white dark:bg-black border-[#f2f2f2] dark:border-[#363636]'} h-14 z-50`}>
+        <div className={`flex fixed -bottom-1 z-40 left-0 w-full items-center border-t justify-around overflow-hidden gap-1 ${theme === 'dark' ? 'bg-black border-[#363636]' : (theme === 'light') ? 'bg-white border-[#f2f2f2]' : ' bg-white dark:bg-black border-[#f2f2f2] dark:border-[#363636]'} h-14 z-50`}>
             {create && <div>
                 <HandlePosts setCreate={setCreate} imgSelected={imgSelected} fileInputRef={fileInputRef} setImgSelected={setImgSelected} />
             </div>}

@@ -31,10 +31,14 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
 
 
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
-    const { theme, commentId, commentLikes, setCommentLikes, allCommentsInMain, setAllCommentsInMain, inputRef, showReplies, setShowReplies } = useContext(ThemeContext)
+    const { theme, commentId, commentLikes, setCommentLikes, allCommentsInMain, setAllCommentsInMain, inputRef, showReplies, setShowReplies, setViewPost } = useContext(ThemeContext)
+    let items = ['', '', '', '', '','', '', '', '']
     let mainTextTheme = theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'
     let subTextTheme = theme === 'dark' ? 'text-[#ffffffa5]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[#ffffffa5]'
     let hoverTheme = theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'
+
+    //-----------------------------------------------------------------------------------
+
 
     useEffect(() => {
         if (posts && posts[indexval]?.description && posts[indexval]?.description.length > 30) {
@@ -44,6 +48,8 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
         }
     }, [posts, indexval])
 
+    //-----------------------------------------------------------------------------------
+
 
 
     useEffect(() => {
@@ -51,6 +57,10 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
             setAllCommentsInMain(allComments)
         }
     }, [allComments, setAllCommentsInMain])
+
+
+    //-----------------------------------------------------------------------------------
+
 
 
     register('short', (number, index) => {
@@ -71,12 +81,15 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
         ][index];
     });
 
+    //-----------------------------------------------------------------------------------
 
     useEffect(() => {
         setShowReplies({})
     },[])
 
 
+
+    //-----------------------------------------------------------------------------------
 
    
 
@@ -104,6 +117,9 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
         }
 
     }
+
+    //-----------------------------------------------------------------------------------
+
 
     const handleReplyLike = async (reply) => {
         try {
@@ -156,6 +172,9 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
 
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleDeleteComment = async (commentId) => {
         setLoading(prev => ({...prev, [commentId]: true}))
         try {
@@ -173,6 +192,9 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
         }
 
     }
+
+    //-----------------------------------------------------------------------------------
+
 
 
     const handleDeleteReply = async (replyId, reply) => {
@@ -202,11 +224,18 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
 
     }
 
+    //-----------------------------------------------------------------------------------
+
+
     const handleNavigate = (username, authorId) => {
+        setViewPost(false)
         navigate(`/profile/${username || authorId}`)
         window.scrollTo(0, 0)
 
     }
+
+
+    //-----------------------------------------------------------------------------------
 
 
 
@@ -231,6 +260,9 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
     }, [allComments, commentId, serverUrl, setCommentLikes])
 
 
+    //-----------------------------------------------------------------------------------
+
+
 
     const handleReplyClick = (reply) => {
         setComment(`@${reply.author?.username} `); 
@@ -239,17 +271,33 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
         inputRef.current.focus();
     }
 
+    //-----------------------------------------------------------------------------------
 
 
+   
 
-    if (status === 'loading') return <div className=" w-full h-80 md:h-110 flex items-center justify-center">
-        <div className="h-15 w-15 border-t-1 border-b-1  border-[white] rounded-full animate-spin transition-all duration-500 ease-in-out" />
+
+    if (status === 'loading') return <div className={`w-full h-80 md:h-110 flex flex-col items-center justify-start pt-5 gap-6 px-5 animate-pulse` }>
+        {items.map((item, index) => (
+            <div key={index} className="w-full h-fit flex items-start justify-start gap-3">
+                <div className={`h-10 w-10 rounded-full ${theme === 'dark' ? 'bg-[#3d3d3d7b]' : (theme === 'light') ? 'bg-[#cccccc9a]' : ' bg-white dark:bg-[#262626]'}`}></div>
+                <div className={`w-fit h-fit flex flex-col items-start justify-center gap-2`}>
+                    <div className={`w-40 h-4 rounded-md ${theme === 'dark' ? 'bg-[#3d3d3d7b]' : (theme === 'light') ? 'bg-[#cccccc9a]' : ' bg-white dark:bg-[#262626]'}`}></div>
+                    <div className={`w-30 h-4 rounded-md ${theme === 'dark' ? 'bg-[#3d3d3d7b]' : (theme === 'light') ? 'bg-[#cccccc9a]' : ' bg-white dark:bg-[#262626]'}`}></div>
+                </div>
+            </div>
+        ))}
     </div>
+
+    //-----------------------------------------------------------------------------------
+
+
+   
 
     return (
         <>
 
-            {((page === 'main' && post?.comments?.length == 0) || (posts && posts[indexval]?.comments?.length == 0)) ?
+            {((page === 'main' && post?.comments?.length == 0) || (posts && posts[indexval]?.comments?.length == 0) && !posts[indexval]?.description) ?
                 <div className="w-full h-fit md:h-110  hidden md:flex flex-col items-center justify-center">
                     <p className={`${mainTextTheme} text-2xl font-medium ml-2 pb-1`}>No comments yet.</p>
                     <p className={`${subTextTheme} text-sm font-medium ml-2`}>Start the conversation</p>
@@ -257,8 +305,10 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
                 <>
                     <div className={`w-full flex flex-col items-start justify-start ${allCommentsInMain && allCommentsInMain.length > 0 ? 'h-fit ' : 'h-150'}`}>
 
-                        {(page === 'main' ? post?.description : posts && posts[indexval]?.description) && <div className="w-full cursor-pointer h-fit flex items-start justify-start p-4 gap-2 ">
-                            <img onClick={() => { handleNavigate(page !== 'main' ? posts[indexval]?.author?.username : post?.author?.username, page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id) }} src={page !== 'main' ? posts[indexval]?.author?.profilepic || dp : post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 z-0 rounded-full object-cover cursor-pointer" />
+                        {(page === 'main' ? post?.description : posts && posts[indexval]?.description) && <div className="w-full cursor-pointer h-fit flex items-start justify-start p-4 gap-2">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer`}>
+                                <img onClick={() => { handleNavigate(page !== 'main' ? posts[indexval]?.author?.username : post?.author?.username, page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id) }} src={(page !== 'main') ? (posts[indexval]?.author?.profilepic || dp) : (post?.author?.profilepic || dp)} alt="author image" className={`"w-9 h-9 z-0 rounded-full object-cover cursor-pointer`} />
+                            </div>
                             <div className="w-full h-fit flex flex-col items-start justify-start">
                                 <div className=" w-fit h-fit flex items-center justify-start gap-2">
                                     <p onClick={() => { handleNavigate(page !== 'main' ? posts[indexval]?.author?.username : post?.author?.username, page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id) }} className={`${mainTextTheme} text-sm font-medium ml-2`}>{page !== 'main' ? (posts[indexval]?.author?.username || posts[indexval]?.author?.name) : (post?.author?.username || post?.author?.name)}</p>
@@ -273,7 +323,7 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
                             <div key={comment._id || index} className={`w-full md:h-fit  flex flex-col items-start justify-start px-4`}>
 
                                 <div className={`${page === 'reels' ? 'md:w-60 w-full ' : 'w-full' } h-fit flex items-start justify-between py-4 cursor-pointer gap-2`}>
-                                    <img onClick={() => { handleNavigate(comment?.author?.username, comment?.author?._id) }} src={comment?.author?.profilepic} alt="author image" className="w-9 h-9 z-0 rounded-full object-cover" />
+                                        <img onClick={() => { handleNavigate(comment?.author?.username, comment?.author?._id) }} src={comment?.author?.profilepic} alt="author image" className="w-9 h-9 z-10 rounded-full object-cover" />
                                     <div onMouseOver={() => { setShowOptions(`${comment._id}`) }} onMouseLeave={() => { setShowOptions('') }} className="w-full h-fit flex flex-col items-start justify-start ">
                                         <p onClick={() => { handleNavigate(comment?.author?.username, comment?.author?._id) }} className={`${mainTextTheme} text-sm font-medium ml-2`}>{comment.author?.username || comment?.author?.name}</p>
                                         <div className="w-full 2xl:w-90 pr-2 h-fit overflow-hidden">
@@ -324,9 +374,9 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
                                             </div>}
                                             <div onMouseOver={() => { setShowOptions(`${reply._id}`) }} onMouseLeave={() => { setShowOptions('') }} className="w-full h-fit flex flex-col items-start justify-center"> 
                                                 <div className="w-full h-fit flex items-center justify-start gap-2">
-                                                    <img src={reply?.author?.profilepic || dp} alt="author image" className="w-7 h-7 z-0 rounded-full object-cover" />
+                                                    <img onClick={() => { handleNavigate(reply?.author?.username, reply?.author?._id) }} src={reply?.author?.profilepic || dp} alt="author image" className="w-7 h-7 z-0 rounded-full object-cover" />
                                                     <div className="w-full h-fit flex flex-col items-start justify-center">
-                                                        <p className={`${mainTextTheme} text-sm font-medium`}>{reply?.author?.username || reply?.author?.name}</p>
+                                                        <p onClick={() => { handleNavigate(reply?.author?.username, reply?.author?._id) }} className={`${mainTextTheme} text-sm font-medium`}>{reply?.author?.username || reply?.author?.name}</p>
                                                         <p className={`${mainTextTheme} text-xs`}>{reply?.reply?.startsWith('@') ?
                                                             <>
                                                                 <span className="text-[#0095f6] font-medium">{reply?.reply.split(' ')[0]}</span>

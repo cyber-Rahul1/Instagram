@@ -14,10 +14,13 @@ const ProfileReels = () => {
 
   const dispatch = useDispatch();
   const { identifier } = useParams();
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     dispatch(getUserReels(identifier))
   }, [dispatch, identifier])
+
+  //-----------------------------------------------------------------------------------
 
   const { theme, setActiveItem, setSearchIsFocussed, viewPost, setViewPost, setNotificationIsFocussed, setShowComment, showComment, viewReels, setViewReels } = useContext(ThemeContext);
   const [reelsindexval, setReelsindexval] = useState(0)
@@ -27,16 +30,19 @@ const ProfileReels = () => {
   const { userProfile } = useSelector((state) => state.user)
   const { userReels, status } = useSelector((state) => state.post)
 
+  //-----------------------------------------------------------------------------------
 
   useEffect(() => {
     setReels(userReels?.posts)
   }, [userReels, reels])
 
+  //-----------------------------------------------------------------------------------
+
   return (
     <div onClick={() => { setActiveItem('Reels'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} flex flex-col items-center justify-start pb-10 h-screen w-full px-1`}>
       <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center">
-        {userProfile?.posts?.length === 0 && <EmptyPage page={'reels'} />}
-        {userProfile?.posts?.length > 0 && <PostCards setViewReels={setViewReels} posts={reels} userProfile={userProfile} status={status} setViewPost={setViewPost} setIndexval={setReelsindexval} setShowComment={setShowComment} setPostId={setReelsPostId} setShowReplies={setShowReplies} />}
+        {reels?.length === 0  && <EmptyPage page={'reels'} />}
+        {reels?.length > 0 && <PostCards setViewReels={setViewReels} posts={reels} userProfile={userProfile} status={status} setViewPost={setViewPost} setIndexval={setReelsindexval} setShowComment={setShowComment} setPostId={setReelsPostId} setShowReplies={setShowReplies} />}
         {viewPost && <ViewPostCards viewReels={viewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={reelsPostId} setIndexval={setReelsindexval} indexval={reelsindexval} posts={reels} setPosts={setReels} />}
       </div>
       <div className="w-full h-fit pt-10">
