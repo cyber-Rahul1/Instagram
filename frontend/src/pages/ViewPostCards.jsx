@@ -380,7 +380,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   }, []);
 
   return (
-    <div className={`post-cards fixed top-0 left-0 w-screen h-screen flex items-center justify-center py-10 lg:px-0 md:px-18 overflow-y-auto overflow-x-hidden ${viewReels ? 'pb-20 pt-15' : ''}`}>
+    <div className={`post-cards fixed top-0 left-0 w-screen h-screen flex items-center justify-center py-10 lg:px-0 md:px-18  ${viewReels ? 'pb-20 pt-15' : ''}`}>
       <div className="fixed top-0 left-0 z-10 w-screen bg-[#000000b9] h-screen" onClick={() => { setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} />
 
       {page !== 'main' && <div ref={leftRef} className={`absolute top-100 left-3 2xl:left-10 z-10 cursor-pointer ${(indexval === 0 || page === 'main') ? "hidden" : ""} `} onClick={(e) => { e.stopPropagation(); handleLeft(); }}>
@@ -440,15 +440,15 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
                 <PostComments setPostIdInMain={setPostIdInMain} post={post} page={page} status={status} posts={posts} showComment={showComment} indexval={indexval} allComments={allComments} allReplies={allReplies} showReplies={showReplies} setShowReplies={setShowReplies} reply={reply} setReply={setReply} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} />
               </div>
             }
-            {showComment && <div style={{ boxShadow: `0 -4px 20px -1px ${theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : (theme === 'light') ? 'rgba(0, 0, 0, 0.2)' : ' rgba(0, 0, 0, 0.2)'}` }} className={`fixed top-30 rounded-t-3xl left-0 z-50 w-screen ${bgTheme} h-[80%] py-10 flex md:hidden flex-col items-start justify-start overflow-y-auto overflow-x-hidden`}>
+            {showComment && <div style={{ boxShadow: `0 -4px 20px -1px ${theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : (theme === 'light') ? 'rgba(0, 0, 0, 0.2)' : ' rgba(0, 0, 0, 0.2)'}` }} className={`fixed top-50 rounded-t-3xl left-0 z-50 w-screen ${bgTheme} h-[80%] py-10 flex md:hidden flex-col items-start justify-start overflow-y-auto overflow-x-hidden`}>
 
-              <div className={`relative left-0 z-0 w-screen ${bgTheme} h-full flex md:hidden flex-col items-start justify-start overflow-y-auto overflow-x-hidden`}>
-                <div className={`${bgTheme} w-full h-fit fixed z-20 top-32 left-0 flex items-center justify-center pt-0 py-4 gap-3 rounded-t-xl`}>
+              <div className={`relative left-0 z-0 w-screen pb-10 ${bgTheme} h-full flex md:hidden flex-col items-start justify-start overflow-y-auto overflow-x-hidden`}>
+                <div className={`${bgTheme} w-full h-fit fixed z-20 top-52 left-0 flex items-center justify-center pt-0 py-4 gap-3 rounded-t-xl`}>
                   <p className={`${mainTextTheme} text-sm font-medium`}>Comments</p>
                 </div>
                 <PostComments post={post} page={page} status={status} showComment={showComment} posts={posts} indexval={indexval} allComments={allComments} allReplies={allReplies} showReplies={showReplies} setShowReplies={setShowReplies} reply={reply} setReply={setReply} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} />
               </div>
-              {<div className={`${bgTheme} w-full h-fit fixed z-20 bottom-9 left-0 flex items-center justify-center pt-0 p-3 gap-3 ${(posts && posts[indexval]?.hideComments) || (page === 'main' && post?.hideComments) ? 'hidden' : ''}`}>
+              {<div className={`${bgTheme} w-full h-fit fixed z-100 bottom-0 left-0 flex items-center justify-center pt-0 p-3 gap-3 ${(posts && posts[indexval]?.hideComments) || (page === 'main' && post?.hideComments) ? 'hidden' : ''}`}>
                 <CommentInput theme={theme} reply={reply} commentId={commentId} setCommentId={setCommentId} comment={comment} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} setEmoji={setEmoji} emoji={emoji} postId={postId} postIdInMain={postIdInMain} posts={posts} indexval={indexval} page={page} post={post} />
               </div>}
             </div>}

@@ -207,7 +207,7 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
     }
 
     return (
-        <div className="w-screen h-screen md:w-fit md:h-fit flex items-center justify-center">
+        <div onClick={(e) => { e.stopPropagation(); }} className="w-screen h-screen md:w-fit md:h-fit flex items-center justify-center">
             <h1 onClick={() => { setViewStory(false) }} className="hidden md:block heading absolute left-10 top-5 text-white text-3xl font-bold cursor-pointer">Instagram</h1>
             {story1?.image && <div className="relative flex items-center justify-center w-fit h-screen pb-20 md:py-10">
                 {<div onClick={() => { handleLeft() }} className={`${page !== 'main' ? 'hidden' : ''} absolute md:relative md:mb-40 left-0 top-30 h-150 md:h-fit w-30 md:w-20 flex items-center justify-center ${storyIndex === 0 ? 'opacity-0 pointer-events-none' : ''}`}>
