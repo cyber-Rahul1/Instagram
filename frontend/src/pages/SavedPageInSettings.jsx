@@ -9,6 +9,7 @@ import { getUserSavedPosts } from "../redux/postSlice"
 import { IoIosArrowBack } from "react-icons/io"
 import { useNavigate } from "react-router-dom"
 import ViewPostCards from "./ViewPostCards"
+import { AiOutlineLeft } from "react-icons/ai"
 
 const SavedPageInSettings = () => {
 
@@ -62,7 +63,7 @@ const SavedPageInSettings = () => {
 
   return (
     <div className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} w-full  lg:w-[950px] h-fit flex flex-col items-center justify-start px-1 mt-0 m-auto`}>
-      <div onClick={() => { navigate(-1) }} className="cursor-pointer active:scale-95 w-full h-fit flex items-center justify-start py-3 gap-2">
+      <div onClick={() => { navigate(`/profile/${userProfile?.username || userProfile?._id}`) }} className="cursor-pointer active:scale-95 w-full h-fit flex items-center justify-start py-3 gap-2">
         <IoIosArrowBack size={24}  className=" text-[#908d8de7] transition-all duration-200 ease-in-out " />
         <h1 className={`text-md font-bold  ${theme === 'dark' ? 'text-[#908d8de7]' : (theme === 'light') ? 'text-[#4c4b4b]' : ' text-black dark:text-[#908d8de7]'}`}>Saved</h1>
       </div>
@@ -74,7 +75,15 @@ const SavedPageInSettings = () => {
       <div className="w-full xl:w-[950px] flex-1 h-fit flex flex-col items-center justify-center pb-10 px-1 ">
         {userProfile?.saved?.length === 0 && <EmptyPage page={'saved'} />}
         {userProfile?.saved?.length > 0 && <PostCards posts={posts} setViewReels={setViewReels} viewReels={viewReels} setViewPost={setViewPost} setIndexval={setSavedIndexval} setShowComment={setShowComment} setPostId={setSavedPostId} setShowReplies={setShowReplies} userProfile={userProfile} status={status} page={'saved'} />}
-        {viewPost && <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={savedPostId} setSavedPostId={setSavedPostId} setIndexval={setSavedIndexval} indexval={savedindexval} posts={posts} setPosts={setPosts} />}
+        {viewPost && <div className="w-full h-full">
+          <div className={`fixed top-0 left-0 z-10 w-full h-14 flex items-center justify-center gap-4 border-b-1 ${theme === 'dark' ? 'bg-black text-white border-[#363636]' : (theme === 'light') ? 'bg-white border-[#d3d3d3] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`}>
+            <div onClick={() => { setViewPost(false); setShowComment(false); }} className="absolute left-1 active:scale-95 cursor-pointer active:text-[#ffffff94]">
+              <AiOutlineLeft size={24} />
+            </div>
+            <p className="text-[15px] font-semibold ">Post</p>
+          </div>
+          <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={savedPostId} setSavedPostId={setSavedPostId} setIndexval={setSavedIndexval} indexval={savedindexval} posts={posts} setPosts={setPosts} />
+        </div> }
         <div className="w-full h-fit pt-10">
           <LoginFooter theme={theme} page={'posts'} />
         </div>

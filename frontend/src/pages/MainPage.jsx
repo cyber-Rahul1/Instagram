@@ -34,7 +34,7 @@ import ViewStoryCards from "../components/ViewStoryCards";
 const MainPage = () => {
 
 
-  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, viewPost, setViewPost, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, aboutAcc, setAboutAcc, editPost, setEditPost, showCross, setAuthorName, viewStory, setViewStory } = useContext(ThemeContext);
+  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, viewPost, setViewPost, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, aboutAcc, setAboutAcc, editPost, setEditPost, showCross, setAuthorName } = useContext(ThemeContext);
   const [emoji, setEmoji] = useState(false)
   const { allComments, allReplies } = useSelector((state) => state.post)
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
@@ -57,6 +57,7 @@ const MainPage = () => {
   const [viewReels, setViewReels] = useState(false)
   const [editPostId, setEditPostId] = useState('')
   const [storyId, setStoryId] = useState('')
+  const [viewStory, setViewStory] = useState(false)
   const [aboutPost, setAboutPost] = useState({})
 
 
@@ -296,10 +297,10 @@ const MainPage = () => {
 
 
   return (
-    <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen w-full overflow-y-auto overflow-x-hidden `}>
+    <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen w-full overflow-y-auto   `}>
 
       {(viewStory) &&
-        <div className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center justify-center">
+        <div className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center justify-center bg-[black] md:bg-[#1A1A1A]">
           <ViewStoryCards storyId={storyId} setViewStory={setViewStory} />
         </div>}
       <div className="w-screen lg:w-2/3 h-screen flex flex-col items-center justify-start gap-4 lg:pl-45 pt-15 md:pt-4">
@@ -385,7 +386,7 @@ const MainPage = () => {
           ))}
         </div>
 
-        {(!loading && viewPost) && <div onClick={() => { dispatch(getAllPosts()); setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} className="fixed top-0 left-0 w-screen z-50 hidden md:flex h-screen flex-col items-center justify-center bg-[#000000a5]">
+        {(!loading && viewPost) && <div onClick={() => { dispatch(getAllPosts()); setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} className="fixed overflow-hidden top-0 left-0 w-screen z-50 hidden md:flex h-screen flex-col items-center justify-center bg-[#000000a5]">
 
 
           <ViewPostCards handleLike={handleLike} posts={posts} setPosts={setPosts} liked={liked} page={'main'} postIdInMain={postIdInMain} setPostIdInMain={setPostIdInMain} setViewPost={setViewPost} viewPost={viewPost} viewReels={viewReels} setShowComment={setShowComment} showComment={showComment} reply={reply} setReply={setReply} />

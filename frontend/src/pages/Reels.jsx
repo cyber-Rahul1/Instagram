@@ -270,14 +270,14 @@ const Reels = () => {
 
 
   return (
-    <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'} flex h-screen w-full items-center justify-center `}>
+    <div onClick={() => { setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'} flex h-screen w-full items-center justify-center`}>
       {viewStory &&
         <div onClick={() => { setViewStory(false); }} className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center bg-[#1A1A1A] justify-center">
           <ViewStoryCards storyId={storyId} setViewStory={setViewStory} />
         </div>}
-      <div className="w-screen h-screen flex flex-col items-center justify-start pt-10 overflow-y-scroll overflow-x-hidden snap-y snap-mandatory snap-always scroll-smooth xl:pr-70 md:scroll-pt-16">
+      <div className="w-screen h-screen flex flex-col items-center justify-start pt-10 my-10 overflow-y-scroll overflow-x-hidden snap-y snap-mandatory snap-always scroll-smooth xl:pr-70 md:scroll-pt-16">
 
-        <div className="flex flex-col items-start justify-center w-full sm:w-120 h-fit z-0 pb-10 ">
+        <div className="flex flex-col items-start justify-center w-full sm:w-120 h-fit z-0 pb-10 gap-5">
           {aboutAcc &&
             <div onClick={() => { setAboutAcc(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#0000003b] items-center justify-center" >
               <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country='India' page={'main'} post={aboutPost} />
@@ -292,12 +292,13 @@ const Reels = () => {
             <div className="h-15 w-15 border-t-1 border-b-1 border-[white] rounded-full animate-spin transition-all duration-500 ease-in-out" />
           </div>}
           {(posts && posts?.length > 0) && posts?.map((post) => (
-            <div key={post._id} className={`relative h-screen w-full md:w-109 xl:w-110 md:h-185 xl:h-200 flex flex-col items-center justify-center `}>
+            <div key={post._id} className={`relative h-screen w-full md:w-109 xl:w-110 md:h-185 xl:h-200 flex flex-col items-center justify-center pt-15 py-10 md:py-0 gap-4`}>
               {editPost &&
                 <div onClick={() => { setEditPost(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center bg-[#000000b1] justify-center">
                   <EditPost page={'posts'} postId={editPostId} />
                 </div>}
-              <div className={`w-full h-full snap-start md:shadow-2xl border-1 rounded-md ${theme === 'dark' ? 'border-[#363636] shadow-[#ffffff93]' : (theme === 'light') ? 'border-[#d3d3d3] bg-[#0000009a] shadow-black' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
+              <div className={`w-full h-full snap-start md:shadow-2xl border-1 pt-10 md:pt-0 rounded-md ${theme === 'dark' ? 'border-[#363636] shadow-[#ffffff93]' : (theme === 'light') ? 'border-[#d3d3d3] bg-[#0000009a] shadow-black' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
+                <p className={`text-lg md:hidden font-medium absolute top-18 left-5 ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Reels</p>
                 <img src={post?.image} alt="Post Image" className="w-full h-full object-cover rounded-sm" />
               </div>
               <div className="absolute bottom-5 right-0 w-screen md:w-full h-fit flex items-center justify-between md:justify-center px-1">

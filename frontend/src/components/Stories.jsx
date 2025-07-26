@@ -70,7 +70,7 @@ const Stories = () => {
 
     return (
         <div className="w-full h-fit flex items-center justify-start gap-4 p-2 overflow-x-auto scrollbar-none overflow-y-hidden scroll-smooth">
-            {viewStory && <div onClick={(e) => { e.stopPropagation(); }} className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[black] md:bg-[#1A1A1A] z-60">
+            {viewStory && <div onClick={(e) => { e.stopPropagation(); }} className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[black] md:bg-[#1A1A1A] z-100">
                 <ViewStoryCards page='main' story={story} setViewStory={setViewStory} storyId={storyId} setStoryId={setStoryId} stories={stories} storyIndex={storyIndex} setStoryIndex={setStoryIndex} />
             </div>}
             <input onChange={(e) => { handleImg(e) }} type="file" id="file" accept="image/*" ref={fileInputRef} className="hidden" />

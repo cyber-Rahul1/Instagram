@@ -197,6 +197,8 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
 
     }, [serverUrl, story1, userData?.user?._id])
 
+    //-------------------------------------------------------------------
+
     const handleLike = async () => {
         try {
             let result = await axios.get(`${serverUrl}/api/story/likestory/${story1?._id}`, { withCredentials: true });
@@ -206,10 +208,12 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
         }
     }
 
+    //-------------------------------------------------------------------
+
     return (
-        <div onClick={(e) => { e.stopPropagation(); }} className="w-screen h-screen md:w-fit md:h-fit flex items-center justify-center">
+        <div className=" w-screen h-screen md:w-fit md:h-fit flex items-center justify-center">
             <h1 onClick={() => { setViewStory(false) }} className="hidden md:block heading absolute left-10 top-5 text-white text-3xl font-bold cursor-pointer">Instagram</h1>
-            {story1?.image && <div className="relative flex items-center justify-center w-fit h-screen pb-20 md:py-10">
+            {story1?.image && <div className="relative flex items-center justify-center w-fit h-screen pb-20 md:py-10 ">
                 {<div onClick={() => { handleLeft() }} className={`${page !== 'main' ? 'hidden' : ''} absolute md:relative md:mb-40 left-0 top-30 h-150 md:h-fit w-30 md:w-20 flex items-center justify-center ${storyIndex === 0 ? 'opacity-0 pointer-events-none' : ''}`}>
                     <TfiArrowCircleLeft size={24} className={`cursor-pointer hidden md:block text-[#ffffff80] hover:text-white active:scale-95 transition-all duration-200 ease-in-out`} />
                 </div>}
@@ -217,9 +221,9 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
                     <div ref={progressBarRef} className={`progress-bar h-[4px] bg-white rounded-full`}>
                     </div>
                 </div>
-                <img src={story1?.image} alt="story" className="md:w-120 h-full object-cover md:rounded-xl" />
-                <div className="absolute bottom-5 md:bottom-15 left-0 w-full h-fit z-120 px-2 md:px-22 flex items-center justify-between gap-2">
-                    <input ref={inputRef} onFocus={() => { setFocused(true) }} onBlur={() => { setFocused(false) }} type="text" placeholder={`Reply to ${story1?.author?.username || story1?.author?.name}...`} className="placeholder:text-white w-full h-fit py-2 bg-transparent outline-none border-1 border-white text-white rounded-full px-5" />
+                <img src={story1?.image} alt="story" className="md:w-120 h-full pointer-events-none object-cover md:rounded-xl " />
+                <div className={`absolute bottom-5 md:bottom-15 left-0 w-full h-fit z-150 px-2  flex items-center justify-between gap-2 ${page !== 'main' ? 'px-6' : 'px-6 md:px-26'}`}>
+                    <input ref={inputRef} onFocus={() => { setFocused(true) }} onBlur={() => { setFocused(false) }} type="text" placeholder={`Reply to ${story1?.author?.username || story1?.author?.name}...`} className="placeholder:text-white w-full h-fit py-2 bg-transparent outline-none border-1 border-white text-white rounded-full z-50 px-5" />
                     <div className={`w-fit h-fit flex items-center justify-center gap-2 ${focussed ? 'hidden' : ''}`}>
                         <div onClick={() => { handleLike() }} className="w-fit h-fit flex items-center">
                             {(story1?.likes && Array.isArray(story1?.likes) && story1?.likes?.some(l => l._id === userData?.user?._id)) ? <img src={heartfill} alt="liked" className="w-7 h-7 cursor-pointer transition-all duration-200 ease-in-out" /> : <GoHeart size={27} className={`text-white active:scale-95 cursor-pointer transition-all duration-200 ease-in-out`} />}
@@ -227,7 +231,7 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
                         <FiSend size={27} className={`text-white active:scale-95 cursor-pointer transition-all duration-200 ease-in-out`} />
                     </div>
                 </div>
-                <div className={`absolute top-10 md:top-20 left-0 w-full h-fit flex items-start justify-between gap-2 ${page !== 'main' ? 'px-6' : 'px-6 md:px-26'}`}>
+                <div className={`absolute top-10 md:top-20 left-0 w-full h-fit flex items-start justify-between z-250 gap-2 ${page !== 'main' ? 'px-6' : 'px-6 md:px-26'}`}>
                     <div className="w-full h-fit flex items-center justify-start gap-2">
                         {<img src={story1?.author?.profilepic || dp} alt="story author" className="w-10 h-10 rounded-full object-cover border-2 border-white" />}
                         <div className="flex flex-col items-start justify-start">
@@ -235,11 +239,11 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
                             <p className={"text-[#ffffff7d] text-xs font-medium"}>{moment(story1?.createdAt).fromNow()}</p>
                         </div>
                     </div>
-                    {muted ? <PiSpeakerSimpleSlashFill onClick={() => { setMuted(!muted) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} /> : <PiSpeakerSimpleHighFill onClick={() => { setMuted(!muted) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />}
-                    {paused ? <IoPlay onClick={() => { setPaused(!paused) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} /> : <MdOutlinePause onClick={() => { setPaused(!paused) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />}
-                    <BsThreeDots onClick={() => { setOptions(!options) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />
+                    {muted ? <PiSpeakerSimpleSlashFill onClick={(e) => { e.stopPropagation(); setMuted(!muted) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} /> : <PiSpeakerSimpleHighFill onClick={(e) => { e.stopPropagation(); setMuted(!muted) }} size={24} className={`pointer-events-auto cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />}
+                    {paused ? <IoPlay onClick={(e) => { e.stopPropagation(); setPaused(!paused) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} /> : <MdOutlinePause onClick={(e) => { e.stopPropagation(); setPaused(!paused) }} size={24} className={`pointer-events-auto cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />}
+                    <BsThreeDots onClick={(e) => { e.stopPropagation(); setOptions(!options) }} size={24} className={`pointer-events-auto cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />
                 </div>
-                <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center gap-2">
+                <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
                     <p className="text-white text-xl text-shadow-lg font-semibold">{story1?.caption}</p>
                 </div>
                 {<div onClick={() => { handleRight() }} className={`${page !== 'main' ? 'hidden' : ''} absolute md:relative md:mb-40 right-0 top-30 h-150 md:h-fit w-30 md:w-20 flex items-center justify-center ${storyIndex === stories?.length - 1 ? 'opacity-0 pointer-events-none' : ''}`}>
