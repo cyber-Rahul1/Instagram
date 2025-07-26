@@ -32,7 +32,7 @@ const SwitchTheme = ({ setTheme, theme, setSwitchTheme, setBottomActive, page })
     }
 
     return (
-        <div className={`switch-theme ${page === 'settings' ? '' : 'w-fit h-fit '} pb-3 w-[270px] rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#262626] text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white text-black dark:text-white dark:bg-[#262626]'}`}>
+        <div className={`switch-theme ${page === 'settings' ? 'w-screen mx-5' : 'w-full h-fit '} pb-3 w-[270px] rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#262626] text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white text-black dark:text-white dark:bg-[#262626]'}`}>
             <div className={` ${page === 'settings' ? 'hidden' : 'w-full h-fit'} `}>
                 <div className="flex items-center justify-between py-[11px] my-1 px-3 mx-2 rounded-lg">
                     <div className="flex items-center gap-2">
@@ -48,7 +48,7 @@ const SwitchTheme = ({ setTheme, theme, setSwitchTheme, setBottomActive, page })
                 </div>
                 <hr className={`w-full h-[1px] outline-none border-none  ${theme === 'dark' ? 'bg-[#363636] ' : (theme === 'light') ? 'bg-[#dedbdb]' : ' bg-[#f2f2f2] dark:bg-[#363636]'}`} />
             </div>
-            <div className={`${page === 'settings' ? 'w-screen px-10' : 'w-fit h-fit pr-4'}`}>
+            <div className={`${page === 'settings' ? 'w-full px-5' : 'w-fit h-fit '} flex items-center justify-center`}>
                 <button onClick={() => setTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'dark' : 'dark')} className={`cursor-pointer flex items-center justify-between w-full ${page === 'settings' ?  'rounded-2xl flex-1 py-5' : 'gap-32 py-[17px] rounded-lg mx-2' }  mt-[12px] px-3 ${page === 'settings' ? theme === "dark" ? 'border-1 border-[#71707058] text-white' : 'text-black border-[#67666658] border-1' : theme === 'dark' ? 'bg-[#262626] text-white active:bg-[#6a6969] hover:bg-[#3c3c3c]' : theme === 'light' ? 'bg-white active:bg-[#dedede] hover:bg-[#f2f2f2] text-black' : 'hover:bg-[#f2f2f2] active:bg-[#dedede] text-black dark:text-white dark:active:bg-[#6a6969] dark:hover:bg-[#3c3c3c]'}`}>
 
                     <p className={` ${page === 'settings' ? 'text-md' : 'text-sm'}`}>Dark mode</p>

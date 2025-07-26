@@ -109,6 +109,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
   const [post, setPost] = useState({})
   const [userPost, setUserPost] = useState({})
   const [country, setCountry] = useState('')
+  const [aboutPost, setAboutPost] = useState('')
 
   let textTheme = theme === 'dark' ? 'text-[#ffffffa5]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[#ffffffa5]'
   let bgTheme = theme === 'dark' ? 'bg-[black] md:bg-[#212328] border-l-1 border-[#363636]' : (theme === 'light') ? 'bg-white border-l-1 border-[#d3d3d3]' : ' bg-white dark:bg-[#212328]'
@@ -333,9 +334,10 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
 
   //-----------------------------------------------------------------------------------
 
-  const handleClickOptions = (authorId) => {
+  const handleClickOptions = (authorId, post) => {
     setShowOptions(!showOptions);
     setSameData(authorId === userData?.user?._id)
+    setAboutPost(post)
   }
 
   //-----------------------------------------------------------------------------------
@@ -379,8 +381,9 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     );
   }, []);
 
+
   return (
-   <div className="relative w-full h-full flex flex-col items-center justify-center ">
+    <div className="relative w-full h-full flex flex-col items-center justify-center ">
       <div className={`post-cards fixed top-0 left-0 w-screen h-screen flex items-center justify-center py-10 lg:px-0 md:px-18 overflow-y-scroll md:overflow-hidden  ${viewReels ? 'pb-20 pt-15' : ''}`}>
         <div className="fixed top-0 left-0 z-10 w-screen bg-[#000000b9] h-screen" onClick={() => { setComment(''); setReply(false); setViewPost(false); setShowComment(false); }} />
 
@@ -390,8 +393,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
         {page !== 'main' && <div ref={rightRef} className={` absolute top-100 right-3 2xl:right-10 z-10 cursor-pointer ${(indexval === posts?.length - 1 || page === 'main') ? "hidden" : ""} `} onClick={(e) => { e.stopPropagation(); handleRight(); }}>
           <IoIosArrowDroprightCircle size={40} className="text-white hidden md:block" />
         </div>}
-        <div onClick={(e) => { e.stopPropagation(); }} className=" flex w-fit 2xl:w-340 2xl:h-210 md:h-120 lg:h-150 xl:h-190 items-center justify-center z-10 ">
-          <div className={`${viewReels ? 'md:w-80 lg:w-100 xl:w-120' : 'lg:w-150 md:w-100 2xl:w-230'} h-full hidden md:flex flex-col items-center justify-center z-10 overflow-hidden`}>
+        <div onClick={(e) => { e.stopPropagation(); }} className="h-fit flex w-fit 2xl:w-340 2xl:h-210 md:h-120 lg:h-150 xl:h-190 items-center justify-center z-10 ">
+          <div className={`${viewReels ? 'md:w-80 lg:w-100 xl:w-120 h-fit' : 'lg:w-150 md:w-100 2xl:w-230 h-full'} hidden md:flex flex-col items-center justify-center z-10 overflow-hidden`}>
             <ViewPostImage viewReels={viewReels} handleLike={handleLike} posts={posts} post={post} indexval={indexval} postId={postId} postIdInMain={postIdInMain} page={page} />
           </div>
           <div className={`2xl:w-130 xl:h-190 2xl:h-full 3xl:h-215 md:w-100 h-screen w-screen md:h-full pt-15 md:pt-0 overflow-auto ${bgTheme} pb-3 md:pb-0 rounded-l-md md:rounded-l-none rounded-r-md flex flex-col items-center justify-start md:justify-between z-10 md:overflow-hidden `}>
@@ -420,7 +423,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
                 </div>
               }
               <div className="w-10 h-full pr-3 flex items-center justify-center cursor-pointer">
-                <BsThreeDots onClick={() => { handleClickOptions(page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
+                <BsThreeDots onClick={() => { handleClickOptions((page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id), (page !== 'main' ? posts[indexval] : post)); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
               </div>
             </div>
             {editPost &&
@@ -485,22 +488,24 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
           </div>
         </div>
         {
-          aboutAcc && <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country={country} userPost={userPost} setCountry={setCountry} setUserPost={setUserPost} page={page} post={post} />
+          aboutAcc && <div className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#0000007b] items-center justify-center" onClick={() => { setAboutAcc(false); }}>
+            <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country={country} userPost={userPost} setCountry={setCountry} setUserPost={setUserPost} page={page} post={aboutPost} />
+          </div>
         }
       </div>
-        {showComment && <div style={{ boxShadow: `0 -4px 20px -1px ${theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : (theme === 'light') ? 'rgba(0, 0, 0, 0.2)' : ' rgba(0, 0, 0, 0.2)'}` }} className={`fixed top-50 rounded-t-3xl left-0 z-50 w-screen ${bgTheme} h-[80%] py-10 flex md:hidden flex-col items-start justify-start `}>
+      {showComment && <div style={{ boxShadow: `0 -4px 20px -1px ${theme === 'dark' ? 'rgba(255, 255, 255, 0.3)' : (theme === 'light') ? 'rgba(0, 0, 0, 0.2)' : ' rgba(0, 0, 0, 0.2)'}` }} className={`fixed top-50 rounded-t-3xl left-0 z-50 w-screen ${bgTheme} h-[80%] py-10 flex md:hidden flex-col items-start justify-start `}>
 
-          <div className={`relative left-0 z-0 w-screen pb-10 ${bgTheme} h-full flex md:hidden flex-col items-start justify-start overflow-y-auto overflow-x-hidden`}>
-            <div className={`${bgTheme} w-full h-fit fixed z-20 top-52 left-0 flex items-center justify-center pt-0 py-4 gap-3 rounded-t-xl`}>
-              <p className={`${mainTextTheme} text-sm font-medium`}>Comments</p>
-            </div>
-            <PostComments post={post} page={page} status={status} showComment={showComment} posts={posts} indexval={indexval} allComments={allComments} allReplies={allReplies} showReplies={showReplies} setShowReplies={setShowReplies} reply={reply} setReply={setReply} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} />
+        <div className={`relative left-0 z-0 w-screen pb-10 ${bgTheme} h-full flex md:hidden flex-col items-start justify-start overflow-y-auto overflow-x-hidden`}>
+          <div className={`${bgTheme} w-full h-fit fixed z-20 top-52 left-0 flex items-center justify-center pt-0 py-4 gap-3 rounded-t-xl`}>
+            <p className={`${mainTextTheme} text-sm font-medium`}>Comments</p>
           </div>
-          {<div className={`${bgTheme} w-full h-fit fixed z-100 bottom-0 left-0 flex items-center justify-center pt-0 p-3 gap-3 ${(posts && posts[indexval]?.hideComments) || (page === 'main' && post?.hideComments) ? 'hidden' : ''}`}>
-            <CommentInput theme={theme} reply={reply} commentId={commentId} setCommentId={setCommentId} comment={comment} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} setEmoji={setEmoji} emoji={emoji} postId={postId} postIdInMain={postIdInMain} posts={posts} indexval={indexval} page={page} post={post} />
-          </div>}
+          <PostComments post={post} page={page} status={status} showComment={showComment} posts={posts} indexval={indexval} allComments={allComments} allReplies={allReplies} showReplies={showReplies} setShowReplies={setShowReplies} reply={reply} setReply={setReply} commentId={commentId} setCommentId={setCommentId} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} />
+        </div>
+        {<div className={`${bgTheme} w-full h-fit fixed z-100 bottom-0 left-0 flex items-center justify-center pt-0 p-3 gap-3 ${(posts && posts[indexval]?.hideComments) || (page === 'main' && post?.hideComments) ? 'hidden' : ''}`}>
+          <CommentInput theme={theme} reply={reply} commentId={commentId} setCommentId={setCommentId} comment={comment} setComment={setComment} handleAddReply={handleAddReply} handleAddComment={handleAddComment} loading={loading} setLoading={setLoading} setEmoji={setEmoji} emoji={emoji} postId={postId} postIdInMain={postIdInMain} posts={posts} indexval={indexval} page={page} post={post} />
         </div>}
-   </div>
+      </div>}
+    </div>
   )
 }
 

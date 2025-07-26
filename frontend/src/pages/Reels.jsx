@@ -27,7 +27,7 @@ import AboutAccount from "../components/AboutAccount";
 const Reels = () => {
 
 
-  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, setViewReels, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, editPost, setEditPost, setAuthorName, aboutAcc, setAboutAcc } = useContext(ThemeContext);
+  const { theme, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, setViewReels, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, editPost, setEditPost, setAuthorName, aboutAcc, setAboutAcc } = useContext(ThemeContext);
   const [emoji, setEmoji] = useState(false)
   const dispatch = useDispatch();
 
@@ -115,7 +115,6 @@ const Reels = () => {
     if (currentPost?.likes) {
       setLikedUsers(currentPost.likes);
     }
-    console.log(likedUsers)
   }, [post, likedUsers, setLikedUsers])
 
 
@@ -163,7 +162,6 @@ const Reels = () => {
 
   useEffect(() => {
     if (allReels) setUserSaved(allReels?.posts)
-    console.log(userSaved)
   }, [allReels, userSaved])
 
 
@@ -288,7 +286,7 @@ const Reels = () => {
               <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen  bg-[#000000b9] blur-6xl opacity-85" />
               <CommentOptions postIdInMain={postIdInMain} page={'main'} setShowOptions={setShowOptions} />
             </div>}
-          {status === 'loading' && <div className="w-full h-100 flex items-center justify-center">
+          {status === 'loading' && <div className="w-full h-screen flex items-center justify-center">
             <div className="h-15 w-15 border-t-1 border-b-1 border-[white] rounded-full animate-spin transition-all duration-500 ease-in-out" />
           </div>}
           {(posts && posts?.length > 0) && posts?.map((post) => (
@@ -305,7 +303,6 @@ const Reels = () => {
                 <div className=" md:absolute bottom-5 left-3 md:left-5 w-full h-fit flex flex-col items-start justify-end pt-25 md:pt-0">
                   <div className={` w-fit h-fit flex items-center justify-start px-4 md:px-1`}>
                     <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-[#363636]' : 'bg-transparent'}`}>
-                      {console.log(post?.author?.story)}
                       <img src={post?.author?.profilepic || dp} alt="author image" className={`w-9 h-9 rounded-full object-cover border-1 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`} />
                     </div>
                     <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-semibold ml-2 cursor-pointer">{post?.author?.username}</p>

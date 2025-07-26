@@ -318,14 +318,14 @@ const MainPage = () => {
               <p className="text-xl pt-2">You're all caught up</p>
               <p className="text-sm text-[#ffffffa5]">You've seen all new posts from the past 3 days.</p>
             </div>}
-          {!allPosts && <div className={`w-full h-full flex items-center justify-start flex-col pt-10`}>
+          {!allPosts && <div className={`w-screen md:w-full h-full flex items-center justify-start flex-col pt-10 px-5`}>
             {items.map((item, index) => (
-              <div key={index} className={`animate-pulse w-fit h-fit flex flex-col items-start justify-center gap-5 pb-5`}>
-                <div className="w-full h-fit flex items-start justify-start gap-3">
+              <div key={index} className={`animate-pulse w-full md:w-fit h-fit flex flex-col items-start justify-center gap-5 pb-5`}>
+                <div className="w-full h-fit flex items-start justify-start gap-3 ">
                   <div className={`w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
                   <div className={`w-40 h-5 rounded-md mt-2 ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
                 </div>
-                <div className={`w-100 h-120 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+                <div className={`w-full md:w-100 h-120 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
               </div>
             ))}
           </div>}

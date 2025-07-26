@@ -41,6 +41,8 @@ const ProfileReels = () => {
 
   return (
     <div onClick={() => { setActiveItem('Reels'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} flex flex-col items-center justify-start pb-10 h-screen w-full px-1`}>
+      {status === 'loading' && <div className={`w-full h-100 flex items-center justify-center`}>
+        <div className={`h-15 w-15 border-t-1 border-b-1  ${theme === 'dark' ? 'border-[#ffffff]' : (theme === 'light') ? 'border-[#000000]' : ' border-[#000000] dark:border-[#ffffff]'} rounded-full animate-spin transition-all duration-500 ease-in-out`} /></div>}
       <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center">
         {reels?.length === 0  && <EmptyPage page={'reels'} />}
         {reels?.length > 0 && <PostCards setViewReels={setViewReels} posts={reels} userProfile={userProfile} status={status} setViewPost={setViewPost} setIndexval={setReelsindexval} setShowComment={setShowComment} setPostId={setReelsPostId} setShowReplies={setShowReplies} page={'reels'} />}

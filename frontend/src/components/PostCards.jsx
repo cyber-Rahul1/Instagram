@@ -44,7 +44,7 @@ const PostCards = ({ posts, setViewReels, setViewPost, setIndexval, status, setS
                 <div className={`h-15 w-15 border-t-1 border-b-1  ${theme === 'dark' ? 'border-[#ffffff]' : (theme === 'light') ? 'border-[#000000]' : ' border-[#000000] dark:border-[#ffffff]'} rounded-full animate-spin transition-all duration-500 ease-in-out`}/></div> :
                 <div className={`w-full h-fit grid grid-cols-3 gap-1 justify-items-center `}>
                     {posts?.map((post) => (
-                        <div key={post._id} onClick={() => { handleClick(post) }} className={`relative w-full ${page && page === 'explore' ? 'h-fit min-h-40 md:min-h-70 ' : 'h-40 md:h-90 lg:h-100'} cursor-pointer ${(page && page === 'explore' && post?.type === 'Reel') ? 'row-span-2' : ''  }`}>
+                        <div key={post._id} onClick={() => { handleClick(post) }} className={`relative w-full ${page && page === 'explore' ? 'min-h-40 md:min-h-70 ' : 'h-40 md:h-90 lg:h-100'} cursor-pointer ${(page && page === 'explore' && post?.type === 'Reel') ? 'row-span-2' : ''  }`}>
                             <div className="absolute top-0 right-0 w-full h-full text-white text-2xl gap-5 flex items-center justify-center bg-[#000000a9] overflow-hidden opacity-0 hover:opacity-100 transition-all duration-200">
                                 {(post.likes?.length > 0 && !post?.hideLikes) && <div className="flex items-center gap-1">
                                     <FaHeart size={22} />
