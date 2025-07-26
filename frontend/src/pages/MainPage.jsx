@@ -41,7 +41,7 @@ const MainPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let items = ['','','','','']
+  let items = ['', '', '', '', '']
   let textTheme = theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'
   let mainTextTheme = theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'
   let bgTheme = theme === 'dark' ? 'bg-[black] md:bg-[#212328] border-l-1 border-[#363636]' : (theme === 'light') ? 'bg-white border-l-1 border-[#d3d3d3]' : ' bg-white dark:bg-[#212328]'
@@ -57,6 +57,7 @@ const MainPage = () => {
   const [viewReels, setViewReels] = useState(false)
   const [editPostId, setEditPostId] = useState('')
   const [storyId, setStoryId] = useState('')
+  const [aboutPost, setAboutPost] = useState({})
 
 
 
@@ -181,12 +182,13 @@ const MainPage = () => {
 
   //-----------------------------------------------------------------------------------
 
-  const handleClickOptions = (authorId, postId, authorName) => {
+  const handleClickOptions = (authorId, postId, authorName, post) => {
     setShowOptions(!showOptions);
     setSameData(authorId === userData?.user?._id)
     setAuthorId(authorId)
     setEditPostId(postId)
     setAuthorName(authorName)
+    setAboutPost(post)
   }
 
   //-----------------------------------------------------------------------------------
@@ -295,7 +297,7 @@ const MainPage = () => {
 
   return (
     <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen w-full overflow-y-auto overflow-x-hidden `}>
-     
+
       {(viewStory) &&
         <div className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center justify-center">
           <ViewStoryCards storyId={storyId} setViewStory={setViewStory} />
@@ -309,8 +311,6 @@ const MainPage = () => {
             <div onClick={() => { setEditPost(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex items-center bg-[#000000b1] justify-center">
               <EditPost page={'main'} postId={editPostId} />
             </div>}
-          
-
           {(allPosts?.posts?.length === 0) &&
             <div className={`w-full h-fit flex flex-col items-center justify-center pb-17 border-b-1 ${(theme === 'dark') ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3]' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
               <img src={main} alt="Main Page" className="w-25 h-25  object-cover rounded-full" />
@@ -332,7 +332,7 @@ const MainPage = () => {
             <div key={post._id} className={`w-full h-full flex flex-col items-center justify-center md:border-b-1 py-5 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
               {aboutAcc &&
                 <div onClick={() => { setAboutAcc(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#0000003b] items-center justify-center" >
-                  <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country='India' page={'main'} post={post} />
+                  <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country='India' page={'main'} post={aboutPost} />
                 </div>
               }
               {showOptions &&
@@ -342,7 +342,7 @@ const MainPage = () => {
               }
               <div className="w-full h-fit flex items-center justify-between">
                 <div className={`w-fit h-fit flex items-start justify-start px-4 md:px-1 pb-4 `}>
-                  <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${(post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id)) ? 'bg-[#363636]' : (post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id)) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : 'bg-transparent'}`}>
+                  <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${(post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id)) ? 'bg-[#363636af]' : (post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id)) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : 'bg-transparent'}`}>
                     <img src={post?.author?.profilepic || dp} alt="author image" className={`w-9 h-9 rounded-full object-cover border-1 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`} />
                   </div>
                   <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-medium ml-2 cursor-pointer">{post?.author?.username}</p>
@@ -352,7 +352,7 @@ const MainPage = () => {
                   {post?.author?._id !== userData?.user?._id && <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>}
                 </div>
                 <div className="w-10 h-full pr-3 flex items-center justify-center cursor-pointer">
-                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
+                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username, post); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
                 </div>
               </div>
               <div className={`w-full h-100 md:h-150 border-1 rounded-sm mb-3 ${post?.type === 'Reel' ? 'px-15' : ''} ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3] bg-[black]' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>

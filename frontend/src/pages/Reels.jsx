@@ -21,12 +21,13 @@ import { useNavigate } from "react-router-dom";
 import { setUserData } from "../redux/userSlice";
 import EditPost from "../components/EditPost";
 import ViewStoryCards from "../components/ViewStoryCards";
+import AboutAccount from "../components/AboutAccount";
 
 
 const Reels = () => {
 
 
-  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, setViewReels, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, editPost, setEditPost, setAuthorName } = useContext(ThemeContext);
+  const { theme, setActiveItem, setSearchIsFocussed, postIdInMain, setPostIdInMain, setNotificationIsFocussed, setSameData, setViewReels, setShowComment, showComment, post, commentId, setCommentId, comment, loading, setLoading, setComment, reply, setReply, likedUsers, setLikedUsers, setAuthorId, editPost, setEditPost, setAuthorName, aboutAcc, setAboutAcc } = useContext(ThemeContext);
   const [emoji, setEmoji] = useState(false)
   const dispatch = useDispatch();
 
@@ -77,6 +78,7 @@ const Reels = () => {
   const [editPostId, setEditPostId] = useState('')
   const [viewStory, setViewStory] = useState(false)
   const [storyId, setStoryId] = useState('')
+  const [aboutPost, setAboutPost] = useState({})
 
   //-----------------------------------------------------------------------------------
 
@@ -148,12 +150,13 @@ const Reels = () => {
   //-----------------------------------------------------------------------------------
 
 
-  const handleClickOptions = (authorId, postId, authorName) => {
+  const handleClickOptions = (authorId, postId, authorName, post) => {
     setShowOptions(!showOptions);
     setSameData(authorId === userData?.user?._id)
     setAuthorId(authorId)
     setEditPostId(postId)
     setAuthorName(authorName)
+    setAboutPost(post)
   }
 
   //-----------------------------------------------------------------------------------
@@ -275,6 +278,11 @@ const Reels = () => {
       <div className="w-screen h-screen flex flex-col items-center justify-start pt-10 overflow-y-scroll overflow-x-hidden snap-y snap-mandatory snap-always scroll-smooth xl:pr-70 md:scroll-pt-16">
 
         <div className="flex flex-col items-start justify-center w-full sm:w-120 h-fit z-0 pb-10 ">
+          {aboutAcc &&
+            <div onClick={() => { setAboutAcc(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#0000003b] items-center justify-center" >
+              <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country='India' page={'main'} post={aboutPost} />
+            </div>
+          }
           {showOptions &&
             <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen flex items-center justify-center" >
               <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen  bg-[#000000b9] blur-6xl opacity-85" />
@@ -291,10 +299,12 @@ const Reels = () => {
                 </div>}
               <div className={`w-full h-full snap-start md:shadow-2xl border-1 rounded-md ${theme === 'dark' ? 'border-[#363636] shadow-[#ffffff93]' : (theme === 'light') ? 'border-[#d3d3d3] bg-[#0000009a] shadow-black' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
                 <img src={post?.image} alt="Post Image" className="w-full h-full object-cover rounded-sm" />
-                <div className="absolute bottom-15 left-3 md:left-5 w-full h-fit flex flex-col items-start justify-between">
+              </div>
+              <div className="absolute bottom-5 right-0 w-screen md:w-full h-fit flex items-center justify-between md:justify-center px-1">
+                <div className=" md:absolute bottom-5 left-3 md:left-5 w-full h-fit flex flex-col items-start justify-end pt-25 md:pt-0">
                   <div className={` w-fit h-fit flex items-center justify-start px-4 md:px-1`}>
                     <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-[#363636]' : 'bg-transparent'}`}>
-                      {console.log(post?.author?.story) }
+                      {console.log(post?.author?.story)}
                       <img src={post?.author?.profilepic || dp} alt="author image" className={`w-9 h-9 rounded-full object-cover border-1 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`} />
                     </div>
                     <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-semibold ml-2 cursor-pointer">{post?.author?.username}</p>
@@ -305,28 +315,25 @@ const Reels = () => {
                     {showDescription ? post?.description : post?.description?.slice(0, 30)}
                     {post?.description.length > 30 && <span onClick={() => { setShowDescription(!showDescription) }} className={`cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{showDescription ? '...read less' : '...read more'}</span>} </p> : ''}
                 </div>
-              </div>
-              <div className="absolute bottom-15 -right-42 md:-right-65 w-full h-fit flex flex-col items-center justify-center px-4 md:px-0 gap-5">
-                <div className="w-fit h-fit flex flex-col items-center justify-start gap-5">
-                  <div onClick={() => { handleLike(post) }} className="w-fit h-fit flex flex-col items-center justify-center">
-                    {(post && Array.isArray(post?.likes) && post?.likes?.some(user => user._id === userData?.user?._id)) ? <img src={heartfill} alt="liked" className="w-7 h-7 cursor-pointer transition-all duration-200 ease-in-out" /> : <GoHeart size={27} className={`${mainTextTheme}  cursor-pointer transition-all duration-200 ease-in-out`} />}
-                    {<p className={`${post?.likes?.length === 0 ? 'hidden' : ''} text-sm flex`}>{post?.likes?.length}&nbsp;<span className="hidden md:block">{post?.likes?.length === 1 ? `like` : `likes`}</span></p>}
+                <div className=" md:absolute bottom-15 -right-42 md:-right-65 w-fit md:w-full h-fit flex flex-col items-center justify-center pr-2 md:pr-0 pb-10 md:pb-0 md:px-0 gap-5">
+                  <div className="w-fit h-fit flex flex-col items-center justify-start gap-5">
+                    <div onClick={() => { handleLike(post) }} className="w-fit h-fit flex flex-col items-center justify-center">
+                      {(post && Array.isArray(post?.likes) && post?.likes?.some(user => user._id === userData?.user?._id)) ? <img src={heartfill} alt="liked" className="w-7 h-7 cursor-pointer transition-all duration-200 ease-in-out" /> : <GoHeart size={27} className={`${mainTextTheme}  cursor-pointer transition-all duration-200 ease-in-out`} />}
+                      {<p className={`${post?.likes?.length === 0 ? 'hidden' : ''} text-sm flex`}>{post?.likes?.length}&nbsp;<span className="hidden md:block">{post?.likes?.length === 1 ? `like` : `likes`}</span></p>}
+                    </div>
+                    <div className="w-fit h-fit flex flex-col items-center justify-center">
+                      <FiMessageCircle onClick={() => { setShowComment(!showComment); handleClick(post); dispatch(getAllComments(post._id)); }} size={27} className={`${mainTextTheme} cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />
+                      <p className={`text-sm `}>{post?.comments?.length}</p>
+                    </div>
+                    <TbSend size={27} className={`${mainTextTheme} cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />
                   </div>
-                  <div className="w-fit h-fit flex flex-col items-center justify-center">
-                    <FiMessageCircle onClick={() => { setShowComment(!showComment); handleClick(post); dispatch(getAllComments(post._id)); }} size={27} className={`${mainTextTheme} cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />
-                    <p className={`text-sm `}>{post?.comments?.length}</p>
+                  <div onClick={() => { handleSave(post) }} className="w-fit h-fit flex items-center justify-start gap-3">
+                    {(post?.saved && post?.saved?.some(user => user === userData?.user?._id)) ? <RiBookmarkFill size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out  `} /> : <BiBookmark size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />}
                   </div>
-                  <TbSend size={27} className={`${mainTextTheme} cursor-pointer ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />
+                  <div className="w-10 h-full flex items-center justify-center cursor-pointer">
+                    <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username, post); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
+                  </div>
                 </div>
-                <div onClick={() => { handleSave(post) }} className="w-fit h-fit flex items-center justify-start gap-3">
-                  {(post?.saved && post?.saved?.some(user => user === userData?.user?._id)) ? <RiBookmarkFill size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out  `} /> : <BiBookmark size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />}
-                </div>
-                <div className="w-10 h-full flex items-center justify-center cursor-pointer">
-                  <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
-                </div>
-              </div>
-              <div className="w-full h-fit flex flex-col items-start justify-center pt-2 px-4 md:px-0">
-
               </div>
             </div>
           ))}
