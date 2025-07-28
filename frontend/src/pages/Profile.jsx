@@ -55,7 +55,7 @@ const Profile = () => {
   const [userProfile2, setUserProfile2] = useState({})
 
 
-  const { theme, setActiveItem, viewPost, setViewPost, showComment, setShowComment, setSearchIsFocussed, setNotificationIsFocussed, active, setActive, image, setActiveSettings, viewStory, setViewStory } = useContext(ThemeContext);
+  const { theme, setActiveItem, viewPost, setViewPost, showComment, setShowComment, setSearchIsFocussed, setNotificationIsFocussed, active, setActive, image, setActiveSettings, viewStory, setViewStory, setMessageArea } = useContext(ThemeContext);
   let buttonClass = same && theme === 'dark' ? ' bg-[#686565a4] hover:bg-[#68656575] text-white' : same && theme === 'light' ? 'bg-[#f0f0f0] hover:bg-[#cecdcd] text-black' : 'bg-[#0095f6] text-white'
   let buttonClass2 = !same && theme === 'dark' ? ' bg-[#686565a4] hover:bg-[#68656575] text-white' : !same && theme === 'light' ? 'bg-[#f0f0f0] hover:bg-[#cecdcd] text-black' : 'bg-[#0095f6] text-white'
   let spanClass = theme === 'dark' ? 'text-white font-medium' : theme === 'light' ? 'text-black font-medium' : 'text-black dark:text-white font-medium'
@@ -161,6 +161,7 @@ const Profile = () => {
     if (same) {
       navigate(`/archive/stories`);
     } else {
+      setMessageArea(true)
       navigate(`/messages/${identifier}`);
     }
   }

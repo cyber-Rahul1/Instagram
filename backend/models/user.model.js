@@ -78,6 +78,10 @@ const userSchema = new mongoose.Schema({
     tagged: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
+    }],
+    messagedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }]
 
 

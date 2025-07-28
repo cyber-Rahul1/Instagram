@@ -383,3 +383,47 @@ export const clearOneRecentUser = async (req, res) => {
 //------------------------------------------------------------------------------------------
 
 
+export const addMessagedUser = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId);
+        if (!currentUser) return res.status(404).json({ message: 'User not found' });
+        const { identifier } = req.body;
+        const conditions = [{ username: identifier }];
+
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            conditions.push({ _id: identifier });
+        }
+        const user = await User.findOne({ $or: conditions });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        if (!currentUser.messagedUsers.includes(user._id)) {
+            await User.findByIdAndUpdate(currentUser._id, { $push: { messagedUsers: user._id } }, { new: true });
+            return res.status(200).json({ message: 'User added to messaged users' });
+        } else {
+            return res.status(200).json({ message: 'User already in messaged users' });
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - addMessagedUser' });
+    }
+}   
+
+
+//------------------------------------------------------------------------------------------
+
+
+export const getMessagedUsers = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId);
+        if (!currentUser) return res.status(404).json({ message: 'User not found' });
+        const messagedUsers = await User.find({ _id: { $in: currentUser.messagedUsers } }).select('_id username profilepic name').sort({ username: -1 });
+        if (!messagedUsers) return res.status(404).json({ message: 'Messaged users not found' });
+        return res.status(200).json(messagedUsers);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - getMessagedUsers' });
+    }
+}
+
+
+//------------------------------------------------------------------------------------------

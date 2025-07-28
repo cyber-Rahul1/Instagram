@@ -11,12 +11,13 @@ import { RiMessengerLine } from 'react-icons/ri';
 import GetCurrentUser from '../functions/GetCurrentUser';
 import axios from 'axios';
 
+
 const Home = () => {
   GetCurrentUser()
   let dispatch = useDispatch();
   const { userEmail, identifier } = useSelector((state) => state.user);
-  const { theme, setTheme, activeItem, viewed, setViewed, viewStory } = useContext(ThemeContext);
-  const [switchAccount, setSwitchAccount] = useState(false)
+  const { theme, setTheme, activeItem, viewed, setViewed, viewStory, setMessageArea } = useContext(ThemeContext);
+  const [switchAccount, setSwitchAccount] = useState(false);
 
 
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
@@ -88,7 +89,7 @@ const Home = () => {
         <div onClick={() => { setSwitchAccount(true); }} className="active:scale-98 cursor-pointer active:text-[#ffffff94] transition-all duration-200 ease-in-out text-[15px] font-semibold flex items-center gap-1 justify-center"><h2 className="heading text-xl active:text-[#ffffff94] tracking-tight font-medium">Instagram</h2> <span><MdKeyboardArrowDown size={24} /></span></div>
         <div className="flex items-center gap-6">
           {MenuItems.map((item) => (
-            <div key={item.name} onClick={() => { item.name === 'Notifications' ? handleViewed() : navigate(item?.path) }} className={`relative  active:scale-95 cursor-pointer active:text-[#ffffff94]`}>
+            <div key={item.name} onClick={() => { item.name === 'Notifications' ? handleViewed() : setMessageArea(true); navigate(item?.path) }} className={`relative  active:scale-95 cursor-pointer active:text-[#ffffff94]`}>
               {item.icon}
               {item.name === 'Notifications' && !viewed && (
                 <span className="absolute top-0 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>

@@ -18,7 +18,7 @@ const MobileSidebar = ({ userData, activeItem, setActiveItem, theme, setActiveSe
     const [imgSelected, setImgSelected] = useState(false)
     const fileInputRef = useRef(null);
 
-    const { showComment } = useContext(ThemeContext)
+    const { showComment, messageArea } = useContext(ThemeContext)
    
     let navigate = useNavigate()
     const menuItems = [
@@ -47,7 +47,7 @@ const MobileSidebar = ({ userData, activeItem, setActiveItem, theme, setActiveSe
 
 
     return (
-        <div className={`${showComment ? 'hidden' : ''} flex fixed -bottom-1 z-40 left-0 w-full items-center border-t justify-around overflow-hidden gap-1 ${theme === 'dark' ? 'bg-black border-[#363636]' : (theme === 'light') ? 'bg-white border-[#f2f2f2]' : ' bg-white dark:bg-black border-[#f2f2f2] dark:border-[#363636]'} h-14 z-50`}>
+        <div className={`${showComment || messageArea ? 'hidden' : ''} flex fixed -bottom-1 z-40 left-0 w-full items-center border-t justify-around overflow-hidden gap-1 ${theme === 'dark' ? 'bg-black border-[#363636]' : (theme === 'light') ? 'bg-white border-[#f2f2f2]' : ' bg-white dark:bg-black border-[#f2f2f2] dark:border-[#363636]'} h-14 z-50`}>
             {create && <div>
                 <HandlePosts setCreate={setCreate} imgSelected={imgSelected} fileInputRef={fileInputRef} setImgSelected={setImgSelected} />
             </div>}

@@ -62,7 +62,7 @@ const Notification = () => {
   
 
   return (
-    <div className={`w-full h-full flex flex-col items-start justify-start p-4 pt-15 md:pt-0 pl-5 ${theme === 'dark' ? 'bg-[black]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[black]'} gap-2`}>
+    <div className={`w-full h-full flex flex-col items-start justify-start p-4 pt-15 md:pt-5 pl-5 ${theme === 'dark' ? 'bg-[black]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[black]'} gap-2`}>
       <div className="w-full flex flex-col items-start justify-start pb-3">
         <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} pb-2`}>Notifications</p>
         <p className={`text-md font-bold ${theme === 'dark' ? 'text-[#ffffffe5]' : (theme === 'light') ? 'text-[#000000db]' : ' text-[#000000d0] dark:text-[#ffffffe7]'} `}>This week</p>
