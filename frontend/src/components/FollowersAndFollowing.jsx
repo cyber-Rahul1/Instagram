@@ -90,7 +90,7 @@ const FollowersAndFollowing = ({ showFollowers, setShowFollowers, showFollowing,
                     </div>}
                     <p className={`text-md font-medium text-start w-full py-4 pl-4 ${theme === 'dark' ? 'text-[#ffffffe7]' : (theme === 'light') ? 'text-[#000000d0]' : ' text-black dark:text-[#ffffff7c]'} `}>Suggested for you</p>
                     <div className="w-full h-fit flex flex-col items-start justify-start px-4 gap-4 py-2 ">
-                        <Suggested page='main' />
+                        <Suggested page='main' setShowFollowers={setShowFollowers} setShowFollowing={setShowFollowing} />
                     </div>
                 </div>
             </div>

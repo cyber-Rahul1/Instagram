@@ -243,6 +243,7 @@ const ViewStoryCards = ({ setViewStory, storyId, page, stories, storyIndex, setS
                     {paused ? <IoPlay onClick={(e) => { e.stopPropagation(); setPaused(!paused) }} size={24} className={`cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} /> : <MdOutlinePause onClick={(e) => { e.stopPropagation(); setPaused(!paused) }} size={24} className={`pointer-events-auto cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />}
                     <BsThreeDots onClick={(e) => { e.stopPropagation(); setOptions(!options) }} size={24} className={`pointer-events-auto cursor-pointer z-100 text-white active:scale-95 transition-all duration-200 ease-in-out`} />
                 </div>
+                <div onMouseDown={(e) => { e.stopPropagation(); setPaused(true); }} onMouseUp={(e) => { e.stopPropagation(); setPaused(false); }} onTouchStart={(e) => { e.stopPropagation(); setPaused(true); }} onTouchEnd={(e) => { e.stopPropagation(); setPaused(false); }} className="absolute md:left-55 top-50 w-40 h-130"/>
                 <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
                     <p className="text-white text-xl text-shadow-lg font-semibold">{story1?.caption}</p>
                 </div>

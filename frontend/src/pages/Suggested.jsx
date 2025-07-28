@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 
 
-const Suggested = ({ page }) => {
+const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
 
     const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed } = useContext(ThemeContext);
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
@@ -85,7 +85,7 @@ const Suggested = ({ page }) => {
                             <img src={user?.profilepic || dp} alt="profile pic" className="w-full h-full object-cover" />
                         </div>
                         <div className="flex flex-col">
-                            <p onClick={() => { navigate(`/profile/${user?.username || user?._id}`) }} className="cursor-pointer text-sm font-semibold">{user?.username}</p>
+                            <p onClick={() => { navigate(`/profile/${user?.username || user?._id}`); setShowFollowers(false); setShowFollowing(false); }} className="cursor-pointer text-sm font-semibold">{user?.username}</p>
                             <p className="text-[14px] text-[#848485]">Suggested for you</p>
                         </div>
                     </div>

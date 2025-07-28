@@ -57,7 +57,7 @@ const MainPage = () => {
   const [viewReels, setViewReels] = useState(false)
   const [editPostId, setEditPostId] = useState('')
   const [storyId, setStoryId] = useState('')
-  const [viewStory, setViewStory] = useState(false)
+  const [viewStory1, setViewStory1] = useState(false)
   const [aboutPost, setAboutPost] = useState({})
 
 
@@ -288,20 +288,30 @@ const MainPage = () => {
 
 
   const handleViewStory = (story) => {
-    setViewStory(true);
+    setViewStory1(true);
     setStoryId(story._id);
   }
 
   //-----------------------------------------------------------------------------------
 
 
+  useEffect(() => {
+    if (viewStory1) {
+      setTimeout(() => {
+        setViewStory1(false);
+      }, 3200);
+    } 
+  }, [viewStory1]);
+ 
+
+
 
   return (
     <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen w-full overflow-y-auto   `}>
 
-      {(viewStory) &&
+      {(viewStory1) &&
         <div className="fixed top-0 left-0 z-200 w-screen h-screen flex items-center justify-center bg-[black] md:bg-[#1A1A1A]">
-          <ViewStoryCards storyId={storyId} setViewStory={setViewStory} />
+          <ViewStoryCards storyId={storyId} setViewStory={setViewStory1} />
         </div>}
       <div className="w-screen lg:w-2/3 h-screen flex flex-col items-center justify-start gap-4 lg:pl-45 pt-15 md:pt-4">
         <div className="w-full md:w-150 h-fit flex items-center justify-center">
