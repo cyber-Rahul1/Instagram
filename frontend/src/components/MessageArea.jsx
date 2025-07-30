@@ -134,22 +134,22 @@ const MessageArea = ({ setMessageUsers }) => {
         <div className="relative w-full flex items-center justify-start gap-3">
           <GrEmoji onClick={() => { setEmoji(!emoji); }} size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />
           {emoji && <div onClick={() => { setEmoji(false) }} className=" absolute bottom-15 left-0 w-fit h-fit flex items-center justify-center" >
-            <div onClick={(e) => { e.stopPropagation(); setEmoji(false); }} className={`fixed w-full h-full bg-transparent `}/>
-              <EmojiPicker onEmojiClick={(emojiObject) => { setInput(prev => prev + emojiObject.emoji); setEmoji(false); }} height={300} width={250} theme={theme === 'dark' ? 'dark' : 'light'} emojiStyle="apple" searchDisabled={true} className='shadow-xl' />
-            </div>}
-            <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Message..." className={`w-full h-fit py-[10px] outline-none ${theme === 'dark' ? 'bg-[#000000] text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`} />
-            {!(input || frontendImg) && <TbPhoto onClick={() => { image.current.click() }} size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />}
-            {(input || frontendImg) && <button onKeyDown={(e) => { if (e.key === 'Enter') { handleSend() } }} onClick={handleSend} disabled={input === '' && !frontendImg} className={`px-3 py-[5px] md:px-4 md:py-2 cursor-pointer rounded-lg text-[#0095f6] hover:text-[#0094f6e0] active:scale-96 transition-all duration-200 ease-in-out font-semibold text-sm`}>
-              {loading ? (
-                <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
-              ) : (
-                'Send'
-              )}
-            </button>}
-          </div>
+            <div onClick={(e) => { e.stopPropagation(); setEmoji(false); }} className={`fixed w-full h-full bg-transparent `} />
+            <EmojiPicker onEmojiClick={(emojiObject) => { setInput(prev => prev + emojiObject.emoji); setEmoji(false); }} height={300} width={250} theme={theme === 'dark' ? 'dark' : 'light'} emojiStyle="apple" searchDisabled={true} className='shadow-xl' />
+          </div>}
+          <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Message..." className={`w-full h-fit py-[10px] outline-none ${theme === 'dark' ? 'bg-[#000000] text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`} />
+          {!(input || frontendImg) && <TbPhoto onClick={() => { image.current.click() }} size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />}
+          {(input || frontendImg) && <button onKeyDown={(e) => { if (e.key === 'Enter') { handleSend() } }} onClick={handleSend} disabled={input === '' && !frontendImg} className={`px-3 py-[5px] md:px-4 md:py-2 cursor-pointer rounded-lg text-[#0095f6] hover:text-[#0094f6e0] active:scale-96 transition-all duration-200 ease-in-out font-semibold text-sm`}>
+            {loading ? (
+              <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
+            ) : (
+              'Send'
+            )}
+          </button>}
+        </div>
       </div>
-      </div>
-      )
+    </div>
+  )
 }
 
-      export default MessageArea;
+export default MessageArea;

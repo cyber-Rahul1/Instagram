@@ -105,7 +105,7 @@ const Message = () => {
       {switchAcc && <div onClick={() => setSwitchAcc(false)} className="fixed top-0 left-0 z-60 w-full h-full flex flex-col bg-[#00000086] items-center justify-center ">
         <SwitchAccount setSwitchAccount={setSwitchAcc} />
       </div>}
-      <div className={`${identifier ? 'hidden md:block' : ''} w-127 h-screen flex flex-col items-start justify-start border-r-1 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3]' : ' border-[#d3d3d3] dark:border-[#363636]'} overflow-hidden`}>
+      <div className={`${identifier ? 'hidden md:block' : ''} w-screen md:w-127 h-screen flex flex-col items-start justify-start border-r-1 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3]' : ' border-[#d3d3d3] dark:border-[#363636]'} overflow-hidden`}>
         <div className="w-full h-fit flex items-center justify-between pt-3 md:pt-10 pb-4 px-7">
           <IoArrowBack onClick={() => { setMessageArea(false); navigate('/') }} size={24} className={`cursor-pointer md:hidden active:opacity-55 transition-all duration-200 ease-in-out ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'}  `} />
           <div onClick={() => setSwitchAcc(true)} className="w-fit h-fit flex items-center justify-start gap-2 cursor-pointer active:opacity-55 transition-all duration-200 ease-in-out">
