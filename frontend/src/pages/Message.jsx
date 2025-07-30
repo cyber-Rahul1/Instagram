@@ -146,7 +146,6 @@ const Message = () => {
               </div>
             ))}
           </div>}
-          { console.log(messagedUsers) }
           {(!isFoccused && !showFollowing && messagedUsers?.length <= 0) && <div className="w-full h-full flex items-center justify-center">
             <p className={`text-md font-medium ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>No messages</p>
           </div>}

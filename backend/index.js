@@ -27,7 +27,7 @@ import { Server } from 'socket.io';
 
 const io = new Server(server,{
     cors: {
-        origin: ['http://localhost:5173', 'https://instagram-n6oq.onrender.com', 'https://instagram-n6oq.onrender.com/api/auth/googlelogin', process.env.FRONTEND_URL],
+        origin: ['http://localhost:5173', 'https://instagram-n6oq.onrender.com', 'https://instagram-cyber-rahul1s-projects.vercel.app/', 'https://instagram-n6oq.onrender.com/api/auth/googlelogin', process.env.FRONTEND_URL],
     }
 });
 
