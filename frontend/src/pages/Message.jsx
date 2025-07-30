@@ -16,7 +16,7 @@ import { IoArrowBack } from "react-icons/io5";
 
 const Message = () => {
 
-  const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed, setMessageArea } = useContext(ThemeContext);
+  const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed, setMessageArea, messagedUsers, setMessageUsers } = useContext(ThemeContext);
   const { userData } = useSelector((state) => state.user)
   const { identifier } = useParams();
 
@@ -24,7 +24,6 @@ const Message = () => {
 
   const [switchAcc, setSwitchAcc] = useState(false)
   const [isFoccused, setIsFocused] = useState(false)
-  const [messagedUsers, setMessageUsers] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
   const [showFollowing, setShowFollowing] = useState(false)
   const [search, setSearch] = useState('')
@@ -51,15 +50,15 @@ const Message = () => {
 
 
   useEffect(() => {
-   const fetchAllUsers = async () => {
-    try {
-      let result = await axios.get(`${serverUrl}/api/users/getallusers`, { withCredentials: true });
-      setAllUsers(result.data.users);
-    } catch (error) {
-      console.log(error);
+    const fetchAllUsers = async () => {
+      try {
+        let result = await axios.get(`${serverUrl}/api/users/getallusers`, { withCredentials: true });
+        setAllUsers(result.data.users);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }
-  fetchAllUsers();
+    fetchAllUsers();
   }, [])
 
 
@@ -99,12 +98,14 @@ const Message = () => {
     }, 1000);
   }
 
+
+
   return (
-    <div onClick={() => { setActiveItem('Messages'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} flex h-screen w-full`}>
+    <div onClick={() => { setActiveItem('Messages'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={`${theme === 'dark' ? 'bg-black text-white' : (theme === 'light') ? 'bg-white text-black' : ' bg-white dark:bg-black text-black dark:text-white'} flex h-screen overflow-hidden w-full`}>
       {switchAcc && <div onClick={() => setSwitchAcc(false)} className="fixed top-0 left-0 z-60 w-full h-full flex flex-col bg-[#00000086] items-center justify-center ">
         <SwitchAccount setSwitchAccount={setSwitchAcc} />
       </div>}
-      <div className={`${identifier ? 'hidden md:block' : ''} w-127 h-screen flex flex-col items-start justify-start border-r-1 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3]' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
+      <div className={`${identifier ? 'hidden md:block' : ''} w-127 h-screen flex flex-col items-start justify-start border-r-1 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3]' : ' border-[#d3d3d3] dark:border-[#363636]'} overflow-hidden`}>
         <div className="w-full h-fit flex items-center justify-between pt-3 md:pt-10 pb-4 px-7">
           <IoArrowBack onClick={() => { setMessageArea(false); navigate('/') }} size={24} className={`cursor-pointer md:hidden active:opacity-55 transition-all duration-200 ease-in-out ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'}  `} />
           <div onClick={() => setSwitchAcc(true)} className="w-fit h-fit flex items-center justify-start gap-2 cursor-pointer active:opacity-55 transition-all duration-200 ease-in-out">
@@ -119,7 +120,7 @@ const Message = () => {
             <p className={`text-md ${theme === 'dark' ? 'text-[#ffffff8f]' : (theme === 'light') ? 'text-[#0000008b]' : ' text-[#000000] dark:text-[#ffffff]'}`}>Search</p>
           </div>
           <IoIosArrowBack onClick={() => { setSearch(''); setIsFocused(false); setShowFollowing(false); }} size={28} className={`${showFollowing || isFoccused ? '' : 'hidden'} cursor-pointer active:opacity-55 transition-all duration-200 ease-in-out ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'}  `} />
-          <input value={search} onChange={(e) => handleSearch(e.target.value) } onClick={fetchFollowing} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} type="text" placeholder={isFoccused || showFollowing ? 'Search' : ''} className={`w-full h-10 rounded-md outline-none pl-4 ${theme === 'dark' ? 'bg-[#121212] text-white' : (theme === 'light') ? 'bg-[#FFFFFF] text-black' : ' bg-white dark:bg-black text-black dark:text-white'} placeholder-[#A8A8A8]`} />
+          <input value={search} onChange={(e) => handleSearch(e.target.value)} onClick={fetchFollowing} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)} type="text" placeholder={isFoccused || showFollowing ? 'Search' : ''} className={`w-full h-10 rounded-md outline-none pl-4 ${theme === 'dark' ? 'bg-[#121212] text-white' : (theme === 'light') ? 'bg-[#FFFFFF] text-black' : ' bg-white dark:bg-black text-black dark:text-white'} placeholder-[#A8A8A8]`} />
         </div>
         {!isFoccused && !showFollowing && <div className="w-full h-fit flex flex-col items-start justify-start px-4">
           <div className="w-fit h-fit flex flex-col items-center justify-center gap-2 py-6 px-2">
@@ -145,6 +146,7 @@ const Message = () => {
               </div>
             ))}
           </div>}
+          { console.log(messagedUsers) }
           {(!isFoccused && !showFollowing && messagedUsers?.length <= 0) && <div className="w-full h-full flex items-center justify-center">
             <p className={`text-md font-medium ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>No messages</p>
           </div>}
@@ -161,7 +163,9 @@ const Message = () => {
           ))}
         </div>
       </div>
-      {identifier ? <MessageArea setMessageUsers={setMessageUsers} /> : <div className="w-full h-screen hidden md:flex flex-col items-center justify-center gap-2">
+      {identifier ? <div className="w-full h-screen flex flex-col items-center justify-center overflow-hidden">
+        <MessageArea setMessageUsers={setMessageUsers} />
+      </div> : <div className="w-full h-screen hidden md:flex flex-col items-center justify-center gap-2">
         <img src={image} alt="message" className="w-25 h-25 object-cover" />
         <p className={`text-2xl font-medium text-center ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Your messages</p>
         <p className="text-sm text-center text-[#ffffffa5]">Send a message to start a chat.</p>

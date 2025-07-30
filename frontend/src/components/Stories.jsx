@@ -89,7 +89,7 @@ const Stories = () => {
             {stories?.map((story) => (
                 <div key={story._id} className="w-fit h-fit flex flex-col items-center justify-center gap-1">
                     <div key={story._id} className={`relative w-16 h-16 rounded-full z-0 ${(story?.views?.some(v => v === userData?.user?._id)) ? 'bg-[#363636b1]' : 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600'} flex items-center justify-center`}>
-                        <img onClick={() => { handleViewStory(story._id) }} src={(story?.author?.profilepic) || dp} alt="profile pic" className={`cursor-pointer w-15 h-15 z-10 rounded-full object-cover border-2 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff]' : ' border-[#ffffff] dark:border-[#000000]'}`} />
+                        <img onClick={() => { handleViewStory(story._id) }} src={(story?.author?.profilepic) || dp} alt="profile pic" className={`cursor-pointer w-15 h-15 rounded-full object-cover border-2 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff]' : ' border-[#ffffff] dark:border-[#000000]'}`} />
                         {story?.author?._id === userData?.user?._id && <div onClick={() => { fileInputRef.current.click(); }} className={`absolute bottom-0 z-10 -right-1 w-6 h-6 rounded-full flex items-center justify-center border-2 ${theme === 'dark' ? 'bg-[#ffffff] border-[#000000]' : (theme === 'light') ? 'bg-[#000000] border-[#ffffff]' : ' bg-[#ffffff94] dark:bg-[#ffffff]'}`}>
                             <RiAddLine size={16} className={` cursor-pointer ${theme === 'dark' ? 'text-[#000000]' : (theme === 'light') ? 'text-[#ffffff]' : ' text-[#ffffff] dark:text-[#000000]'}`} />
                         </div>}

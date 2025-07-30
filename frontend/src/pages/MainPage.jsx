@@ -300,9 +300,11 @@ const MainPage = () => {
       setTimeout(() => {
         setViewStory1(false);
       }, 3200);
-    } 
+    }
   }, [viewStory1]);
- 
+
+
+  //-----------------------------------------------------------------------------------
 
 
 
@@ -314,7 +316,7 @@ const MainPage = () => {
           <ViewStoryCards storyId={storyId} setViewStory={setViewStory1} />
         </div>}
       <div className="w-screen lg:w-2/3 h-screen flex flex-col items-center justify-start gap-4 lg:pl-45 pt-15 md:pt-4">
-        <div className="w-full md:w-150 h-fit flex items-center justify-center">
+        <div className="w-full md:w-150 h-fit flex items-center justify-center z-0">
           <Stories />
         </div>
         <div className="flex flex-col items-start justify-center w-full sm:w-110 h-fit z-0 pb-10">
@@ -332,8 +334,13 @@ const MainPage = () => {
             {items.map((item, index) => (
               <div key={index} className={`animate-pulse w-full md:w-fit h-fit flex flex-col items-start justify-center gap-5 pb-5`}>
                 <div className="w-full h-fit flex items-start justify-start gap-3 ">
-                  <div className={`w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
-                  <div className={`w-40 h-5 rounded-md mt-2 ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+                  <div className="w-fit h-fit flex items-center justify-center rounded-full">
+                    <div className={`w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`} />
+                  </div>
+                  <div className="w-full h-fit flex flex-col items-start justify-start gap-2">
+                    <div className={`w-40 h-3 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+                    <div className={`w-30 h-3 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
+                  </div>
                 </div>
                 <div className={`w-full md:w-100 h-120 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
               </div>

@@ -26,6 +26,8 @@ const userSlice = createSlice({
         identifier: null,
         userCredentials: {},
         allUsers: null,
+        socketIo: null,
+        onlineUsers: null,
         status: null,
         error: null
     },
@@ -50,7 +52,13 @@ const userSlice = createSlice({
         },
         clearUserCredentials(state) {
             state.userCredentials = {};
-          }
+          },
+        setSocketIo(state, action) { 
+            state.socketIo = action.payload 
+        },
+        setOnlineUsers(state, action) {
+            state.onlineUsers = action.payload
+        }
         
        
     },
@@ -70,5 +78,5 @@ const userSlice = createSlice({
     }
 })
 
-export const { setUserData, setUserEmail, setIdentifier, setUserCredentials, clearUserCredentials, setUserProfile } = userSlice.actions;
+export const { setUserData, setUserEmail, setIdentifier, setUserCredentials, clearUserCredentials, setUserProfile, setSocketIo, setOnlineUsers } = userSlice.actions;
 export default userSlice.reducer      

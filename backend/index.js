@@ -31,8 +31,26 @@ const io = new Server(server,{
     }
 });
 
+const onlineUsers = {}
+
+export const getReceiverSocketId = (receiver) => {
+    return onlineUsers[receiver]
+}
+
 io.on('connection', (socket) => {
     console.log('New client connected' , socket.id);
+
+    socket.on('addUser', (userId) => {
+            onlineUsers[userId] = socket.id;
+
+    });
+
+
+    io.emit('onlineUsers', Object.keys(onlineUsers));
+
+
+    socket.on('disconnect', () => { delete Object.keys(onlineUsers) });
+    
 })
 
 
@@ -60,7 +78,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', isAuth, userRouter);
 app.use('/api/posts', isAuth, postRouter);
 app.use('/api/story', isAuth, storyRouter);
-app.use('/api/message', isAuth, messageRouter);
+app.use('/api/messages', isAuth, messageRouter);
 
 
 

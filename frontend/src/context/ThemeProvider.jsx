@@ -41,12 +41,15 @@ const ThemeProvider = ({ children }) => {
     const [showCross , setShowCross] = useState(false)
     const [authorName, setAuthorName] = useState('')
     const [messageArea, setMessageArea] = useState(false);
+    const [messagedUsers, setMessageUsers] = useState([]);
+
+
 
 
 
 
     return (
-        <ThemeContext.Provider value={{ messageArea, setMessageArea, authorName, setAuthorName, showCross, setShowCross, viewStory, setViewStory, editPostId, setEditPostId, viewed, setViewed, recentUsers, setRecentUsers, showReplies, setShowReplies, postIdInMain, setPostIdInMain, inputRef, allCommentsInMain, setAllCommentsInMain, authorId, setAuthorId, reply, setReply, loading, setLoading, comment, setComment, post, setPost, indexval, setIndexval, commentLikes, setCommentLikes, likedUsers, setLikedUsers, commentId, setCommentId, hideCommenting, setHideCommenting, showLikes, setShowLikes, aboutAcc, setAboutAcc, sameData, setSameData, editPost, setEditPost, postId, setPostId, showComment, setShowComment, viewPost, setViewPost, activeSettings, setActiveSettings, image, theme, setTheme, activeItem, setActiveItem, active, setActive, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed }}>
+        <ThemeContext.Provider value={{ messagedUsers, setMessageUsers, messageArea, setMessageArea, authorName, setAuthorName, showCross, setShowCross, viewStory, setViewStory, editPostId, setEditPostId, viewed, setViewed, recentUsers, setRecentUsers, showReplies, setShowReplies, postIdInMain, setPostIdInMain, inputRef, allCommentsInMain, setAllCommentsInMain, authorId, setAuthorId, reply, setReply, loading, setLoading, comment, setComment, post, setPost, indexval, setIndexval, commentLikes, setCommentLikes, likedUsers, setLikedUsers, commentId, setCommentId, hideCommenting, setHideCommenting, showLikes, setShowLikes, aboutAcc, setAboutAcc, sameData, setSameData, editPost, setEditPost, postId, setPostId, showComment, setShowComment, viewPost, setViewPost, activeSettings, setActiveSettings, image, theme, setTheme, activeItem, setActiveItem, active, setActive, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed }}>
             {children}
         </ThemeContext.Provider>
     )

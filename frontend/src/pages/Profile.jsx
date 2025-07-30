@@ -55,7 +55,7 @@ const Profile = () => {
   const [userProfile2, setUserProfile2] = useState({})
 
 
-  const { theme, setActiveItem, viewPost, setViewPost, showComment, setShowComment, setSearchIsFocussed, setNotificationIsFocussed, active, setActive, image, setActiveSettings, viewStory, setViewStory, setMessageArea } = useContext(ThemeContext);
+  const { theme, setActiveItem, viewPost, setViewPost, showComment, setShowComment, setSearchIsFocussed, setNotificationIsFocussed, active, setActive, image, setActiveSettings, viewStory, setViewStory, setMessageArea, setMessageUsers } = useContext(ThemeContext);
   let buttonClass = same && theme === 'dark' ? ' bg-[#686565a4] hover:bg-[#68656575] text-white' : same && theme === 'light' ? 'bg-[#f0f0f0] hover:bg-[#cecdcd] text-black' : 'bg-[#0095f6] text-white'
   let buttonClass2 = !same && theme === 'dark' ? ' bg-[#686565a4] hover:bg-[#68656575] text-white' : !same && theme === 'light' ? 'bg-[#f0f0f0] hover:bg-[#cecdcd] text-black' : 'bg-[#0095f6] text-white'
   let spanClass = theme === 'dark' ? 'text-white font-medium' : theme === 'light' ? 'text-black font-medium' : 'text-black dark:text-white font-medium'
@@ -157,14 +157,22 @@ const Profile = () => {
 
   //-----------------------------------------------------------------------------------
 
-  const handleClick2 = () => {
+  const handleClick2 = async () => {
     if (same) {
       navigate(`/archive/stories`);
     } else {
+        try {
+          await axios.post(`${serverUrl}/api/users/addmessageduser`, { identifier }, { withCredentials: true });
+          setMessageUsers(prev => [...prev, userProfile ]);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
       setMessageArea(true)
       navigate(`/messages/${identifier}`);
     }
-  }
+  
 
   //-----------------------------------------------------------------------------------
 
@@ -348,7 +356,7 @@ const Profile = () => {
                       {!same && userData?.user?.following?.some(u => u === userProfile?._id) && <IoIosArrowDown size={15} className={`mt-[2px] ml-[1px]  ${theme === 'dark' ? 'text-[#ffffffab]' : (theme === 'light') ? 'text-[#0000008d]' : ' text-black dark:text-white'} `} />}
                     </button>
                     <div className="relative w-fit h-fit">
-                      <button onClick={handleClick2} className={`px-4 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${!same ? buttonClass2 : buttonClass}`}>
+                      <button onClick={() => handleClick2()} className={`px-4 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${!same ? buttonClass2 : buttonClass}`}>
                         {same ? 'View archive' : 'Message'}
                       </button>
                       <div onClick={() => { setMenuOptions(true); }} className={` ${same ? 'hidden' : ''} absolute bottom-0 -right-10 w-10 h-10 flex items-center justify-center cursor-pointer pt-1 `}>
@@ -374,7 +382,7 @@ const Profile = () => {
           </div>
           <div onClick={(e) => e.stopPropagation()} className="absolute md:hidden  bottom-3 flex w-full gap-2 px-4">
             <button onClick={handleClick1} className={`flex-1 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${(!same && userData?.user?.following?.some(u => u === userProfile?._id)) ? buttonClass2 : buttonClass}`}> {same ? 'Edit Profile' : userData?.user?.following?.some(u => u === userProfile?._id) ? 'Following' : userData?.user?.followers?.some(u => u === userProfile?._id) ? 'Follow back' : 'Follow'}</button>
-            <button onClick={handleClick2} className={`flex-1 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${!same ? buttonClass2 : buttonClass}`}>{same ? 'View archive' : 'Message'}</button>
+            <button onClick={() => handleClick2()} className={`flex-1 py-[6px] rounded-lg font-semibold text-sm transition-all duration-200 ease-in-out cursor-pointer active:scale-95 ${!same ? buttonClass2 : buttonClass}`}>{same ? 'View archive' : 'Message'}</button>
           </div>
         </div>}
 

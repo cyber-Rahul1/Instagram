@@ -35,6 +35,8 @@ import { setAllComments } from "./redux/postSlice"
 import { useDispatch, useSelector } from "react-redux"
 import MainPage from "./pages/MainPage"
 import MessageArea from "./components/MessageArea"
+import { setOnlineUsers } from "./redux/userSlice"
+import { setMessages } from "./redux/messageSlice"
 
 
 
@@ -51,6 +53,13 @@ const App = () => {
 
   const { userData } = useSelector((state) => state.user)
 
+
+
+  useEffect(() => {
+    if (userData?.user?._id) {
+      socket.emit('addUser', userData?.user?._id);
+    }
+  }, [userData]);
 
 
   useEffect(() => {
@@ -130,17 +139,30 @@ const App = () => {
       }
     });
 
+   
+
+
+    socket.on('onlineUsers', (users) => {
+      dispatch(setOnlineUsers(users));
+    });
 
 
     return () => {
       socket.off('newComment');
-      socket.off('newLike');
-      socket.off('newCommentLike');
+      socket.off('newCommentLike');``
       socket.off('newReply');
       socket.off('clearOneRecentUser');
       socket.off('newNotification');
+      socket.off('onlineUsers');
     };
   }, []);
+
+  
+  useEffect(() => {
+    socket.on('newMessage', (message) => {
+      dispatch(setMessages(message));
+    });
+  }, [dispatch])
 
 
 
@@ -162,7 +184,7 @@ const App = () => {
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>}>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={ userData?.user?.following?.length > 0 ? <MainPage /> : <Suggested />} />
           <Route path="/suggested" element={<Suggested />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/reels" element={<Reels />} />
