@@ -12,6 +12,7 @@ import SenderMessage from "./SenderMessage";
 import ReceiverMessage from "./ReceiverMessage";
 import { useDispatch, useSelector } from "react-redux";
 import { getMessages, setMessages } from "../redux/messageSlice";
+import EmojiPicker from "emoji-picker-react";
 
 
 const MessageArea = ({ setMessageUsers }) => {
@@ -24,13 +25,14 @@ const MessageArea = ({ setMessageUsers }) => {
   const bottomRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
 
   const [user, setUser] = useState({})
   const [input, setInput] = useState('')
   const [frontendImg, setFrontendImg] = useState('')
   const [backendImg, setBackendImg] = useState('')
   const [loading, setLoading] = useState(false)
+  const [emoji, setEmoji] = useState(false)
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -119,7 +121,7 @@ const MessageArea = ({ setMessageUsers }) => {
               {message && message?.sender === userData?.user?._id ? <SenderMessage message={message?.message} image={message?.image} post={message?.post} story={message?.story} /> : <ReceiverMessage message={message?.message} image={message?.image} post={message?.post} story={message?.story} />}
             </div>
           ))}
-        <div ref={bottomRef}/>
+          <div ref={bottomRef} />
         </div>
       </div>
       <div className={`w-[95%] flex-col mx-auto h-fit px-3 border-1 my-4 ${theme === 'dark' ? 'bg-[#000000] border-[#363636]' : (theme === 'light') ? 'bg-white border-[#d3d3d3]' : ' bg-white dark:bg-black'} flex items-start justify-start gap-3 ${frontendImg ? ' rounded-3xl pt-3' : ' rounded-full'}`}>
@@ -129,21 +131,25 @@ const MessageArea = ({ setMessageUsers }) => {
           </div>
           <img src={frontendImg} alt="image" className="w-15 h-15 rounded-lg object-cover" />
         </div>}
-        <div className="w-full flex items-center justify-start gap-3">
-          <GrEmoji size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />
-          <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Message..." className={`w-full h-fit py-[10px] outline-none ${theme === 'dark' ? 'bg-[#000000] text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`} />
-          {!(input || frontendImg) && <TbPhoto onClick={() => { image.current.click() }} size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />}
-          {(input || frontendImg) && <button onKeyDown={(e) => { if (e.key === 'Enter') { handleSend() } }} onClick={handleSend} disabled={input === '' && !frontendImg} className={`px-3 py-[5px] md:px-4 md:py-2 cursor-pointer rounded-lg text-[#0095f6] hover:text-[#0094f6e0] active:scale-96 transition-all duration-200 ease-in-out font-semibold text-sm`}>
-            {loading ? (
-              <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
-            ) : (
-              'Send'
-            )}
-          </button>}
-        </div>
+        <div className="relative w-full flex items-center justify-start gap-3">
+          <GrEmoji onClick={() => { setEmoji(!emoji); }} size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />
+          {emoji && <div onClick={() => { setEmoji(false) }} className=" absolute bottom-15 left-0 w-fit h-fit flex items-center justify-center" >
+            <div onClick={(e) => { e.stopPropagation(); setEmoji(false); }} className={`fixed w-full h-full bg-transparent `}/>
+              <EmojiPicker onEmojiClick={(emojiObject) => { setInput(prev => prev + emojiObject.emoji); setEmoji(false); }} height={300} width={250} theme={theme === 'dark' ? 'dark' : 'light'} emojiStyle="apple" searchDisabled={true} className='shadow-xl' />
+            </div>}
+            <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Message..." className={`w-full h-fit py-[10px] outline-none ${theme === 'dark' ? 'bg-[#000000] text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`} />
+            {!(input || frontendImg) && <TbPhoto onClick={() => { image.current.click() }} size={24} className={` ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'} cursor-pointer `} />}
+            {(input || frontendImg) && <button onKeyDown={(e) => { if (e.key === 'Enter') { handleSend() } }} onClick={handleSend} disabled={input === '' && !frontendImg} className={`px-3 py-[5px] md:px-4 md:py-2 cursor-pointer rounded-lg text-[#0095f6] hover:text-[#0094f6e0] active:scale-96 transition-all duration-200 ease-in-out font-semibold text-sm`}>
+              {loading ? (
+                <div className="w-4 h-4 border-t-1 border-b-1 border-white rounded-full animate-spin"></div>
+              ) : (
+                'Send'
+              )}
+            </button>}
+          </div>
       </div>
-    </div>
-  )
+      </div>
+      )
 }
 
-export default MessageArea;
+      export default MessageArea;

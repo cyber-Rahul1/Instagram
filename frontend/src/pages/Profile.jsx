@@ -167,10 +167,10 @@ const Profile = () => {
         } catch (error) {
           console.log(error);
         }
+        navigate(`/messages/${identifier}`);
       }
 
       setMessageArea(true)
-      navigate(`/messages/${identifier}`);
     }
   
 
