@@ -9,7 +9,7 @@ import cors from 'cors';
 
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://instagram-n6oq.onrender.com', 'https://instagram-n6oq.onrender.com/api/auth/googlelogin', process.env.FRONTEND_URL],
+    origin: ['http://localhost:5173', 'https://instagram-n6oq.onrender.com', 'https://instagram-cyber-rahul1s-projects.vercel.app/', 'https://instagram-n6oq.onrender.com/api/auth/googlelogin', process.env.FRONTEND_URL],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
