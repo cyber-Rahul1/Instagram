@@ -17,6 +17,8 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
     const navigate = useNavigate()
     const { userData } = useSelector((state) => state.user)
 
+    let items = ['', '', '', '', '', '', '', '']
+
     //-----------------------------------------------------------------------------------
 
     useEffect(() => {
@@ -69,8 +71,24 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
     //-----------------------------------------------------------------------------------
 
     if (loading) {
-        return <div className="w-screen h-screen flex items-center justify-center">
-            <div className="h-10 w-10 border-t-1 border-b-1  border-[white] rounded-full animate-spin transition-all duration-500 ease-in-out" />
+        return <div className={`w-screen h-screen flex items-center justify-center flex-col gap-5 ${theme === 'dark' ? 'bg-[#000000]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-black'}`}>
+            <div className=" w-full md:w-120 flex items-start justify-start p-3">
+                <p className={`text-md font-semibold ${page === 'main' ? 'hidden' : ''} ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Suggested</p>
+            </div>
+            {items.map((_, index) => (
+                <div key={index} className={`animate-pulse w-full md:w-120 h-fit flex items-start justify-between gap-10 pb-5`}>
+                    <div className="flex items-center gap-3">
+                        <div className="w-full h-full flex items-center justify-center rounded-full overflow-hidden">
+                            <div className={`h-10 w-10 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#d3d3d3]' : ' bg-[#d3d3d3] dark:bg-[#363636]'}`} />
+                        </div>
+                        <div className="w-full h-full flex flex-col items-start justify-start gap-3">
+                            <div className={`h-3 w-40 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#d3d3d3]' : ' bg-[#d3d3d3] dark:bg-[#363636]'}`} />
+                            <div className={`h-3 w-30 rounded-full ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#d3d3d3]' : ' bg-[#d3d3d3] dark:bg-[#363636]'}`} />
+                        </div>
+                    </div>
+                    <div className={`h-8 w-20 rounded-xl ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#d3d3d3]' : ' bg-[#d3d3d3] dark:bg-[#363636]'}`}></div>
+                </div>
+            ))}
         </div>
     }
 
@@ -103,6 +121,7 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
 
     return (
         <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen items-start justify-center w-full overflow-y-auto overflow-x-hidden `}>
+
             <div className={` h-fit flex flex-col items-center justify-center gap-4  ${page === 'main' ? 'md:w-70 pt-0' : 'w-full md:w-140 pt-15'}`}>
                 <div className="w-full flex items-center justify-start p-3">
                     <p className={`text-md font-semibold ${page === 'main' ? 'hidden' : ''} ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Suggested</p>
