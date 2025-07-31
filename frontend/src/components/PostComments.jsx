@@ -42,9 +42,9 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
 
     useEffect(() => {
         if (posts && posts[indexval]?.description && posts[indexval]?.description.length > 30) {
-            setMore(true)
-        } else {
             setMore(false)
+        } else {
+            setMore(true)
         }
     }, [posts, indexval])
 
@@ -314,7 +314,7 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
                                     <p onClick={() => { handleNavigate(page !== 'main' ? posts[indexval]?.author?.username : post?.author?.username, page !== 'main' ? posts[indexval]?.author?._id : post?.author?._id) }} className={`${mainTextTheme} text-sm font-medium ml-2`}>{page !== 'main' ? (posts[indexval]?.author?.username || posts[indexval]?.author?.name) : (post?.author?.username || post?.author?.name)}</p>
                                     <p className={`${subTextTheme} ${theme === 'dark' ? 'bg-[#78787884]' : (theme === 'light') ? 'bg-[#81818184]' : ' bg-[#81818184] dark:bg-[#78787884]'} px-1 rounded-2xl text-xs font-medium ml-2`}>Author</p>
                                 </div>
-                                <p className={` text-sm pl-2 pb-2 break-words whitespace-normal ${mainTextTheme} `}>{more ? page !== 'main' ? posts[indexval]?.description : post?.description : page !== 'main' ? posts[indexval]?.description?.slice(0, 30) : post?.description?.slice(0, 30)} <span onClick={() => { setMore(!more) }} className="text-[#ffffff84] text-sm cursor-pointer hover:text-[#ffffff81] transition-all duration-200 ease-in-out">{more ? '...more' : ''}</span> </p>
+                                <p className={` text-sm pl-2 pb-2 break-words whitespace-normal ${mainTextTheme} `}>{more ? (page !== 'main' ? posts[indexval]?.description : post?.description) : (page !== 'main') ? (posts[indexval]?.description?.slice(0, 30)) : post?.description?.slice(0, 30)} <span onClick={() => { setMore(!more) }} className="text-[#ffffff84] text-sm cursor-pointer hover:text-[#ffffff81] transition-all duration-200 ease-in-out">{more ? '' : '...more'}</span> </p>
                             </div>
                         </div>}
                     </div>

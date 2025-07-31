@@ -71,7 +71,7 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
     //-----------------------------------------------------------------------------------
 
     if (loading) {
-        return <div className={`w-screen h-screen flex items-center justify-center flex-col gap-5 ${theme === 'dark' ? 'bg-[#000000]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-black'}`}>
+        return <div className={`w-screen h-screen flex items-center justify-start md:justify-center flex-col px-5 md:px-0 gap-5 ${theme === 'dark' ? 'bg-[#000000]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-black'}`}>
             <div className=" w-full md:w-120 flex items-start justify-start p-3">
                 <p className={`text-md font-semibold ${page === 'main' ? 'hidden' : ''} ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Suggested</p>
             </div>

@@ -427,3 +427,24 @@ export const getMessagedUsers = async (req, res) => {
 
 
 //------------------------------------------------------------------------------------------
+
+
+export const verifyToken = async (req, res) => {
+    try {
+        const { token } = req.body;
+        if (!token) {
+            return res.status(400).json({ message: 'Token is required' });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (!decoded) {
+            return res.status(400).json({ message: 'Invalid token' });
+        }
+        return res.status(200).json({ message: 'Token verified successfully' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Something went wrong - verifyToken' });
+    }
+}
+
+
+//------------------------------------------------------------------------------------------

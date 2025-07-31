@@ -4,8 +4,10 @@ export default function ProtectedRoute({ children }) {
 
 
     const token = localStorage.getItem('token');
+    
 
     if (!token ) {
+        alert('Session expired. Please login again.')
         return <Navigate to="/login" replace />;
     }
 

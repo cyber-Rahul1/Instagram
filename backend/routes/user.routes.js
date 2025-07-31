@@ -1,5 +1,5 @@
 import express from 'express';
-import { addMessagedUser, addRecentUsers, clearOneRecentUser, clearRecentUsers, followAndUnfollow, getAllMostFollowedUsers, getAllUsers, getFollowers, getFollowing, getMessagedUsers, getRecentUsers, getUser, getUserProfile, removeProfilePic, suggestedUsers, updateUser } from '../controllers/user.controller.js';
+import { addMessagedUser, addRecentUsers, clearOneRecentUser, clearRecentUsers, followAndUnfollow, getAllMostFollowedUsers, getAllUsers, getFollowers, getFollowing, getMessagedUsers, getRecentUsers, getUser, getUserProfile, removeProfilePic, suggestedUsers, updateUser, verifyToken } from '../controllers/user.controller.js';
 import upload from '../middlewares/multer.js';
 const userRouter = express.Router();
 
@@ -20,6 +20,7 @@ userRouter.get('/clearrecentusers', clearRecentUsers);
 userRouter.post('/clearonerecentuser', clearOneRecentUser);
 userRouter.get('/getmessagedusers', getMessagedUsers);
 userRouter.post('/addmessageduser', addMessagedUser);
+userRouter.post('/verifytoken', verifyToken);
 
 
 

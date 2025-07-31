@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 const EmptyPage = ({ page }) => {
 
-  const { theme, image } = useContext(ThemeContext)
+  const { theme, setCreate2 } = useContext(ThemeContext)
   const {identifier} = useParams()
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   const [userProfile, setUserProfile] = useState({})
@@ -58,7 +58,7 @@ const EmptyPage = ({ page }) => {
                   <>{userProfile?._id === userData?.user?._id && ("When people tag you in photos, they'll appear here.")}</>
           )}
           </p>
-          {(page === 'posts' && userProfile?._id === userData?.user?._id) &&  <p onClick={() => image.current.click()} className="text-[#358be0] text-center font-semibold text-xs md:text-sm mt-3 cursor-pointer active:scale-97 hover:text-[#2a79c7cc]">Share your first photo.</p>}
+          {(page === 'posts' && userProfile?._id === userData?.user?._id) &&  <p onClick={() => { setCreate2(true) }} className="text-[#358be0] text-center font-semibold text-xs md:text-sm mt-3 cursor-pointer active:scale-97 hover:text-[#2a79c7cc]">Share your first photo.</p>}
         </div>
       </div>}
       

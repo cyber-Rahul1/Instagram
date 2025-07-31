@@ -33,7 +33,7 @@ const Sidebar = () => {
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   let navigate = useNavigate()
   const location = useLocation();
-  const { activeItem, setActiveItem, viewPost, setViewPost, viewed, setViewed, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings } = useContext(ThemeContext)
+  const { activeItem, setActiveItem, viewPost, setViewPost, viewed, setViewed, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings, create2 } = useContext(ThemeContext)
   const { userData } = useSelector((state) => state.user)
   const [create, setCreate] = useState(false)
   const [bottomActive, setBottomActive] = useState('')
@@ -63,14 +63,14 @@ const Sidebar = () => {
 
   //-----------------------------------------------------------------------------------
 
-   const handleViewed = async () => {
-     try {
-       let result = await axios.get(`${serverUrl}/api/posts/setviewed`, { withCredentials: true });
-       setViewed(result.data.viewed)
-     } catch (error) {
-       console.log(error);
-     }
-   }
+  const handleViewed = async () => {
+    try {
+      let result = await axios.get(`${serverUrl}/api/posts/setviewed`, { withCredentials: true });
+      setViewed(result.data.viewed)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   //-----------------------------------------------------------------------------------
 
@@ -132,18 +132,18 @@ const Sidebar = () => {
 
   return (
     <>
-      { create && <div>
+      {(create || create2) && <div>
         <HandlePosts setCreate={setCreate} imgSelected={imgSelected} fileInputRef={fileInputRef} setImgSelected={setImgSelected} />
-      </div> }
+      </div>}
       <div className="hidden relative md:block transition-all duration-200 ease-in-out">
         <div className={`flex flex-col justify-between ${(theme === 'dark') ? 'text-white bg-black transition-all duration-200 ease-in-out border-[#363636b4]' : (theme === 'light') ? 'text-black  bg-white border-gray-200' : ' text-black dark:text-white border-gray-200 dark:border-[#363636b4] dark:bg-black bg-white'}  h-screen  pt-6  ${activeItem === 'Messages' ? 'w-[70px] mr-0 pl-2' : 'w-[70px] 2xl:w-[340px] xl:w-[240px] pl-3'} transition-all duration-200 ease-in-out border-r`}>
-          
+
           <div className="flex flex-col gap-3">
             <div onClick={() => { setActiveItem('Home'); navigate('/') }} className="flex flex-col">
               <IoLogoInstagram size={38} className={`${(searchIsFocussed || notificationIsFocussed || activeItem === 'Messages') ? '' : 'xl:hidden'}  active:text-[#ffffff94] pl-1 ml-1 mb-8 pt-2 cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`} />
               <h1 className={`heading text-[27px]  active:text-[#ffffff94] tracking-tight font-medium ${(theme === 'dark') ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} pl-1 ml-2 mb-5 pt-2 ${(searchIsFocussed || activeItem === 'Messages' || notificationIsFocussed) ? 'hidden ' : 'hidden xl:block '} cursor-pointer `}>Instagram</h1>
             </div>
-            {(notificationIsFocussed || searchIsFocussed) && <div onClick={() => {setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className='absolute top-0 z-5 left-20 w-screen h-full bg-transparent' />}
+            {(notificationIsFocussed || searchIsFocussed) && <div onClick={() => { setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className='absolute top-0 z-5 left-20 w-screen h-full bg-transparent' />}
             <div className={`flex flex-col gap-[7px] `}>
               {menuItems.map((item) => (
                 <div key={item.name} onClick={() => { handleItemClick(item.name, item?.path); }} className={`active:text-[#ffffff94]  ${theme === 'dark' ? 'hover:bg-[#ffffff1a] ' : (theme === 'light') ? 'hover:bg-[#a09e9e2a] ' : ' dark:hover:bg-[#ffffff1a] hover:bg-[#a09e9e2a] dark:text-white'} active:scale-95 relative py-3 flex items-center gap-4  cursor-pointer ${notificationIsFocussed || searchIsFocussed ? 'pl-3 mr-[275px]' : 'pl-3 mr-3'} rounded-xl transition-all duration-200 ease-in-out`}>
@@ -153,7 +153,7 @@ const Sidebar = () => {
                     {item.name === 'Notifications' && !viewed && (
                       <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
                     )}
-                    </div>}
+                  </div>}
                   {item.image && <div className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center"><img src={item.image} className={"w-full h-full rounded-full object-cover"} alt="Profile" /></div>}
                   <p className={`text-md ${(searchIsFocussed || activeItem === 'Messages' || notificationIsFocussed) ? 'hidden' : 'hidden xl:block'}  ${activeItem === item.name ? 'font-bold' : 'font-normal'} transition-all duration-200 ease-in-out`}>{item.name}</p>
                 </div>

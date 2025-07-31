@@ -54,6 +54,21 @@ const App = () => {
   const { userData } = useSelector((state) => state.user)
 
 
+  // useEffect(() => {
+  //   const verifyToken = async () => {
+  //     try { 
+  //       let result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/users/verifytoken`, { withCredentials: true });
+  //       if (result.status !== 200 && result.status !== 400) {
+  //         localStorage.removeItem('token');
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //       localStorage.removeItem('token');
+  //     }
+  //   }
+  //   verifyToken();
+  // },[])
+
 
   useEffect(() => {
     if (userData?.user?._id) {
