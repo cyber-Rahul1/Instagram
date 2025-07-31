@@ -74,6 +74,7 @@ const Message = () => {
 
 
   const handleAddMessagedUser = async (user) => {
+    if (messagedUsers?.some(u => u._id === user?._id)) return navigate(`/messages/${user?.username || user?._id}`);
     try {
       await axios.post(`${serverUrl}/api/users/addmessageduser`, { identifier: user?.username || user?._id }, { withCredentials: true });
       setMessageUsers(prev => [...prev, user]);
