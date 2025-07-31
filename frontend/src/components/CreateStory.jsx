@@ -10,7 +10,7 @@ import postwhite from '../assets/postwhite.png';
 import postblack from '../assets/postblack.png';
 import axios from "axios";
 
-const CreateStory = ({ setImgSelected, frontendImg, backendImg, discard, setDiscard }) => {
+const CreateStory = ({ setImgSelected, frontendImg, backendImg, discard, setDiscard, setBackendImg, setFrontendImg }) => {
 
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";    
 
@@ -36,6 +36,8 @@ const CreateStory = ({ setImgSelected, frontendImg, backendImg, discard, setDisc
 
 
     const handleDiscard = () => {
+        setBackendImg('')
+        setFrontendImg('')
         setImgSelected(false)
         setDiscard(false)
     }
@@ -55,6 +57,8 @@ const CreateStory = ({ setImgSelected, frontendImg, backendImg, discard, setDisc
             console.log(result.data);
             window.location.reload();
             setImgSelected(false)
+            setBackendImg('')
+            setFrontendImg('')
             setDiscard(false)
             setLoading(false)
         } catch (error) {

@@ -316,7 +316,7 @@ const MainPage = () => {
           <ViewStoryCards storyId={storyId} setViewStory={setViewStory1} />
         </div>}
       <div className="w-screen lg:w-2/3 h-screen flex flex-col items-center justify-start gap-4 lg:pl-45 pt-15 md:pt-4">
-        <div className="w-full md:w-150 h-fit flex items-center justify-center z-0">
+        <div className={`w-full md:w-150 h-fit flex items-center justify-center ${(showOptions || editPost || aboutAcc || viewPost) ? 'z-0' : 'z-10'}`}>
           <Stories />
         </div>
         <div className="flex flex-col items-start justify-center w-full sm:w-110 h-fit z-0 pb-10">
@@ -349,12 +349,12 @@ const MainPage = () => {
           {allPosts && (posts && posts?.length > 0) && posts?.map((post) => (
             <div key={post._id} className={`w-full h-full flex flex-col items-center justify-center md:border-b-1 py-5 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
               {aboutAcc &&
-                <div onClick={() => { setAboutAcc(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#0000003b] items-center justify-center" >
+                <div onClick={() => { setAboutAcc(false); }} className="fixed top-0 left-0 z-100 w-screen h-screen flex bg-[#00000013] items-center justify-center" >
                   <AboutAccount setAboutAcc={setAboutAcc} theme={theme} country='India' page={'main'} post={aboutPost} />
                 </div>
               }
               {showOptions &&
-                <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen flex bg-[#00000031] items-center justify-center" >
+                <div onClick={() => { setShowOptions(false); }} className="fixed top-0 left-0 z-50 w-screen h-screen flex bg-[#00000011] items-center justify-center" >
                   <CommentOptions setViewPost={setViewPost} editPostId={editPostId} postId={post?._id} setPostIdInMain={setPostIdInMain} setAboutAcc={setAboutAcc} page={'main'} setShowOptions={setShowOptions} />
                 </div>
               }

@@ -69,16 +69,16 @@ const Stories = () => {
 
 
     return (
-        <div className="w-full h-fit flex items-center justify-start gap-4 p-2 overflow-x-auto scrollbar-none overflow-y-hidden scroll-smooth">
+        <div className="w-screen md:w-full h-fit flex items-start justify-start gap-4 p-2 overflow-x-auto scrollbar-none overflow-y-hidden scroll-smooth">
             {viewStory && <div onClick={(e) => { e.stopPropagation(); }} className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[black] md:bg-[#1A1A1A] z-100">
                 <ViewStoryCards page='main' story={story} setViewStory={setViewStory} storyId={storyId} setStoryId={setStoryId} stories={stories} storyIndex={storyIndex} setStoryIndex={setStoryIndex} />
             </div>}
             <input onChange={(e) => { handleImg(e) }} type="file" id="file" accept="image/*" ref={fileInputRef} className="hidden" />
             {imgSelected && <div onClick={(e) => { e.stopPropagation(); setDiscard(true) }} className="fixed top-0 left-0 w-screen h-screen flex items-start md:items-center justify-start md:justify-center bg-[#00000094] z-100">
-                <CreateStory setImgSelected={setImgSelected} frontendImg={frontendImg} backendImg={backendImg} discard={discard} setDiscard={setDiscard} />
+                <CreateStory setImgSelected={setImgSelected} frontendImg={frontendImg} backendImg={backendImg} discard={discard} setDiscard={setDiscard} setBackendImg={setBackendImg} setFrontendImg={setFrontendImg} />
             </div>}
-            {!userData?.user?.story?._id && <div className="w-fit h-fit flex flex-col items-center justify-center gap-1">
-                <div className="relative w-16 h-16 rounded-full z-10 flex items-center justify-center">
+            {!userData?.user?.story?._id && <div className="w-fit h-fit flex flex-col items-center justify-center gap-1 ">
+                <div className="relative w-16 h-16 rounded-full z-10 flex items-center justify-center ">
                     <img src={userData?.user?.profilepic || dp} alt="profile pic" className={`cursor-pointer w-15 h-15 z-10 rounded-full object-cover border-2 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff]' : ' border-[#ffffff] dark:border-[#000000]'}`} />
                     <div onClick={() => { fileInputRef.current.click(); }} className={`absolute bottom-0 z-10 -right-1 w-6 h-6 rounded-full flex items-center justify-center border-2 ${theme === 'dark' ? 'bg-[#ffffff] border-[#000000]' : (theme === 'light') ? 'bg-[#000000] border-[#ffffff]' : ' bg-[#ffffff94] dark:bg-[#ffffff]'}`}>
                         <RiAddLine size={16} className={` cursor-pointer ${theme === 'dark' ? 'text-[#000000]' : (theme === 'light') ? 'text-[#ffffff]' : ' text-[#ffffff] dark:text-[#000000]'}`} />
@@ -87,7 +87,7 @@ const Stories = () => {
                 <p className={`text-xs font-medium ${theme === 'dark' ? 'text-[#ffffff]' : (theme === 'light') ? 'text-[#000000]' : ' text-[#000000] dark:text-[#ffffff]'}`}>Your story</p>
             </div>}
             {stories?.map((story) => (
-                <div key={story._id} className="w-fit h-fit flex flex-col items-center justify-center gap-1">
+                <div key={story._id} className="w-fit h-fit flex flex-col items-center justify-center gap-1 z-10">
                     <div key={story._id} className={`relative w-16 h-16 rounded-full z-0 ${(story?.views?.some(v => v === userData?.user?._id)) ? 'bg-[#363636b1]' : 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600'} flex items-center justify-center`}>
                         <img onClick={() => { handleViewStory(story._id) }} src={(story?.author?.profilepic) || dp} alt="profile pic" className={`cursor-pointer w-15 h-15 rounded-full object-cover border-2 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff]' : ' border-[#ffffff] dark:border-[#000000]'}`} />
                         {story?.author?._id === userData?.user?._id && <div onClick={() => { fileInputRef.current.click(); }} className={`absolute bottom-0 z-10 -right-1 w-6 h-6 rounded-full flex items-center justify-center border-2 ${theme === 'dark' ? 'bg-[#ffffff] border-[#000000]' : (theme === 'light') ? 'bg-[#000000] border-[#ffffff]' : ' bg-[#ffffff94] dark:bg-[#ffffff]'}`}>
