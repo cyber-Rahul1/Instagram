@@ -199,7 +199,7 @@ const App = () => {
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>}>
-          <Route path="/" element={ (userData?.user?.following?.length > 1) ? <MainPage /> : <Suggested />} />
+          <Route path="/" element={ (userData?.user?.following?.length > 0) ? <MainPage /> : <Suggested />} />
           <Route path="/suggested" element={<Suggested />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/reels" element={<Reels />} />

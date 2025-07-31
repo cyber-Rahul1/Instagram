@@ -33,7 +33,7 @@ const Sidebar = () => {
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
   let navigate = useNavigate()
   const location = useLocation();
-  const { activeItem, setActiveItem, viewPost, setViewPost, viewed, setViewed, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings, create2 } = useContext(ThemeContext)
+  const { activeItem, setActiveItem, viewPost, setViewPost, viewed, setViewed, theme, setShowComment, setTheme, switchTheme, setSwitchTheme, searchIsFocussed, setSearchIsFocussed, notificationIsFocussed, setNotificationIsFocussed, setActiveSettings, create2, setCreate2 } = useContext(ThemeContext)
   const { userData } = useSelector((state) => state.user)
   const [create, setCreate] = useState(false)
   const [bottomActive, setBottomActive] = useState('')
@@ -132,7 +132,7 @@ const Sidebar = () => {
 
   return (
     <>
-      {(create || create2) && <div>
+      {(create || create2) && <div onClick={() => { setCreate(false); setCreate2(false); }} className="fixed top-0 left-0 z-50 w-full h-full bg-[#00000081] flex items-center justify-center">
         <HandlePosts setCreate={setCreate} imgSelected={imgSelected} fileInputRef={fileInputRef} setImgSelected={setImgSelected} />
       </div>}
       <div className="hidden relative md:block transition-all duration-200 ease-in-out">

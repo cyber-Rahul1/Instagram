@@ -12,7 +12,7 @@ import LogOutPopup from "./LogOutPopup";
 import axios from "axios";
 import Report from "./Report";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../redux/userSlice";
+import { setUserData, setUserProfile } from "../redux/userSlice";
 
 
 
@@ -83,6 +83,7 @@ const More = ({ setBottomActive }) => {
        try {
            let result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, { withCredentials: true })
            console.log(result);
+           dispatch(setUserProfile(null))
            dispatch(setUserData(null))
            setTimeout(() => {
                setLogout(false)

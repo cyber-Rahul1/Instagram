@@ -71,7 +71,7 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
     //-----------------------------------------------------------------------------------
 
     if (loading) {
-        return <div className={`w-screen h-screen flex items-center justify-start md:justify-center flex-col px-5 md:px-0 gap-5 ${theme === 'dark' ? 'bg-[#000000]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-black'}`}>
+        return <div className={`w-screen h-screen flex pt-2 md:pt-0 items-start md:items-center justify-start md:justify-center flex-col px-5 md:px-0 gap-5 ${theme === 'dark' ? 'bg-[#000000]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-black'}`}>
             <div className=" w-full md:w-120 flex items-start justify-start p-3">
                 <p className={`text-md font-semibold ${page === 'main' ? 'hidden' : ''} ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Suggested</p>
             </div>
@@ -120,7 +120,7 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing }) => {
 
 
     return (
-        <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen items-start justify-center w-full overflow-y-auto overflow-x-hidden `}>
+        <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen items-start justify-center w-full overflow-y-auto overflow-x-hidden px-5 md:px-0`}>
 
             <div className={` h-fit flex flex-col items-center justify-center gap-4  ${page === 'main' ? 'md:w-70 pt-0' : 'w-full md:w-140 pt-15'}`}>
                 <div className="w-full flex items-center justify-start p-3">
