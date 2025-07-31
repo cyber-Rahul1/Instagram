@@ -46,7 +46,7 @@ const Message = () => {
       }
     }
     getMessagedUsers();
-  }, [serverUrl])
+  }, [serverUrl, setMessageUsers])
 
 
   useEffect(() => {

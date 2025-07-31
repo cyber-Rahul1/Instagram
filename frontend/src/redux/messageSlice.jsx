@@ -27,7 +27,7 @@ const messageSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(getMessages.pending, (state) => {
             state.status = 'loading'
-            state.messages = null
+            state.messages = []
         }).addCase(getMessages.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.error = null
@@ -35,7 +35,7 @@ const messageSlice = createSlice({
         }).addCase(getMessages.rejected, (state) => {
             state.status = 'failed'
             state.error = 'Something went wrong'
-            state.messages = null
+            state.messages = []
         })
         
     }

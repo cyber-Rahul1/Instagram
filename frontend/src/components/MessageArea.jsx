@@ -11,8 +11,8 @@ import { RxCross2 } from "react-icons/rx";
 import SenderMessage from "./SenderMessage";
 import ReceiverMessage from "./ReceiverMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { getMessages, setMessages } from "../redux/messageSlice";
 import EmojiPicker from "emoji-picker-react";
+import { getMessages, setMessages } from "../redux/messageSlice";
 
 
 const MessageArea = ({ setMessageUsers }) => {
@@ -51,7 +51,7 @@ const MessageArea = ({ setMessageUsers }) => {
 
   useEffect(() => {
     dispatch(getMessages(user?._id))
-  }, [user?._id, dispatch])
+  }, [user?._id, dispatch, setMessageUsers])
 
 
   const { messages, status } = useSelector((state) => state.message);
@@ -78,6 +78,7 @@ const MessageArea = ({ setMessageUsers }) => {
       setInput('');
       setFrontendImg('');
       setBackendImg('');
+      dispatch(getMessages(user?._id))
     } catch (error) {
       setLoading(false)
       console.log(error);
