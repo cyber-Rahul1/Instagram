@@ -26,7 +26,7 @@ const ViewPostImage = ({ handleLike, posts, indexval, liked, page, post, viewRee
         {posts?.map((post) => (
           <div key={post._id} onDoubleClick={() => { handleLike() }} className="relative w-full h-full flex flex-col items-center justify-center">
             {indexval === posts?.indexOf(post) &&
-              <img src={post.image} alt="post" className={`3xl:w-220 2xl:h-210 w-full h-190 object-cover ${viewReels ? 'h-250' : 'h-90'}`} />
+              <img src={post.image} alt="post" className={`3xl:w-220 2xl:h-210 w-full h-190 object-cover ${viewReels ? 'md:h-full xl:h-190' : 'h-90'}`} />
 
             }
           </div>

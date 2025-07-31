@@ -46,7 +46,7 @@ const ProfileReels = () => {
       <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center">
         {reels?.length === 0  && <EmptyPage page={'reels'} />}
         {reels?.length > 0 && <PostCards setViewReels={setViewReels} posts={reels} userProfile={userProfile} status={status} setViewPost={setViewPost} setIndexval={setReelsindexval} setShowComment={setShowComment} setPostId={setReelsPostId} setShowReplies={setShowReplies} page={'reels'} />}
-        {viewPost && <ViewPostCards viewReels={viewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={reelsPostId} setIndexval={setReelsindexval} indexval={reelsindexval} posts={reels} setPosts={setReels} page={'reels'} />}
+        {viewPost && <ViewPostCards viewReels={viewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={reelsPostId} setIndexval={setReelsindexval} indexval={reelsindexval} posts={reels} setPosts={setReels}  />}
       </div>
       <div className="w-full h-fit pt-10">
         <LoginFooter theme={theme} page={'posts'} />

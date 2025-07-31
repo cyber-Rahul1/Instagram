@@ -6,7 +6,7 @@ import dp from '../assets/dp.webp'
 import { useNavigate } from "react-router-dom";
 
 
-const AboutAccount = ({ setAboutAcc, theme, country, post }) => {
+const AboutAccount = ({ setAboutAcc, theme, country, post, user }) => {
     let navigate = useNavigate()
 
 
@@ -20,8 +20,8 @@ const AboutAccount = ({ setAboutAcc, theme, country, post }) => {
                     <p className={`text-xs  md:text-[16px] w-full text-center rounded-t-2xl font-semibold py-3 ${theme === 'dark' ? 'text-white bg-[#363636]' : (theme === 'light') ? 'text-black bg-[#f2f2f2]' : ' text-black dark:text-white '} border-b-1 border-[#8584846f] `}>About this account</p>
                     <div className="md:w-100 h-fit flex flex-col items-center justify-center gap-5 px-3">
                         <div className={`w-full h-fit flex flex-col items-center justify-center gap-2 py-3 `}>
-                            <img src={post?.author?.profilepic || dp} alt="profile pic" className="w-20 h-20 rounded-full object-cover" />
-                            <p className={`text-xs md:text-[13px] font-bold pt-1 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#0000007c]' : ' text-black dark:text-[white]'}`}>{post?.author?.username || post?.author?.name}</p>
+                            <img src={post?.author?.profilepic || user?.profilepic || dp} alt="profile pic" className="w-20 h-20 rounded-full object-cover" />
+                            <p className={`text-xs md:text-[13px] font-bold pt-1 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#0000007c]' : ' text-black dark:text-[white]'}`}>{post?.author?.username || post?.author?.name || user?.username || user?.name }</p>
                             <p className={`text-xs text-center ${theme === 'dark' ? 'text-[#ffffff7c]' : (theme === 'light') ? 'text-[#0000007c]' : ' text-black dark:text-[#ffffff7c]'}`}>To help keep our community authentic, we're showing<br /> information about accounts on Instagram. <span onClick={() => { navigate('/privacy-policy') }} className="cursor-pointer hover:text-[#708dff] text-[#708dff]">See why<br /> this information is important.</span> </p>
                         </div>
                         <div className="w-full h-fit flex flex-col items-start justify-center gap-4">
@@ -29,7 +29,7 @@ const AboutAccount = ({ setAboutAcc, theme, country, post }) => {
                                 <FaRegCalendarAlt size={24} />
                                 <div>
                                     <p className={`${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Date Joined</p>
-                                    <p className={` text-xs ${theme === 'dark' ? 'text-[#ffffff7c]' : (theme === 'light') ? 'text-[#0000007c]' : ' text-black dark:text-[#ffffff7c]'}`}>{post?.author?.createdAt?.slice(0, 10)}</p>
+                                    <p className={` text-xs ${theme === 'dark' ? 'text-[#ffffff7c]' : (theme === 'light') ? 'text-[#0000007c]' : ' text-black dark:text-[#ffffff7c]'}`}>{post?.author?.createdAt?.slice(0, 10) || user?.createdAt?.slice(0, 10)}</p>
                                 </div>
                             </div>
                             <div className="flex items-center justify-start gap-2">

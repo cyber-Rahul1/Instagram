@@ -282,7 +282,7 @@ const Profile = () => {
       {(view === 'dp') && <div onClick={() => { setView(''); setShowDp(false); }} className="fixed top-0 bg-[#6a6a6ab9] left-0 w-screen h-screen z-100 flex items-center justify-center">
         <ProfileImage profileImage={userProfile?.profilepic || dp} showDp={showDp} setShowDp={setShowDp} />
       </div>}
-      {(showDp && userProfile?.story?.length > 0) && <div onClick={() => { setShowDp(false); }} className="fixed top-0 z-10 left-0 w-screen h-screen flex items-center justify-center">
+      {(showDp) && <div onClick={() => { setShowDp(false); }} className="fixed top-0 z-10 left-0 w-screen h-screen flex items-center justify-center">
         <div onClick={() => { setShowDp(false); }} className="fixed top-0 left-0 z-10 w-screen h-screen bg-[#6a6a6ab9] blur-6xl opacity-85" />
         <ViewProfileOrStory view={view} setViewStory={setViewStory} setView={setView} showDp={showDp} setShowDp={setShowDp} theme={theme} profileImage={userProfile?.profilepic || dp} />
       </div>}

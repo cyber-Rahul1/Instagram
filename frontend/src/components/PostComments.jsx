@@ -322,7 +322,7 @@ const PostComments = ({ posts, indexval, allComments, allReplies, setReply, setC
                         allCommentsInMain && allCommentsInMain.map((comment, index) => (
                             <div key={comment._id || index} className={`w-full md:h-fit  flex flex-col items-start justify-start px-4`}>
 
-                                <div className={`${page === 'reels' ? 'md:w-60 w-full ' : 'w-full' } h-fit flex items-start justify-between py-4 cursor-pointer gap-2`}>
+                                <div className={`${page === 'reels' ? 'w-60 ' : 'w-full' } h-fit flex items-start justify-between py-4 cursor-pointer gap-2`}>
                                         <img onClick={() => { handleNavigate(comment?.author?.username, comment?.author?._id) }} src={comment?.author?.profilepic} alt="author image" className="w-9 h-9 z-10 rounded-full object-cover" />
                                     <div onMouseOver={() => { setShowOptions(`${comment._id}`) }} onMouseLeave={() => { setShowOptions('') }} className="w-full h-fit flex flex-col items-start justify-start ">
                                         <p onClick={() => { handleNavigate(comment?.author?.username, comment?.author?._id) }} className={`${mainTextTheme} text-sm font-medium ml-2`}>{comment.author?.username || comment?.author?.name}</p>

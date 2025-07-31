@@ -119,7 +119,7 @@ const EditProfile = () => {
     setFormData(prev => {
       return {
         ...prev,
-        [e.target.name]: e.target.value.trim()
+        [e.target.name]: e.target.value
       }
     })
     if (e.target.name === 'bio') {

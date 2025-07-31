@@ -84,7 +84,7 @@ const CreateStory = ({ setImgSelected, frontendImg, backendImg, discard, setDisc
             </div>
             <div className="w-fit h-fit flex flex-col md:flex-row items-center justify-center">
                 <img src={frontendImg} alt="Story" className="w-screen md:w-130 h-120 md:h-150 xl:w-160 xl:h-180 object-cover" />
-                <div className="w-screen md:w-90 h-screen md:h-150 xl:h-180 bg-[#262626] flex flex-col items-start justify-start">
+                <div className={`w-screen md:w-90 h-screen md:h-150 xl:h-180 ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'} flex flex-col items-start justify-start`}>
                     <div className="w-fit h-fit p-5 flex items-center justify-center gap-3">
                         <div className="w-8 h-8 overflow-hidden rounded-full"><img src={userData?.user?.profilepic || dp} alt="profile pic" className='w-full h-full object-cover rounded-full' /></div>
                         <p className={`text-sm md:text-md font-medium ${theme === 'dark' ? 'text-[#ffffffd1]' : (theme === 'light') ? 'text-[#000000] ' : ' text-[#000000] dark:text-[#ffffffd1]'} z-60`}>{userData?.user?.username}</p>

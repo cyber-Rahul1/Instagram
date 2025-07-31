@@ -172,7 +172,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
     if (currentPost?.likes) {
       setLikedUsers(currentPost.likes);
     }
-  }, [posts, indexval, userPosts, likedUsers, setLikedUsers, postId, post, page])
+  }, [posts, indexval, userPosts, setLikedUsers, postId, post, page])
 
 
   //-----------------------------------------------------------------------------------
@@ -226,20 +226,23 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
         withCredentials: true
       });
       console.log(result.data);
-      if (result.data.message === 'Post liked' && !posts[indexval]?.likes?.some(user => user._id === userData?.user?._id)) {
+      if (result.data.message === 'Post liked') {
         setPosts(prev => prev?.map(post => {
           if (post?._id === id) {
             return { ...post, likes: [...post.likes, userData?.user] }
           }
           return post
         }))
-      } else if (result.data.message === 'Post unliked' && posts[indexval]?.likes?.some(user => user._id === userData?.user?._id)) {
+
+        setLikedUsers(prev => [...prev, userData?.user])
+      } else if (result.data.message === 'Post unliked') {
         setPosts(prev => prev?.map(post => {
           if (post?._id === id) {
             return { ...post, likes: post?.likes?.filter(user => user._id !== userData?.user?._id) }
           }
           return post
         }))
+        setLikedUsers(prev => prev?.filter(user => user._id !== userData?.user?._id))
       }
     } catch (error) {
       console.log(error);
@@ -452,6 +455,8 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
                 {page === 'main' && <div onClick={() => { handleLike() }} className="w-fit h-fit flex items-center">
                   {((post?.likes && Array.isArray(post?.likes) && post?.likes?.some(l => l._id === userData?.user?._id))) ? <img src={heartfill} alt="liked" className="w-7 h-7 cursor-pointer transition-all duration-200 ease-in-out" /> : <GoHeart size={27} className={`${mainTextTheme}  cursor-pointer transition-all duration-200 ease-in-out`} />}
                 </div>}
+
+
                 {page !== 'main' && <div onClick={() => { handleLike2() }} className="w-fit h-fit flex items-center">
                   {((posts && posts[indexval]?.likes?.some(user => user?._id === userData?.user?._id))) ? <img src={heartfill} alt="liked" className="w-7 h-7 cursor-pointer transition-all duration-200 ease-in-out" /> : <GoHeart size={27} className={`${mainTextTheme}  cursor-pointer transition-all duration-200 ease-in-out`} />}
                 </div>}
