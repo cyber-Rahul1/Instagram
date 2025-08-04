@@ -67,6 +67,9 @@ const Profile = () => {
 
 
 
+  useEffect(() => {
+    setActive('POSTS')
+  }, [])
 
 
   useEffect(() => {

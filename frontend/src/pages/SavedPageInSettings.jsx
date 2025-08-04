@@ -76,7 +76,7 @@ const SavedPageInSettings = () => {
         {userProfile?.saved?.length === 0 && <EmptyPage page={'saved'} />}
         {userProfile?.saved?.length > 0 && <PostCards posts={posts} setViewReels={setViewReels} viewReels={viewReels} setViewPost={setViewPost} setIndexval={setSavedIndexval} setShowComment={setShowComment} setPostId={setSavedPostId} setShowReplies={setShowReplies} userProfile={userProfile} status={status} page={'saved'} />}
         {viewPost && <div className="w-full h-full">
-          <div className={`fixed top-0 left-0 z-10 w-full h-14 flex items-center justify-center gap-4 border-b-1 ${theme === 'dark' ? 'bg-black text-white border-[#363636]' : (theme === 'light') ? 'bg-white border-[#d3d3d3] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`}>
+          <div className={`fixed top-0 left-0 z-10 w-full md:hidden h-14 flex items-center justify-center gap-4 border-b-1 ${theme === 'dark' ? 'bg-black text-white border-[#363636]' : (theme === 'light') ? 'bg-white border-[#d3d3d3] text-black' : ' bg-white dark:bg-black text-black dark:text-white'}`}>
             <div onClick={() => { setViewPost(false); setShowComment(false); }} className="absolute left-1 active:scale-95 cursor-pointer active:text-[#ffffff94]">
               <AiOutlineLeft size={24} />
             </div>

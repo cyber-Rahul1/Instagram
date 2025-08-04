@@ -20,6 +20,7 @@ const Posts = () => {
   const [indexval, setIndexval] = useState(0)
   const [showReplies, setShowReplies] = useState({})
   const [viewReels, setViewReels] = useState(false)
+  const [loading, setLoading] = useState(false)
   
   
   
@@ -27,14 +28,16 @@ const Posts = () => {
   
   
   useEffect(() => {
+    setLoading(true)
     dispatch(getUserPosts(identifier))
+    setLoading(false)
     if (postId !== '') {
       dispatch(getAllComments(postId));
       dispatch(getAllReplies(postId));
     }
   }, [dispatch, identifier, postId])
   
-  const { userPosts, status, error } = useSelector((state) => state.post)
+  const { userPosts, error } = useSelector((state) => state.post)
   const { userProfile } = useSelector((state) => state.user)
 
 
@@ -50,7 +53,7 @@ const Posts = () => {
     <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10 px-1 ">
       
       {posts?.length === 0 && <EmptyPage page={'posts'} />}
-      {posts?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={posts} setShowComment={setShowComment} userProfile={userProfile} setViewPost={setViewPost} setIndexval={setIndexval} status={status} error={error} setPostId={setPostId} setShowReplies={setShowReplies} />}
+      {posts?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={posts} setShowComment={setShowComment} userProfile={userProfile} setViewPost={setViewPost} setIndexval={setIndexval} loading={loading} error={error} setPostId={setPostId} setShowReplies={setShowReplies} />}
       {viewPost && <ViewPostCards viewPost={viewPost} viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={postId} setIndexval={setIndexval} indexval={indexval} posts={posts} setPosts={setPosts} />}
       <div className="w-full h-fit pt-10">
         <LoginFooter theme={theme} page={'posts'} />

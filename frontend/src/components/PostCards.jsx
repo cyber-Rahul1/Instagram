@@ -7,7 +7,7 @@ import { ThemeContext } from "../context/ContextProvider";
 import { useContext } from "react";
 
 
-const PostCards = ({ posts, setViewReels, setViewPost, setIndexval, status, setShowComment, setPostId, setShowReplies, page }) => {
+const PostCards = ({ posts, setViewReels, setViewPost, setIndexval, status, setShowComment, setPostId, setShowReplies, page, loading }) => {
 
     const dispatch = useDispatch();
     const { theme } = useContext(ThemeContext)
@@ -40,7 +40,7 @@ const PostCards = ({ posts, setViewReels, setViewPost, setIndexval, status, setS
     
     return (
         <>
-            {status === 'loading' ? <div className={`w-full h-100 flex items-center justify-center`}>
+            {status === 'loading' || loading ? <div className={`w-full h-100 flex items-center justify-center`}>
                 <div className={`h-15 w-15 border-t-1 border-b-1  ${theme === 'dark' ? 'border-[#ffffff]' : (theme === 'light') ? 'border-[#000000]' : ' border-[#000000] dark:border-[#ffffff]'} rounded-full animate-spin transition-all duration-500 ease-in-out`}/></div> :
                 <div className={`w-full h-fit grid grid-cols-3 gap-1 justify-items-center `}>
                     {posts?.map((post) => (

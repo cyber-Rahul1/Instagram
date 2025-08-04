@@ -35,7 +35,7 @@ const ProfileReels = () => {
 
   useEffect(() => {
     setReels(userReels?.posts)
-  }, [userReels, reels])
+  }, [userReels])
 
   //-----------------------------------------------------------------------------------
 
@@ -56,3 +56,6 @@ const ProfileReels = () => {
 }
 
 export default ProfileReels
+
+
+

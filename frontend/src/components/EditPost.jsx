@@ -71,7 +71,7 @@ const EditPost = ({ postId, page }) => {
 
 
   return (
-    <div className={`w-full h-full flex flex-col items-center justify-start pt-15 md:justify-center ${theme === 'dark' ? ' text-white' : (theme === 'light') ? 'bg-white text-black' : ' text-black dark:text-white'} `}>
+    <div className={`w-full h-full flex flex-col items-center justify-start pt-15 md:justify-center ${theme === 'dark' ? ' text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} `}>
       <div onClick={(e) => { e.stopPropagation(); }} className={`w-full md:w-fit h-screen md:h-180 flex flex-col items-start justify-start rounded-xl overflow-hidden ${theme === 'dark' ? 'bg-[#262626]' : (theme === 'light') ? 'bg-white' : ' bg-white dark:bg-[#262626]'} overflow-y-auto md:overflow-hidden`}>
         <div className={`w-full h-fit border-b-1 flex items-center justify-between py-2 px-4 ${theme === 'dark' ? 'bg-[#000000] border-[#363636]' : (theme === 'light') ? 'bg-white border-[#d3d3d3]' : ' bg-white dark:bg-[#262626]'}`}>
           <p onClick={() => { setEditPost(false) }} className={`text-md cursor-pointer ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'} z-60`}>Cancel</p>
