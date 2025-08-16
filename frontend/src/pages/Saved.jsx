@@ -41,11 +41,13 @@ const Saved = () => {
 
   return (
     <>
-      {userProfile?._id === userData?.user?._id ? <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10">
-        {userProfile?.saved?.length > 0 && <p className="text-xs md:text-sm text-center text-[#ffffffa5] py-2">Only you can see what you've saved.</p>}
-        {userProfile?.saved?.length === 0 && <EmptyPage page={'saved'} />}
-        {userProfile?.saved?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={savedPosts} userProfile={userProfile} status={status} setViewPost={setViewPost} setIndexval={setSavedIndexval} setShowComment={setShowComment} setPostId={setSavedPostId} setShowReplies={setShowReplies} page={'saved'} />}
-        {viewPost && <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={savedPostId} setIndexval={setSavedIndexval} indexval={savedindexval} posts={savedPosts} setPosts={setSavedPosts} />}
+      {userProfile?._id === userData?.user?._id ? <div className="w-full lg:w-[950px] h-screen flex flex-col items-center justify-between mx-auto pb-10">
+       <div className="w-full h-fit">
+          {userProfile?.saved?.length > 0 && <p className="text-xs md:text-sm text-center text-[#ffffffa5] py-2">Only you can see what you've saved.</p>}
+          {userProfile?.saved?.length === 0 && <EmptyPage page={'saved'} />}
+          {userProfile?.saved?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={savedPosts} userProfile={userProfile} status={status} setViewPost={setViewPost} setIndexval={setSavedIndexval} setShowComment={setShowComment} setPostId={setSavedPostId} setShowReplies={setShowReplies} page={'saved'} />}
+          {viewPost && <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={savedPostId} setIndexval={setSavedIndexval} indexval={savedindexval} posts={savedPosts} setPosts={setSavedPosts} />}
+       </div>
         <div className="w-full h-fit pt-10">
           <LoginFooter theme={theme} page={'posts'} />
         </div>

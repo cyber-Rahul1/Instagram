@@ -37,7 +37,7 @@ const Posts = () => {
     }
   }, [dispatch, identifier, postId])
   
-  const { userPosts, error } = useSelector((state) => state.post)
+  const { userPosts, status, error } = useSelector((state) => state.post)
   const { userProfile } = useSelector((state) => state.user)
 
 
@@ -50,11 +50,14 @@ const Posts = () => {
 
 
   return (
-    <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10 px-1 ">
-      
-      {posts?.length === 0 && <EmptyPage page={'posts'} />}
-      {posts?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={posts} setShowComment={setShowComment} userProfile={userProfile} setViewPost={setViewPost} setIndexval={setIndexval} loading={loading} error={error} setPostId={setPostId} setShowReplies={setShowReplies} />}
-      {viewPost && <ViewPostCards viewPost={viewPost} viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={postId} setIndexval={setIndexval} indexval={indexval} posts={posts} setPosts={setPosts} />}
+    <div className="w-full lg:w-[950px] h-screen flex flex-col items-center justify-between mx-auto pb-10 px-1 ">
+      {status === 'loading' && <div className={`w-full h-100 flex items-center justify-center`}>
+        <div className={`h-15 w-15 border-t-1 border-b-1  ${theme === 'dark' ? 'border-[#ffffff]' : (theme === 'light') ? 'border-[#000000]' : ' border-[#000000] dark:border-[#ffffff]'} rounded-full animate-spin transition-all duration-500 ease-in-out`} /></div>}
+      <div className="w-full h-fit">
+        {posts?.length === 0 && <EmptyPage page={'posts'} />}
+        {posts?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={posts} setShowComment={setShowComment} userProfile={userProfile} setViewPost={setViewPost} setIndexval={setIndexval} loading={loading} error={error} setPostId={setPostId} setShowReplies={setShowReplies} />}
+        {viewPost && <ViewPostCards viewPost={viewPost} viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={postId} setIndexval={setIndexval} indexval={indexval} posts={posts} setPosts={setPosts} />}
+      </div>
       <div className="w-full h-fit pt-10">
         <LoginFooter theme={theme} page={'posts'} />
       </div>

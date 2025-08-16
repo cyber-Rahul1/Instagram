@@ -43,10 +43,14 @@ const Tagged = () => {
 
   
   return (
-    <div className="w-full lg:w-[950px] h-fit flex flex-col items-center justify-center pb-10 px-1">
-      {userProfile?.tagged?.length === 0 && <EmptyPage page={'tagged'} />}
-      {userProfile?.tagged?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={taggedPosts} setShowComment={setShowComment} userProfile={userProfile} setIndexval={setTaggedIndexval} status={status} setViewPost={setViewPost} setPostId={setTaggedPostId} setShowReplies={setShowReplies} />}
-      {(viewPost && taggedPosts?.length > 0) && <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={taggedPostId} setPostId={setTaggedPostId} setIndexval={setTaggedIndexval} indexval={taggedindexval} posts={taggedPosts} setPosts={setTaggedPosts} />}
+    <div className="w-full lg:w-[950px] h-screen flex flex-col items-center justify-between mx-auto pb-10 px-1">
+      {status === 'loading' && <div className={`w-full h-100 flex items-center justify-center`}>
+        <div className={`h-15 w-15 border-t-1 border-b-1  ${theme === 'dark' ? 'border-[#ffffff]' : (theme === 'light') ? 'border-[#000000]' : ' border-[#000000] dark:border-[#ffffff]'} rounded-full animate-spin transition-all duration-500 ease-in-out`} /></div>}
+      <div className="w-full h-fit">
+        {userProfile?.tagged?.length === 0 && <EmptyPage page={'tagged'} />}
+        {userProfile?.tagged?.length > 0 && <PostCards viewReels={viewReels} setViewReels={setViewReels} posts={taggedPosts} setShowComment={setShowComment} userProfile={userProfile} setIndexval={setTaggedIndexval} status={status} setViewPost={setViewPost} setPostId={setTaggedPostId} setShowReplies={setShowReplies} />}
+        {(viewPost && taggedPosts?.length > 0) && <ViewPostCards viewReels={viewReels} setViewReels={setViewReels} showReplies={showReplies} setShowReplies={setShowReplies} setViewPost={setViewPost} showComment={showComment} setShowComment={setShowComment} postId={taggedPostId} setPostId={setTaggedPostId} setIndexval={setTaggedIndexval} indexval={taggedindexval} posts={taggedPosts} setPosts={setTaggedPosts} />}
+      </div>
       <div className="w-full h-fit pt-10">
         <LoginFooter theme={theme} page={'posts'} />
       </div>
