@@ -43,7 +43,7 @@ const Posts = () => {
 
 
   useEffect(() => {
-    setPosts(userPosts?.posts);
+    setPosts(userPosts?.posts || []);
   }, [userPosts])
 
 

@@ -123,10 +123,17 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing, followersPage }) 
         <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen items-start justify-center w-full overflow-y-auto overflow-x-hidden px-5 md:px-0`}>
 
             <div className={` h-fit flex flex-col items-center justify-center gap-4  ${page === 'main' ? 'md:w-70 pt-0' : 'w-full md:w-140 pt-15'}`}>
-                <div className="w-full flex items-center justify-start p-3">
+                <div className="w-full flex items-center justify-between p-3">
                     <p className={`text-md font-semibold ${page === 'main' ? 'hidden' : ''} ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Suggested</p>
+                    {page !== 'main' && (
+                        <p onClick={() => navigate('/')} className={`cursor-pointer text-sm font-medium text-[#0095f6] hover:text-[#008cff]`}>Skip</p>
+                    )}
                 </div>
-                {mostFollowedusers?.map((user, index) => {
+                {mostFollowedusers?.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center p-5 text-[#848485]">
+                        <p>No suggestions available at the moment.</p>
+                    </div>
+                ) : mostFollowedusers?.map((user, index) => {
                     return (
                         <div key={user?._id || index} className={`flex items-center justify-between gap-3  w-full p-3`}>
                             <div className="flex items-center gap-3">
