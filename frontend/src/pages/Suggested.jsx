@@ -120,7 +120,7 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing, followersPage }) 
 
 
     return (
-        <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? ' text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen items-start justify-center w-full overflow-y-auto overflow-x-hidden px-5 md:px-0`}>
+        <div onClick={() => { setActiveItem('Home'); setSearchIsFocussed(false); setNotificationIsFocussed(false); }} className={` ${(theme === 'dark') ? 'bg-black text-white' : (theme === 'light') ? 'bg-[#ffffff] text-black' : ' dark:bg-black dark:text-white bg-white'}  flex h-screen items-start justify-center w-full overflow-y-auto overflow-x-hidden px-5 md:px-0`}>
 
             <div className={` h-fit flex flex-col items-center justify-center gap-4  ${page === 'main' ? 'md:w-70 pt-0' : 'w-full md:w-140 pt-15'}`}>
                 <div className="w-full flex items-center justify-start p-3">
