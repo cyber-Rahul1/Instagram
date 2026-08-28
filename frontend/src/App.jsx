@@ -1,5 +1,5 @@
 import Login from "./pages/Login"
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Signup from "./pages/Signup"
 import Home from "./pages/Home"
 import { useContext, useEffect } from "react"
@@ -208,6 +208,7 @@ const App = () => {
             <Route path="/messages/:identifier" element={<MessageArea />} />
           </Route>
           <Route path="/notifications" element={<Notification />} />
+          <Route path="/profile" element={userData?.user ? <Navigate to={`/profile/${userData?.user?.username || userData?.user?._id}`} replace /> : <Navigate to="/" replace />} />
           <Route path="/profile/:identifier" element={<Profile />} >
             <Route path="/profile/:identifier" element={<Posts />} />
             <Route path="/profile/:identifier/saved" element={<Saved />} />
