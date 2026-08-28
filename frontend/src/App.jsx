@@ -47,7 +47,7 @@ const socket = io(import.meta.env.VITE_SERVER_URL || 'http://localhost:8000');
 const App = () => {
 
 
-  const { theme, setCommentLikes, setAllCommentsInMain, setShowReplies, setRecentUsers, setViewed } = useContext(ThemeContext);
+  const { theme, setCommentLikes, setAllCommentsInMain, setShowReplies, setRecentUsers, setViewed, skippedSuggested } = useContext(ThemeContext);
   const dispatch = useDispatch();
 
 
@@ -200,7 +200,7 @@ const App = () => {
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>}>
-          <Route path="/" element={ (userData?.user?.following?.length > 0) ? <MainPage /> : <Suggested />} />
+          <Route path="/" element={ (userData?.user?.following?.length > 0 || skippedSuggested) ? <MainPage /> : <Suggested />} />
           <Route path="/suggested" element={<Suggested />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/reels" element={<Reels />} />

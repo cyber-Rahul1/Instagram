@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const Suggested = ({ page, setShowFollowers, setShowFollowing, followersPage }) => {
 
-    const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed } = useContext(ThemeContext);
+    const { theme, setActiveItem, setSearchIsFocussed, setNotificationIsFocussed, setSkippedSuggested } = useContext(ThemeContext);
     const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
     const [mostFollowedusers, setMostFollowedUsers] = useState([])
     const [mostFollowedusersInMain, setMostFollowedUsersInMain] = useState([])
@@ -126,7 +126,7 @@ const Suggested = ({ page, setShowFollowers, setShowFollowing, followersPage }) 
                 <div className="w-full flex items-center justify-between p-3">
                     <p className={`text-md font-semibold ${page === 'main' ? 'hidden' : ''} ${theme === 'dark' ? 'text-white' : (theme === 'light') ? 'text-black' : ' text-black dark:text-white'}`}>Suggested</p>
                     {page !== 'main' && (
-                        <p onClick={() => navigate('/')} className={`cursor-pointer text-sm font-medium text-[#0095f6] hover:text-[#008cff]`}>Skip</p>
+                        <p onClick={() => { setSkippedSuggested(true); navigate('/'); }} className={`cursor-pointer text-sm font-medium text-[#0095f6] hover:text-[#008cff]`}>Skip</p>
                     )}
                 </div>
                 {mostFollowedusers?.length === 0 ? (
