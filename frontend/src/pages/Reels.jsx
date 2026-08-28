@@ -305,7 +305,7 @@ const Reels = () => {
                     <div onClick={() => { post?.author?.story && handleViewStory(post?.author?.story) }} className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center  ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'} cursor-pointer  ${post?.author?.story?._id && !post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600' : post?.author?.story?._id && post?.author?.story?.views?.some(v => v === userData?.user?._id) ? 'bg-[#363636]' : 'bg-transparent'}`}>
                       <img src={post?.author?.profilepic || dp} alt="author image" className={`w-9 h-9 rounded-full object-cover border-1 ${theme === 'dark' ? 'border-[#000000]' : (theme === 'light') ? 'border-[#ffffff] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`} />
                     </div>
-                    <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-semibold ml-2 cursor-pointer">{post?.author?.username}</p>
+                    <p onClick={() => { navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className="text-sm font-semibold ml-2 cursor-pointer">{post?.author?.username || post?.author?.name}</p>
                     {post?.author?._id !== userData?.user?._id && <LuDot size={20} className={`text-sm p-0 ${theme === 'dark' ? 'text-[#ffffffa5]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[#ffffffa5]'}`} />}
                     {post?.author?._id !== userData?.user?._id && <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>}
                   </div>
@@ -329,7 +329,7 @@ const Reels = () => {
                     {(post?.saved && post?.saved?.some(user => user === userData?.user?._id)) ? <RiBookmarkFill size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out  `} /> : <BiBookmark size={27} className={`${mainTextTheme} cursor-pointer transition-all duration-200 ease-in-out ${theme === 'dark' ? 'hover:text-[#ffffff81]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`} />}
                   </div>
                   <div className="w-10 h-full flex items-center justify-center cursor-pointer">
-                    <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username, post); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
+                    <BsThreeDots onClick={() => { handleClickOptions(post?.author?._id, post?._id, post?.author?.username || post?.author?.name, post); }} size={20} className={`${textTheme} hover:opacity-50 cursor-pointer transition-all duration-200 ease-in-out`} />
                   </div>
                 </div>
               </div>

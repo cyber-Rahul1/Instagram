@@ -137,21 +137,29 @@ export const googleLogin = async (req, res) => {
         if (!name || !email) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-        const user = await User.findOne({
-            email
-        });
+        const user = await User.findOne({ email });
         if (!user) {
-            let user = await User.create({email,name});
-            user = await user.save();
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+            let baseUsername = email.split('@')[0];
+            let username = baseUsername;
+            let userExists = await User.findOne({ username });
+            let count = 1;
+            while (userExists) {
+                username = baseUsername + count;
+                userExists = await User.findOne({ username });
+                count++;
+            }
+
+            let newUser = await User.create({ email, name, username });
+            
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
-            return res.status(200).json({ message: 'Login successful', user , jwt: token });
-        }else {
+            return res.status(200).json({ message: 'Login successful', user: newUser , jwt: token });
+        } else {
            
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
             res.cookie('token', token, {
@@ -163,11 +171,9 @@ export const googleLogin = async (req, res) => {
             return res.status(200).json({ message: 'Login successful', user , jwt: token });
         }
         
-        
-
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Something went wrong - googleLogin' });
+        return res.status(500).json({ message: 'Something went wrong - googleLogin', error: error.message, stack: error.stack });
     }
 }
 

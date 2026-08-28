@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import instalogin from '../assets/instagram-login.png'
-import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import LoginFooter from '../components/LoginFooter';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
@@ -27,6 +27,7 @@ const Login = () => {
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState('')
+  const [googleError, setGoogleError] = useState(false)
   const { setPage } = useContext(ServerContext)
   const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
 
@@ -85,6 +86,7 @@ const Login = () => {
   useEffect(() => {
     inputBox.current.focus()
     setStatus('')
+    setGoogleError(false)
     document.title = `Login - Instagram`;
     setPage('login')
 
@@ -135,8 +137,9 @@ const Login = () => {
 
   //-----------------------------------------------------------------------------------
 
-  const handleFacebookLogin = async () => {
+  const handleGoogleLogin = async () => {
     setLoading(true)
+    setGoogleError(false)
     try {
       let response = await signInWithPopup(auth, provider);
       let name = response.user.displayName;
@@ -157,7 +160,7 @@ const Login = () => {
       setPage('')
     } catch (error) {
       setLoading(false)
-      setStatus(error?.response?.status);
+      setGoogleError(true)
     }
   }
 
@@ -210,9 +213,9 @@ const Login = () => {
                 <p className='dark:text-[#ffffffa5] text-[#737c8add] text-[13px] dark:font-normal font-semibold'>OR</p>
                 <hr className='w-[110px] dark:h-[2px] h-[1px] border-none bg-[#737c8a6f] dark:bg-[#55555574]' />
               </div>
-              <div onClick={handleFacebookLogin} className='flex items-center justify-center gap-2 mt-7'>
-                <FaFacebook color='#2d6dd6' className='text-[21px]' />
-                <p className='text-[#2d6dd6] text-[14px] font-semibold cursor-pointer '>Log in with Facebook</p>
+              <div onClick={handleGoogleLogin} className='flex items-center justify-center gap-2 mt-7'>
+                <FcGoogle className='text-[21px]' />
+                <p className='text-[#2d6dd6] text-[14px] font-semibold cursor-pointer '>Log in with Google</p>
               </div>
 
 
@@ -222,6 +225,11 @@ const Login = () => {
                 {(status === 400 || status === 500) && (
                   <p className="text-red-400 text-center text-sm mt-1  md:block">
                     Sorry, your password was incorrect. Please<br /> double-check your password.
+                  </p>
+                )}
+                {googleError && (
+                  <p className="text-red-400 text-center text-sm mt-1  md:block">
+                    Google login failed. Please try again.
                   </p>
                 )}
                 <p onClick={() => { navigate('/signup') }} className={`dark:text-[#fffffff4]  text-sm md:mb-30  cursor-pointer`}>Don't have an account? <span className='dark:text-[#2d65d6] text-[14px] font-bold cursor-pointer text-[#4e7edc]'>Sign up</span></p>

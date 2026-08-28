@@ -408,7 +408,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
                 {posts?.map((post) => (
                   <div key={post._id} className={`w-fit h-fit flex items-center justify-start p-4 gap-2 ${indexval === posts?.indexOf(post) ? "" : "hidden"}`}>
                     <img src={post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 z-0 md:z-10 rounded-full object-cover" />
-                    <p onClick={() => { setViewPost(false); setIndexval(null); navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className={` text-sm font-medium cursor-pointer ml-2 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'}`}>{post.author?.username}</p>
+                    <p onClick={() => { setViewPost(false); setIndexval(null); navigate(`/profile/${post?.author?.username || post?.author?._id}`) }} className={` text-sm font-medium cursor-pointer ml-2 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'}`}>{post.author?.username || post.author?.name}</p>
                     {post?.author?._id !== userData?.user?._id && <div className="w-fit h-fit flex items-center justify-start">
                       <LuDot size={20} />
                       <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium ${userData?.user?.following?.includes(post?.author?._id) ? 'text-[#6b6b6b]' : 'text-[#008cff]'} cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>
@@ -418,7 +418,7 @@ const ViewPostCards = ({ viewReels, showReplies, setShowReplies, viewPost, setVi
               </div> :
                 <div className={`w-fit h-fit flex items-center justify-start p-4 gap-2 `}>
                   <img src={post?.author?.profilepic || dp} alt="author image" className="w-9 h-9 z-0 md:z-10 rounded-full object-cover" />
-                  <p className={` text-sm font-medium ml-2 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'}`}>{post?.author?.username}</p>
+                  <p className={` text-sm font-medium ml-2 ${theme === 'dark' ? 'text-[white]' : (theme === 'light') ? 'text-[#000000a5]' : ' text-[#000000a5] dark:text-[white]'}`}>{post?.author?.username || post?.author?.name}</p>
                   {post?.author?._id !== userData?.user?._id && <div className="w-fit h-fit flex items-center justify-start">
                     <LuDot size={20} />
                     <p onClick={() => { handleFollow(post?.author?._id) }} className={` text-sm font-medium text-[#008cff] cursor-pointer active:scale-95 ${theme === 'dark' ? 'hover:text-[#ffffffdd]' : (theme === 'light') ? 'hover:text-[#00000081]' : 'hover:text-[#00000081] dark:hover:text-[#ffffff81]'} transition-all duration-200 ease-in-out`}>{userData?.user?.following?.includes(post?.author?._id) ? 'Following' : userData?.user?.followers?.includes(post?.author?._id) ? 'Follow back' : 'Follow'}</p>
