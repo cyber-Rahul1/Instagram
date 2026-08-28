@@ -7,8 +7,15 @@ import store from './redux/store.js'
 import { BrowserRouter } from 'react-router-dom'
 import { ServerProvider } from './context/ServerProvider.jsx'
 import ThemeProvider from './context/ThemeProvider.jsx'
+import axios from 'axios';
 
-
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
 createRoot(document.getElementById('root')).render(
 
   
