@@ -330,7 +330,7 @@ const MainPage = () => {
               <p className="text-xl pt-2">You're all caught up</p>
               <p className="text-sm text-[#ffffffa5]">You've seen all new posts from the past 3 days.</p>
             </div>}
-          {!allPosts && <div className={`w-screen md:w-full h-full flex items-center justify-start flex-col pt-10 px-5`}>
+          {status === 'loading' && !allPosts && <div className={`w-screen md:w-full h-full flex items-center justify-start flex-col pt-10 px-5`}>
             {items.map((item, index) => (
               <div key={index} className={`animate-pulse w-full md:w-fit h-fit flex flex-col items-start justify-center gap-5 pb-5`}>
                 <div className="w-full h-fit flex items-start justify-start gap-3 ">
@@ -345,6 +345,10 @@ const MainPage = () => {
                 <div className={`w-full md:w-100 h-120 rounded-md ${theme === 'dark' ? 'bg-[#363636]' : (theme === 'light') ? 'bg-[#797979] ' : ' bg-[#d3d3d3] bg:border-[#363636]'}`}></div>
               </div>
             ))}
+          </div>}
+          {status === 'failed' && <div className={`w-full h-fit flex flex-col items-center justify-center pt-20`}>
+              <p className="text-xl pt-2 text-red-500">Failed to load posts</p>
+              <p className="text-sm text-[#ffffffa5]">Please check your connection or login status.</p>
           </div>}
           {allPosts && (posts && posts?.length > 0) && posts?.map((post) => (
             <div key={post._id} className={`w-full h-full flex flex-col items-center justify-center md:border-b-1 py-5 ${theme === 'dark' ? 'border-[#363636]' : (theme === 'light') ? 'border-[#d3d3d3] ' : ' border-[#d3d3d3] dark:border-[#363636]'}`}>
